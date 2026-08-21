@@ -1,0 +1,309 @@
+:root {
+    --blue: #3560dc;
+    --blue-dark: #294fca;
+    --ink: #172033;
+    --muted: #657086;
+    --line: #dfe5ef;
+    --surface: #f7f9fc;
+    --danger: #d92d20;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 320px;
+    margin: 0;
+    color: var(--ink);
+    background: #eef2f8;
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+.app-shell {
+    width: min(100%, 430px);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 58px 26px 28px;
+    background: var(--surface);
+    box-shadow: 0 8px 30px rgb(22 40 76 / 8%);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--blue);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.brand__mark {
+    display: inline-flex;
+    width: 29px;
+    height: 33px;
+}
+
+.brand__mark svg {
+    width: 100%;
+    fill: currentColor;
+}
+
+.brand__check {
+    fill: none;
+    stroke: white;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.intro {
+    margin: 36px 0 26px;
+}
+
+.intro h1 {
+    margin: 0 0 12px;
+    font-size: clamp(34px, 9vw, 42px);
+    line-height: 1.2;
+    letter-spacing: -1.4px;
+}
+
+.intro p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.65;
+    letter-spacing: -.35px;
+}
+
+.upload-card {
+    display: flex;
+    min-height: 276px;
+    padding: 34px 30px 30px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #b9c8eb;
+    border-radius: 18px;
+    background: white;
+    transition: border-color .2s, background-color .2s;
+}
+
+.upload-card.is-dragging {
+    border-color: var(--blue);
+    background: #f4f7ff;
+}
+
+.upload-card__empty {
+    text-align: center;
+}
+
+.camera-icon {
+    display: inline-grid;
+    width: 64px;
+    height: 70px;
+    margin-bottom: 12px;
+    place-items: center;
+    border-radius: 24px;
+    color: var(--blue);
+    background: #eef2ff;
+}
+
+.camera-icon svg {
+    width: 38px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.upload-card h2 {
+    margin: 0 0 9px;
+    font-size: 19px;
+    letter-spacing: -.5px;
+}
+
+.upload-card__empty p {
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 15px;
+}
+
+.primary-button {
+    width: 100%;
+    min-height: 54px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 14px;
+    color: white;
+    background: var(--blue);
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background-color .2s, transform .1s;
+}
+
+.primary-button:hover {
+    background: var(--blue-dark);
+}
+
+.primary-button:active {
+    transform: translateY(1px);
+}
+
+.analyze-button {
+    margin-bottom: 10px;
+}
+
+.analyze-button + .primary-button {
+    border: 1px solid #9aa7bd;
+    color: #465167;
+    background: white;
+}
+
+.analyze-button + .primary-button:hover {
+    background: #f4f6fa;
+}
+
+.primary-button:focus-visible,
+.capture-guide summary:focus-visible {
+    outline: 3px solid rgb(53 96 220 / 30%);
+    outline-offset: 3px;
+}
+
+.preview {
+    width: 100%;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.preview img {
+    display: block;
+    width: 100%;
+    max-height: 280px;
+    border-radius: 10px;
+    object-fit: contain;
+    background: #f3f5f9;
+}
+
+.preview__name {
+    overflow: hidden;
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-error {
+    min-height: 20px;
+    margin: 10px 0 -16px;
+    color: var(--danger);
+    font-size: 14px;
+    text-align: center;
+}
+
+.privacy-note {
+    display: flex;
+    margin: 26px 0;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    color: #596579;
+    font-size: 14px;
+}
+
+.capture-guide {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.capture-guide summary {
+    padding: 15px 4px;
+    color: var(--blue);
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    list-style: none;
+}
+
+.capture-guide summary::-webkit-details-marker {
+    display: none;
+}
+
+.capture-guide summary::after {
+    display: inline-block;
+    margin-left: 8px;
+    content: "›";
+    transition: transform .2s;
+}
+
+.capture-guide[open] summary::after {
+    transform: rotate(90deg);
+}
+
+.capture-guide__content {
+    padding: 0 12px 12px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.capture-guide__content p {
+    margin: 8px 0;
+}
+
+footer {
+    margin-top: 28px;
+    padding: 18px;
+    border-radius: 12px;
+    color: #7a8495;
+    background: #f1f4f8;
+    font-size: 13px;
+    text-align: center;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (min-width: 431px) {
+    body {
+        padding: 28px 0;
+    }
+
+    .app-shell {
+        min-height: calc(100vh - 56px);
+        border-radius: 36px;
+    }
+}
+
+@media (max-width: 360px) {
+    .app-shell {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .upload-card {
+        padding-right: 22px;
+        padding-left: 22px;
+    }
+}

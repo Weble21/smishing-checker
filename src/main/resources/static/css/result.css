@@ -1,0 +1,25 @@
+.result-shell { padding-top: 38px; }
+.result-header { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+.result-header h1 { margin: 0; font-size: 22px; }
+.back-button { display: grid; width: 28px; height: 36px; place-items: center; color: var(--ink); font-size: 32px; line-height: 1; text-decoration: none; }
+.danger-banner { display: flex; padding: 12px 14px; align-items: center; gap: 11px; border: 1px solid #ffb7b2; border-radius: 16px; color: #d92d20; background: #fff1f0; }
+.danger-icon { display: grid; width: 30px; height: 30px; flex: 0 0 30px; place-items: center; border-radius: 50%; color: white; background: #e63228; font-size: 22px; font-weight: 800; }
+.danger-banner strong { font-size: 18px; }
+.danger-banner p { margin: 3px 0 0; font-size: 13px; }
+.scroll-card, .scroll-list { overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #b8c1d1 transparent; }
+.scroll-card { max-height: 150px; margin-top: 14px; padding: 14px 15px; border: 1px solid var(--line); border-radius: 15px; background: white; }
+.scroll-card h2 { margin: 0 0 8px; color: var(--muted); font-size: 13px; font-weight: 600; }
+.scroll-card p { margin: 0 0 12px; color: #4f5b70; font-size: 14px; line-height: 1.7; }
+.reason-section { margin-top: 17px; }
+.reason-section h2 { margin: 0 0 7px; font-size: 17px; }
+.scroll-list { max-height: 112px; padding-right: 8px; color: #536077; font-size: 13px; line-height: 1.65; }
+.scroll-list p { margin: 0 0 7px; }
+.scroll-card:focus-visible, .scroll-list:focus-visible { outline: 2px solid rgb(53 96 220 / 35%); outline-offset: 2px; }
+.action-card { margin-top: 18px; padding: 16px; border-radius: 15px; background: #edf3ff; }
+.action-card h2 { margin: 0 0 6px; color: var(--blue); font-size: 17px; }
+.action-card p { margin: 0 0 12px; color: #536077; font-size: 13px; line-height: 1.55; }
+.call-button, .secondary-button { display: flex; min-height: 54px; align-items: center; justify-content: center; border-radius: 12px; font-weight: 800; text-decoration: none; }
+.call-button { color: white; background: var(--blue); }
+.secondary-button { margin-top: 14px; border: 1px solid #9aa7bd; color: #465167; background: white; }
+.result-disclaimer { margin: 16px 0 0; color: #8a94a6; font-size: 11px; line-height: 1.55; text-align: center; }
+@media (max-width: 360px) { .result-shell { padding-top: 28px; } .danger-banner strong { font-size: 16px; } }

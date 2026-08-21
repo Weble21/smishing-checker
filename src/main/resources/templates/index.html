@@ -1,17 +1,58 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-    <title>이 문자, 안전할까요?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="의심스러운 문자나 카카오톡 화면을 사진으로 올려 안전 여부를 확인하세요.">
+    <title>안심문자 | 스미싱 검사</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css">
 </head>
 <body>
-    <h1>이 문자, 안전할까요?</h1>
-    <p>의심스러운 문자나 카카오톡 화면을 올려주세요.</p>
+    <main class="app-shell">
+        <header class="brand" aria-label="안심문자">
+            <span class="brand__mark" aria-hidden="true">
+                <svg viewBox="0 0 32 36"><path d="M16 1 29 6v10c0 8.5-5.4 15.3-13 19C8.4 31.3 3 24.5 3 16V6l13-5Z"/><path class="brand__check" d="m10 17 4 4 8-9"/></svg>
+            </span>
+            <span>안심문자</span>
+        </header>
 
-    <input type="file" accept="image/png, image/jpeg">
+        <section class="intro" aria-labelledby="page-title">
+            <h1 id="page-title">이 문자,<br>안전할까요?</h1>
+            <p>의심스러운 문자나 카카오톡 화면을<br>사진으로 올려주세요.</p>
+        </section>
+
+        <section class="upload-card" id="uploadCard">
+            <input class="visually-hidden" id="imageInput" type="file"
+                   accept="image/png,image/jpeg,image/webp,image/gif"
+                   aria-describedby="uploadHint fileError">
+            <div class="upload-card__empty" id="emptyState">
+                <span class="camera-icon" aria-hidden="true">
+                    <svg viewBox="0 0 48 48"><path d="M9 16h7l3-5h10l3 5h7a4 4 0 0 1 4 4v17a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V20a4 4 0 0 1 4-4Z"/><circle cx="24" cy="28" r="8"/></svg>
+                </span>
+                <h2>사진 선택하기</h2>
+                <p id="uploadHint">캡쳐본이나 문자 내용이 잘 보이게 올려주세요</p>
+            </div>
+            <div class="preview" id="previewState" hidden>
+                <img id="imagePreview" alt="선택한 문자 화면 미리보기">
+                <p class="preview__name" id="fileName"></p>
+            </div>
+            <button class="primary-button analyze-button" id="analyzeButton" type="button" hidden>
+                이 사진 분석하기
+            </button>
+            <button class="primary-button" id="selectButton" type="button">사진 선택하기</button>
+            <p class="file-error" id="fileError" role="alert" aria-live="polite"></p>
+        </section>
+
+        <p class="privacy-note"><span aria-hidden="true">🔒</span> 사진은 분석 후 바로 삭제돼요.</p>
+        <details class="capture-guide">
+            <summary>화면 캡처 방법 보기</summary>
+            <div class="capture-guide__content">
+                <p><strong>아이폰</strong> 측면 버튼과 음량 높이기 버튼을 동시에 눌러주세요.</p>
+                <p><strong>안드로이드</strong> 전원 버튼과 음량 낮추기 버튼을 동시에 눌러주세요.</p>
+            </div>
+        </details>
+        <footer>의심되는 링크는 누르지 말고 먼저 확인하세요.</footer>
+    </main>
+    <script th:src="@{/js/index.js}" src="/js/index.js" defer></script>
 </body>
 </html>
