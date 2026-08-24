@@ -3,31 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>&#50504;&#49900;&#47928;&#51088; | &#44160;&#49324; &#44208;&#44284;</title>
+    <meta name="description" content="업로드한 문자 화면의 스미싱 분석 결과를 확인하세요.">
+    <title>안심문자 | 검사 결과</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css">
     <link rel="stylesheet" th:href="@{/css/result.css}" href="/css/result.css">
 </head>
 <body>
     <main class="app-shell result-shell">
-        <header class="result-header"><a class="back-button" th:href="@{/}" href="/" aria-label="&#51060;&#51204; &#54868;&#47732;&#51004;&#47196;">&#8249;</a><h1>&#44160;&#49324; &#44208;&#44284;</h1></header>
-        <section class="danger-banner" aria-label="&#50948;&#54744; &#44221;&#44256;"><span class="danger-icon" aria-hidden="true">!</span><div><strong>&#50948;&#54744; &#44032;&#45733;&#49457;&#51060; &#45458;&#50500;&#50836;</strong><p>&#47553;&#53356;&#47484; &#45572;&#47476;&#44144;&#45208; &#49569;&#44552;&#54616;&#51648; &#47560;&#49464;&#50836;.</p></div></section>
-        <section class="scroll-card" tabindex="0" aria-labelledby="summary-title">
-            <h2 id="summary-title">&#54869;&#51064;&#54620; &#45236;&#50857;</h2>
-            <p>[&#44397;&#48124;&#44148;&#44053;&#48372;&#54744;] &#54872;&#44553;&#44552;&#51060; &#51080;&#49845;&#45768;&#45796;.<br>&#50500;&#47000; &#47553;&#53356;&#50640;&#49436; &#50724;&#45720; &#50504;&#50640; &#49888;&#52397;&#54616;&#49464;&#50836;.</p>
-            <p>&#47928;&#51088;&#50640; &#44592;&#44288;&#51012; &#49324;&#52845;&#54620; &#54364;&#54788;&#44284; &#44553;&#54620; &#49888;&#52397;&#51012; &#50976;&#46020;&#54616;&#45716; &#47928;&#44396;&#44032; &#54252;&#54632;&#46104;&#50612; &#51080;&#50612;&#50836;.</p>
-        </section>
-        <section class="reason-section" aria-labelledby="reason-title">
-            <h2 id="reason-title">&#50780; &#50948;&#54744;&#54620;&#44032;&#50836;?</h2>
-            <div class="scroll-list" tabindex="0">
-                <p>&bull; &#52636;&#52376;&#47484; &#54869;&#51064;&#54616;&#44592; &#50612;&#47140;&#50868; &#51064;&#53552;&#45367; &#51452;&#49548;&#44032; &#51080;&#50612;&#50836;.</p>
-                <p>&bull; &lsquo;&#50724;&#45720; &#50504;&#50640;&rsquo;&#52376;&#47100; &#44553;&#54616;&#44172; &#54665;&#46041;&#54616;&#44172; &#54644;&#50836;.</p>
-                <p>&bull; &#54872;&#44553;&#44552;&#51012; &#48120;&#45180;&#47196; &#44060;&#51064;&#51221;&#48372;&#47484; &#50836;&#44396;&#54624; &#49688; &#51080;&#50612;&#50836;.</p>
-                <p>&bull; &#44277;&#44277;&#44592;&#44288;&#51008; &#47928;&#51088; &#47553;&#53356;&#47196; &#48708;&#48128;&#48264;&#54840;&#45208; &#44552;&#50997; &#51221;&#48372;&#47484; &#50836;&#52397;&#54616;&#51648; &#50506;&#50500;&#50836;.</p>
+        <header class="brand" aria-label="안심문자">
+            <span class="brand__mark" aria-hidden="true">
+                <svg viewBox="0 0 32 36"><path d="M16 1 29 6v10c0 8.5-5.4 15.3-13 19C8.4 31.3 3 24.5 3 16V6l13-5Z"/><path class="brand__check" d="m10 17 4 4 8-9"/></svg>
+            </span>
+            <span>안심문자</span>
+        </header>
+
+        <header class="result-header">
+            <h1>검사 결과</h1>
+        </header>
+
+        <section class="risk-card" id="riskCard" aria-labelledby="riskTitle">
+            <div class="risk-card__heading">
+                <span class="risk-card__icon" id="riskIcon" aria-hidden="true"></span>
+                <h2 id="riskTitle"></h2>
             </div>
+            <p id="resultSummary"></p>
+            <p class="mock-notice" id="mockNotice" hidden>현재 테스트용 분석 결과입니다.</p>
         </section>
-        <section class="action-card"><h2>&#51648;&#44552; &#51060;&#47111;&#44172; &#54616;&#49464;&#50836;</h2><p>&#47928;&#51088;&#47484; &#45803;&#44256;, &#44277;&#49885; &#50545;&#51060;&#45208; &#45824;&#54364;&#48264;&#54840;&#47196; &#51649;&#51217; &#54869;&#51064;&#54616;&#49464;&#50836;.</p><a class="call-button" href="tel:118">&#9742;&nbsp; &#44397;&#48264; &#50630;&#51060; 118 &#47928;&#51032;</a></section>
-        <a class="secondary-button" th:href="@{/}" href="/">&#45796;&#47480; &#49324;&#51652; &#44160;&#49324;&#54616;&#44592;</a>
-        <p class="result-disclaimer">AI &#48516;&#49437;&#51008; &#50504;&#51204;&#51012; &#48372;&#51109;&#54616;&#51648; &#50506;&#50500;&#50836;.<br>&#51032;&#49900;&#46104;&#47732; 118 &#46608;&#45716; &#44221;&#52272; 112&#50640; &#47928;&#51032;&#54616;&#49464;&#50836;.</p>
+
+        <section class="result-section" aria-labelledby="reasonTitle">
+            <h2 id="reasonTitle">왜 이렇게 판단했나요?</h2>
+            <ul class="result-list" id="reasonList"></ul>
+            <p class="empty-list" id="reasonEmpty" hidden>확인된 판단 이유가 없습니다.</p>
+        </section>
+
+        <section class="action-card" aria-labelledby="actionTitle">
+            <h2 id="actionTitle">지금 이렇게 하세요</h2>
+            <ul class="result-list action-list" id="actionList"></ul>
+            <p class="empty-list" id="actionEmpty" hidden>안내된 행동 요령이 없습니다.</p>
+            <a class="call-button" href="tel:118">☎ 국번 없이 118 문의</a>
+        </section>
+
+        <button class="secondary-button" id="retryButton" type="button">다른 사진 검사하기</button>
+        <p class="result-disclaimer">AI 분석 결과만으로 안전 여부를 확정할 수 없어요.<br>의심되면 118 또는 경찰 112에 문의하세요.</p>
     </main>
+    <script th:src="@{/js/result.js}" src="/js/result.js" defer></script>
 </body>
 </html>
