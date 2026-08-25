@@ -2,6 +2,7 @@ package com.safeletter.smishing_checker.service;
 
 import com.safeletter.smishing_checker.dto.OcrResult;
 import com.safeletter.smishing_checker.dto.VisionAnalysisResult;
+import com.safeletter.smishing_checker.exception.ExternalApiException;
 import com.safeletter.smishing_checker.exception.OcrUnavailableException;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
@@ -48,6 +49,7 @@ class MessageAnalysisServiceTests {
 
         assertEquals("HIGH", result.riskLevel());
         assertFalse(result.mock());
+        assertEquals("SUCCESS", result.analysisStatus());
     }
 
     @Test
@@ -72,6 +74,46 @@ class MessageAnalysisServiceTests {
     }
 
     @Test
+    void rejectsCorruptedImageWithAllowedContentType() {
+        MessageAnalysisService service = service(
+                (bytes, contentType, ocr, rules) -> {
+                    throw new AssertionError("손상 이미지는 AI에 전달되면 안 됩니다.");
+                },
+                (bytes, contentType) -> {
+                    throw new AssertionError("손상 이미지는 OCR에 전달되면 안 됩니다.");
+                }
+        );
+        MockMultipartFile image = new MockMultipartFile(
+                "image",
+                "broken.png",
+                "image/png",
+                "not a png".getBytes()
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> service.analyze(image));
+    }
+
+    @Test
+    void rejectsImageLargerThanTenMegabytes() {
+        MessageAnalysisService service = service(
+                (bytes, contentType, ocr, rules) -> {
+                    throw new AssertionError("대용량 이미지는 AI에 전달되면 안 됩니다.");
+                },
+                (bytes, contentType) -> {
+                    throw new AssertionError("대용량 이미지는 OCR에 전달되면 안 됩니다.");
+                }
+        );
+        MockMultipartFile image = new MockMultipartFile(
+                "image",
+                "large.png",
+                "image/png",
+                new byte[10 * 1024 * 1024 + 1]
+        );
+
+        assertThrows(IllegalArgumentException.class, () -> service.analyze(image));
+    }
+
+    @Test
     void returnsReviewRequiredWhenOcrIsUnavailable() {
         VisionAnalyzer analyzer = (bytes, contentType, ocr, rules) -> {
             throw new AssertionError("OCR 실패 이미지는 AI에 전달되면 안 됩니다.");
@@ -86,6 +128,8 @@ class MessageAnalysisServiceTests {
         var result = service.analyze(validImage());
 
         assertEquals("REVIEW_REQUIRED", result.riskLevel());
+        assertEquals("OCR_ERROR", result.analysisStatus());
+        assertEquals("OCR_UNAVAILABLE", result.errorCode());
     }
 
     @Test
@@ -101,6 +145,8 @@ class MessageAnalysisServiceTests {
         var result = service.analyze(validImage());
 
         assertEquals("REVIEW_REQUIRED", result.riskLevel());
+        assertEquals("OCR_UNCERTAIN", result.analysisStatus());
+        assertEquals("OCR_LOW_CONFIDENCE", result.errorCode());
     }
 
     @Test
@@ -127,6 +173,98 @@ class MessageAnalysisServiceTests {
         assertTrue(result.actions().stream().anyMatch(
                 action -> action.contains("118") || action.contains("112")
         ));
+    }
+
+    @Test
+    void keepsRoutineDeliveryNoticeLow() {
+        VisionAnalyzer analyzer = (bytes, contentType, ocr, rules) ->
+                new VisionAnalysisResult(
+                        "LOW",
+                        "일반적인 배송 예정 안내입니다.",
+                        List.of("링크, 송금, 개인정보 요구가 없습니다."),
+                        List.of("주문한 쇼핑몰 공식 앱에서 확인하세요.")
+                );
+        MessageAnalysisService service = service(
+                analyzer,
+                (bytes, contentType) -> new OcrResult(
+                        "OO택배 상품이 오늘 오후 도착 예정입니다. 공식 앱에서 확인해 주세요.",
+                        0.98,
+                        1
+                )
+        );
+
+        var result = service.analyze(validImage());
+
+        assertEquals("LOW", result.riskLevel());
+    }
+
+    @Test
+    void mediumRiskIncludes118Or112Guidance() {
+        VisionAnalyzer analyzer = (bytes, contentType, ocr, rules) ->
+                new VisionAnalysisResult(
+                        "MEDIUM",
+                        "확인이 필요한 링크가 있습니다.",
+                        List.of("문자에 URL이 있습니다."),
+                        List.of("공식 앱에서 확인하세요.")
+                );
+        MessageAnalysisService service = service(
+                analyzer,
+                (bytes, contentType) -> new OcrResult(
+                        "배송 현황 https://example.com/order",
+                        0.98,
+                        1
+                )
+        );
+
+        var result = service.analyze(validImage());
+
+        assertEquals("MEDIUM", result.riskLevel());
+        assertTrue(result.actions().stream().anyMatch(
+                action -> action.contains("118") || action.contains("112")
+        ));
+    }
+
+    @Test
+    void returnsReviewRequiredWhenAiFails() {
+        VisionAnalyzer analyzer = (bytes, contentType, ocr, rules) -> {
+            throw new ExternalApiException("timeout");
+        };
+        MessageAnalysisService service = service(
+                analyzer,
+                (bytes, contentType) -> new OcrResult(
+                        "택배가 오늘 도착 예정입니다.",
+                        0.98,
+                        1
+                )
+        );
+
+        var result = service.analyze(validImage());
+
+        assertEquals("REVIEW_REQUIRED", result.riskLevel());
+        assertTrue(result.summary().contains("확인"));
+        assertEquals("AI_ERROR", result.analysisStatus());
+        assertEquals("UPSTREAM_ERROR", result.errorCode());
+    }
+
+    @Test
+    void preservesRuleBasedHighRiskWhenAiFails() {
+        VisionAnalyzer analyzer = (bytes, contentType, ocr, rules) -> {
+            throw new ExternalApiException("RATE_LIMIT", "rate limited");
+        };
+        MessageAnalysisService service = service(
+                analyzer,
+                (bytes, contentType) -> new OcrResult(
+                        "안전계좌로 전액 이체하세요.",
+                        0.98,
+                        1
+                )
+        );
+
+        var result = service.analyze(validImage());
+
+        assertEquals("HIGH", result.riskLevel());
+        assertEquals("AI_ERROR", result.analysisStatus());
+        assertEquals("RATE_LIMIT", result.errorCode());
     }
 
     private MessageAnalysisService service(

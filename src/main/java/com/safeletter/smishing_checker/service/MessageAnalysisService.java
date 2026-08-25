@@ -4,6 +4,7 @@ import com.safeletter.smishing_checker.dto.AnalysisResponse;
 import com.safeletter.smishing_checker.dto.OcrResult;
 import com.safeletter.smishing_checker.dto.RuleCheckResult;
 import com.safeletter.smishing_checker.dto.VisionAnalysisResult;
+import com.safeletter.smishing_checker.exception.ExternalApiException;
 import com.safeletter.smishing_checker.exception.OcrUnavailableException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -65,12 +66,17 @@ public class MessageAnalysisService {
             }
 
             RuleCheckResult ruleResult = ruleChecker.check(ocrResult.text());
-            VisionAnalysisResult aiResult = visionAnalyzer.analyze(
-                    imageBytes,
-                    image.getContentType(),
-                    ocrResult,
-                    ruleResult
-            );
+            VisionAnalysisResult aiResult;
+            try {
+                aiResult = visionAnalyzer.analyze(
+                        imageBytes,
+                        image.getContentType(),
+                        ocrResult,
+                        ruleResult
+                );
+            } catch (ExternalApiException exception) {
+                return aiUnavailableResponse(ruleResult, exception.errorCode());
+            }
             VisionAnalysisResult result = merge(aiResult, ruleResult);
 
             return new AnalysisResponse(
@@ -78,7 +84,9 @@ public class MessageAnalysisService {
                     result.summary(),
                     result.reasons(),
                     result.actions(),
-                    false
+                    false,
+                    "SUCCESS",
+                    null
             );
         } catch (IOException exception) {
             throw new IllegalArgumentException(
@@ -111,7 +119,7 @@ public class MessageAnalysisService {
         LinkedHashSet<String> actions = new LinkedHashSet<>();
         actions.addAll(ruleResult.actions());
         actions.addAll(aiResult.actions());
-        if ("HIGH".equals(riskLevel)
+        if (("HIGH".equals(riskLevel) || "MEDIUM".equals(riskLevel))
                 && actions.stream().noneMatch(
                 action -> action.contains("118") || action.contains("112")
         )) {
@@ -126,6 +134,33 @@ public class MessageAnalysisService {
         );
     }
 
+    private AnalysisResponse aiUnavailableResponse(
+            RuleCheckResult ruleResult,
+            String errorCode
+    ) {
+        LinkedHashSet<String> actions = new LinkedHashSet<>(ruleResult.actions());
+        actions.add("문자 속 링크, 송금, 개인정보 요구에는 응답하지 마세요.");
+        actions.add("의심되면 국번 없이 118 또는 긴급한 피해 상황은 112에 문의하세요.");
+
+        String ruleRiskLevel = ruleResult.minimumRiskLevel();
+        boolean hasDeterministicRisk = "HIGH".equals(ruleRiskLevel)
+                || "MEDIUM".equals(ruleRiskLevel);
+
+        return new AnalysisResponse(
+                hasDeterministicRisk ? ruleRiskLevel : "REVIEW_REQUIRED",
+                hasDeterministicRisk
+                        ? "AI 분석은 완료하지 못했지만 서버 규칙에서 위험 신호를 확인했습니다."
+                        : "AI 분석을 완료하지 못해 확인이 필요합니다.",
+                ruleResult.reasons().isEmpty()
+                        ? List.of("현재 자동 분석 결과를 신뢰할 수 없습니다.")
+                        : ruleResult.reasons(),
+                List.copyOf(actions),
+                false,
+                "AI_ERROR",
+                errorCode
+        );
+    }
+
     private AnalysisResponse ocrUnavailableResponse() {
         return new AnalysisResponse(
                 "REVIEW_REQUIRED",
@@ -135,7 +170,9 @@ public class MessageAnalysisService {
                         "잠시 후 다시 검사해 주세요.",
                         "의심되는 링크나 송금 요청에는 응하지 마세요."
                 ),
-                false
+                false,
+                "OCR_ERROR",
+                "OCR_UNAVAILABLE"
         );
     }
 
@@ -152,7 +189,11 @@ public class MessageAnalysisService {
                         "문자 영역이 선명하게 보이도록 다시 촬영해 주세요.",
                         "의심되는 링크나 송금 요청에는 응하지 마세요."
                 ),
-                false
+                false,
+                "OCR_UNCERTAIN",
+                ocrResult.text().isBlank()
+                        ? "OCR_EMPTY_TEXT"
+                        : "OCR_LOW_CONFIDENCE"
         );
     }
 

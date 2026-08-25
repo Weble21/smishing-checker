@@ -98,5 +98,205 @@
     "expectedReasons": ["문자 내 URL 없음", "개인정보·송금 요구 없음", "공식 앱에서 직접 확인하도록 안내"],
     "sourceTitle": "합성 정상 대조군",
     "sourceUrl": null
+  },
+  {
+    "id": "case-11-delivery-scheduled",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO택배",
+    "message": "고객님의 상품이 오늘 오후 2시부터 4시 사이 도착 예정입니다. 배송 조회는 주문하신 쇼핑몰 공식 앱에서 확인해 주세요.",
+    "expectedReasons": ["문자 내 URL 없음", "송금·개인정보 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-12-delivery-delay",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO택배",
+    "message": "기상 상황으로 배송이 하루 지연될 예정입니다. 별도 조치 없이 기다려 주세요. 불편을 드려 죄송합니다.",
+    "expectedReasons": ["행동 요구 없음", "링크·결제 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-13-pickup-notice",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "편의점택배",
+    "message": "보관 중인 택배를 매장 운영 시간에 수령해 주세요. 결제나 개인정보 입력은 필요하지 않습니다.",
+    "expectedReasons": ["수령 안내", "링크·결제 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-14-card-approved",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO카드",
+    "message": "08/25 13:20 편의점 12,500원 승인되었습니다. 본인이 이용하지 않았다면 카드 뒷면 대표번호로 문의해 주세요.",
+    "expectedReasons": ["승인 사실 안내", "공식 대표번호 확인 안내"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-15-bank-deposit",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO은행",
+    "message": "홍길동님 계좌에 50,000원이 입금되었습니다. 이 문자는 입금 사실만 안내하며 회신할 필요가 없습니다.",
+    "expectedReasons": ["입금 사실 안내", "송금 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-16-library-return",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "시립도서관",
+    "message": "대출 도서 반납 예정일은 8월 28일입니다. 연장은 도서관 공식 앱에서 신청할 수 있습니다.",
+    "expectedReasons": ["일정 안내", "문자 내 URL 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-17-school-notice",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO초등학교",
+    "message": "내일 현장학습은 비 예보로 취소되었습니다. 학생들은 정상 등교합니다.",
+    "expectedReasons": ["학교 일정 안내", "행동·정보 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-18-hospital-result-ready",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO병원",
+    "message": "검사 결과 상담 예약이 8월 30일 오전 10시로 확정되었습니다. 변경은 병원 대표번호로 전화해 주세요.",
+    "expectedReasons": ["예약 확정 안내", "대표번호 직접 확인"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-19-apartment-maintenance",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "관리사무소",
+    "message": "8월 29일 오전 9시부터 정오까지 단지 수도 점검이 있습니다. 주민 여러분의 양해 바랍니다.",
+    "expectedReasons": ["점검 일정 안내", "금전·개인정보 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-20-restaurant-booking",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO식당",
+    "message": "오늘 오후 7시 2명 예약이 완료되었습니다. 예약 변경은 매장으로 전화해 주세요.",
+    "expectedReasons": ["예약 완료 안내", "링크·결제 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-21-coworker-meeting",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "김대리",
+    "message": "내일 회의가 오후 3시로 변경됐습니다. 회의실은 4층 B입니다.",
+    "expectedReasons": ["업무 일정 안내", "위험 행동 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-22-weather-alert",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "재난안전",
+    "message": "오늘 밤 강한 비가 예상됩니다. 하천 주변 접근을 피하고 안전에 유의하세요.",
+    "expectedReasons": ["안전 안내", "링크·개인정보 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-23-subscription-renewed",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO서비스",
+    "message": "정기 이용권이 정상 갱신되었습니다. 이용 내역은 설치된 공식 앱에서 확인할 수 있습니다.",
+    "expectedReasons": ["갱신 사실 안내", "문자 내 URL 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-24-delivery-redelivery-link",
+    "category": "SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "OO택배",
+    "message": "부재로 반송 예정입니다. 오늘 안에 재배송 주소를 입력하세요. hxxps://parcel-retry[.]invalid",
+    "expectedReasons": ["택배 사칭 URL", "기한을 내세운 입력 유도"],
+    "sourceTitle": "KISA 유형 기반 합성 사례",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000030&menuNo=205027&nttId=71280"
+  },
+  {
+    "id": "case-25-card-cancel-link",
+    "category": "IMPERSONATION_SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "OO카드",
+    "message": "해외 결제 980,000원 승인. 본인 결제가 아니면 즉시 취소하세요. hxxps://card-cancel[.]invalid",
+    "expectedReasons": ["카드사 사칭", "긴급한 URL 클릭 유도"],
+    "sourceTitle": "KISA 유형 기반 합성 사례",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000030&menuNo=205027&nttId=71280"
+  },
+  {
+    "id": "case-26-court-document-link",
+    "category": "IMPERSONATION_SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "법원알림",
+    "message": "귀하에게 소송 서류가 발송되었습니다. 오늘까지 확인하세요. hxxps://court-doc[.]invalid",
+    "expectedReasons": ["공공기관 사칭", "기한을 내세운 링크 유도"],
+    "sourceTitle": "KISA 유형 기반 합성 사례",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000030&menuNo=205027&nttId=71280"
+  },
+  {
+    "id": "case-27-job-task-transfer",
+    "category": "SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "재택알바 담당자",
+    "message": "고수익 미션 참여를 위해 보증금 10만원을 아래 계좌로 먼저 송금해 주세요.",
+    "expectedReasons": ["선입금 요구", "고수익 미끼"],
+    "sourceTitle": "KISA 유형 기반 합성 사례",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000131&menuNo=205056&nttId=70214&pageIndex=1&searchCnd=1"
+  },
+  {
+    "id": "case-28-police-safe-account",
+    "category": "IMPERSONATION_SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "경찰청 수사관",
+    "message": "명의도용 사건에 연루되었습니다. 자산 보호를 위해 안전계좌로 전액 이체하세요.",
+    "expectedReasons": ["경찰 사칭", "안전계좌 송금 요구"],
+    "sourceTitle": "KISA 유형 기반 합성 사례",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000131&menuNo=205056&nttId=70214&pageIndex=1&searchCnd=1"
+  },
+  {
+    "id": "case-29-mobile-id-otp",
+    "category": "IMPERSONATION_SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "통신사 고객센터",
+    "message": "휴대폰 명의 보호를 위해 주민번호와 문자 인증번호를 지금 회신해 주세요.",
+    "expectedReasons": ["통신사 사칭", "개인정보·인증번호 요구"],
+    "sourceTitle": "KISA 유형 기반 합성 사례",
+    "sourceUrl": "https://www.boho.or.kr/common/cmm/fms/FileDown.do?atchFileId=FILE_000000000084934&fileSn=1"
+  },
+  {
+    "id": "case-30-wedding-invitation-link",
+    "category": "SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "박민지",
+    "message": "저희 결혼합니다. 모바일 청첩장과 장소는 여기서 확인해 주세요. hxxps://wedding-card[.]invalid",
+    "expectedReasons": ["지인 사칭 가능 URL", "모바일 청첩장 클릭 유도"],
+    "sourceTitle": "KISA 유형 기반 합성 사례",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000030&menuNo=205027&nttId=71280"
   }
 ]

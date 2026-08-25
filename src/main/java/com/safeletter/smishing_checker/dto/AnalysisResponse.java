@@ -7,6 +7,8 @@ public record AnalysisResponse(
         String summary,
         List<String> reasons,
         List<String> actions,
-        boolean mock
+        boolean mock,
+        String analysisStatus,
+        String errorCode
 ) {
 }
