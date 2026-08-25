@@ -1,11 +1,17 @@
 package com.safeletter.smishing_checker.service;
 
 import com.safeletter.smishing_checker.dto.AnalysisResponse;
+import com.safeletter.smishing_checker.dto.OcrResult;
+import com.safeletter.smishing_checker.dto.RuleCheckResult;
+import com.safeletter.smishing_checker.dto.VisionAnalysisResult;
+import com.safeletter.smishing_checker.exception.OcrUnavailableException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,22 +25,134 @@ public class MessageAnalysisService {
             "image/png"
     );
 
+    private final VisionAnalyzer visionAnalyzer;
+    private final OcrAnalyzer ocrAnalyzer;
+    private final MessageRiskRuleChecker ruleChecker;
+    private final double minimumOcrConfidence;
+
+    public MessageAnalysisService(
+            VisionAnalyzer visionAnalyzer,
+            OcrAnalyzer ocrAnalyzer,
+            MessageRiskRuleChecker ruleChecker,
+            @Value("${ocr.minimum-confidence:0.55}")
+            double minimumOcrConfidence
+    ) {
+        this.visionAnalyzer = visionAnalyzer;
+        this.ocrAnalyzer = ocrAnalyzer;
+        this.ruleChecker = ruleChecker;
+        this.minimumOcrConfidence = minimumOcrConfidence;
+    }
+
     public AnalysisResponse analyze(MultipartFile image) {
         validateImage(image);
 
+        try {
+            byte[] imageBytes = image.getBytes();
+            OcrResult ocrResult;
+
+            try {
+                ocrResult = ocrAnalyzer.extract(
+                        imageBytes,
+                        image.getContentType()
+                );
+            } catch (OcrUnavailableException exception) {
+                return ocrUnavailableResponse();
+            }
+
+            if (ocrResult.text().isBlank()
+                    || ocrResult.confidence() < minimumOcrConfidence) {
+                return uncertainOcrResponse(ocrResult);
+            }
+
+            RuleCheckResult ruleResult = ruleChecker.check(ocrResult.text());
+            VisionAnalysisResult aiResult = visionAnalyzer.analyze(
+                    imageBytes,
+                    image.getContentType(),
+                    ocrResult,
+                    ruleResult
+            );
+            VisionAnalysisResult result = merge(aiResult, ruleResult);
+
+            return new AnalysisResponse(
+                    result.riskLevel(),
+                    result.summary(),
+                    result.reasons(),
+                    result.actions(),
+                    false
+            );
+        } catch (IOException exception) {
+            throw new IllegalArgumentException(
+                    "사진을 읽는 중 오류가 발생했습니다."
+            );
+        }
+    }
+
+    private VisionAnalysisResult merge(
+            VisionAnalysisResult aiResult,
+            RuleCheckResult ruleResult
+    ) {
+        String riskLevel = aiResult.riskLevel();
+        String summary = aiResult.summary();
+
+        if ("HIGH".equals(ruleResult.minimumRiskLevel())
+                && !"HIGH".equals(riskLevel)) {
+            riskLevel = "HIGH";
+            summary = "문자에서 위험 신호가 확인되어 스미싱 가능성이 높습니다.";
+        } else if ("MEDIUM".equals(ruleResult.minimumRiskLevel())
+                && "LOW".equals(riskLevel)) {
+            riskLevel = "MEDIUM";
+            summary = "문자에서 확인이 필요한 위험 신호가 발견되었습니다.";
+        }
+
+        LinkedHashSet<String> reasons = new LinkedHashSet<>();
+        reasons.addAll(ruleResult.reasons());
+        reasons.addAll(aiResult.reasons());
+
+        LinkedHashSet<String> actions = new LinkedHashSet<>();
+        actions.addAll(ruleResult.actions());
+        actions.addAll(aiResult.actions());
+        if ("HIGH".equals(riskLevel)
+                && actions.stream().noneMatch(
+                action -> action.contains("118") || action.contains("112")
+        )) {
+            actions.add("의심되면 국번 없이 118 또는 긴급한 피해 상황은 112에 문의하세요.");
+        }
+
+        return new VisionAnalysisResult(
+                riskLevel,
+                summary,
+                List.copyOf(reasons),
+                List.copyOf(actions)
+        );
+    }
+
+    private AnalysisResponse ocrUnavailableResponse() {
         return new AnalysisResponse(
-                "HIGH",
-                "위험 가능성이 높은 문자예요.",
+                "REVIEW_REQUIRED",
+                "문자를 읽는 서비스에 연결할 수 없어 확인이 필요합니다.",
+                List.of("현재 이미지에서 문자 내용을 추출하지 못했습니다."),
                 List.of(
-                        "출처를 확인하기 어려운 링크가 있어요.",
-                        "사용자를 급하게 행동하도록 유도해요."
+                        "잠시 후 다시 검사해 주세요.",
+                        "의심되는 링크나 송금 요청에는 응하지 마세요."
                 ),
+                false
+        );
+    }
+
+    private AnalysisResponse uncertainOcrResponse(OcrResult ocrResult) {
+        String reason = ocrResult.text().isBlank()
+                ? "이미지에서 읽을 수 있는 문자를 찾지 못했습니다."
+                : "문자 인식 신뢰도가 낮아 내용을 확정하기 어렵습니다.";
+
+        return new AnalysisResponse(
+                "REVIEW_REQUIRED",
+                "이미지의 문자 내용이 불분명하여 확인이 필요합니다.",
+                List.of(reason),
                 List.of(
-                        "링크를 누르지 마세요.",
-                        "공식 대표번호로 직접 확인하세요.",
-                        "의심되면 국번 없이 118에 문의하세요."
+                        "문자 영역이 선명하게 보이도록 다시 촬영해 주세요.",
+                        "의심되는 링크나 송금 요청에는 응하지 마세요."
                 ),
-                true
+                false
         );
     }
 

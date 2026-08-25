@@ -29,6 +29,11 @@
       title: "뚜렷한 위험 요소가 없어요",
       className: "risk-card--low",
     },
+    REVIEW_REQUIRED: {
+      icon: "🔵",
+      title: "확인이 필요해요",
+      className: "risk-card--unknown",
+    },
     DEFAULT: {
       icon: "🔵",
       title: "판단 결과를 확인해주세요",

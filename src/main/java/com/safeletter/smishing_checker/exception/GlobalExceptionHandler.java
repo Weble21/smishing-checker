@@ -21,4 +21,13 @@ public class GlobalExceptionHandler {
                         exception.getMessage()
                 ));
     }
+
+    @ExceptionHandler(ExternalApiException.class)
+    public ResponseEntity<Map<String, String>> handleExternalApi(
+            ExternalApiException exception
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Map.of("message", exception.getMessage()));
+    }
 }

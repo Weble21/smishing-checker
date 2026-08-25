@@ -1,0 +1,102 @@
+[
+  {
+    "id": "case-01-delivery-address",
+    "category": "SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "[Web발신] OO택배",
+    "message": "고객님 주소 불명으로 배송이 보류되었습니다.\n오늘 안에 배송지를 확인해 주세요.\nhxxps://delivery-check[.]invalid/a7",
+    "expectedReasons": ["출처를 확인하기 어려운 URL", "배송 보류를 빌미로 한 긴급한 클릭 유도"],
+    "sourceTitle": "KISA 스미싱 주의보 - 택배사 사칭 사례",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000030&menuNo=205027&nttId=71280"
+  },
+  {
+    "id": "case-02-health-check",
+    "category": "IMPERSONATION_SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "건강보험공단",
+    "message": "건강검진 통보 내역이 발송되었습니다.\n검진 결과를 확인해 주세요.\nhxxps://nh-check[.]invalid/r2",
+    "expectedReasons": ["공공기관 사칭", "검진 결과 확인을 빌미로 한 URL 클릭 유도"],
+    "sourceTitle": "KISA 스미싱 주의보 - 건강보험공단 사칭 사례",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000030&menuNo=205027&nttId=71280"
+  },
+  {
+    "id": "case-03-traffic-fine",
+    "category": "IMPERSONATION_SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "교통민원24",
+    "message": "미납 과태료 68,000원이 확인되었습니다.\n오늘까지 조회·납부하지 않으면 가산금이 부과됩니다.\nhxxps://efine-check[.]invalid/p9",
+    "expectedReasons": ["정부·공공기관 사칭", "과태료와 기한을 내세운 URL 클릭 유도"],
+    "sourceTitle": "KISA 공공기관 사칭 스미싱 주의 권고",
+    "sourceUrl": "https://boho.or.kr/kr/bbs/view.do?bbsId=B0000133&categoryCode=&menuNo=205020&nttId=71966&pageIndex=1&searchCnd=&searchWrd="
+  },
+  {
+    "id": "case-04-government-support",
+    "category": "IMPERSONATION_SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "국민지원센터",
+    "message": "고유가 국민지원금 지급 대상자로 선정되었습니다.\n오늘 안에 신청하고 본인 인증을 완료하세요.\nhxxps://grant-check[.]invalid/k4",
+    "expectedReasons": ["정부 지원금 사칭", "본인 인증을 빌미로 한 URL 클릭 유도"],
+    "sourceTitle": "KISA 고유가 국민지원금 사칭 스미싱 주의 권고",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000133&menuNo=205020&nttId=72060&pageIndex=1"
+  },
+  {
+    "id": "case-05-obituary",
+    "category": "SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "김민수",
+    "message": "아버지께서 오늘 별세하셨기에 삼가 알려드립니다.\n장례식장 위치와 발인 일정을 확인해 주세요.\nhxxps://obituary[.]invalid/b5",
+    "expectedReasons": ["지인 부고를 가장한 URL", "감정을 이용해 확인 없이 클릭하도록 유도"],
+    "sourceTitle": "KISA 스미싱 주의보 - 지인 부고 사칭 사례",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000030&menuNo=205027&nttId=71280"
+  },
+  {
+    "id": "case-06-child-transfer",
+    "category": "IMPERSONATION_SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "우리 딸",
+    "message": "엄마 나 휴대폰이 고장 나서 친구 번호로 문자해.\n수리비가 급한데 아래 계좌로 48만 원만 먼저 보내줘.\nOO은행 000-0000-0000 홍길동",
+    "expectedReasons": ["가족 사칭", "긴급한 송금 요구"],
+    "sourceTitle": "KISA 예방 수칙 - 지인에게 온 요청도 별도 확인",
+    "sourceUrl": "https://www.boho.or.kr/kr/bbs/view.do?bbsId=B0000131&menuNo=205056&nttId=70214&pageIndex=1&searchCnd=1"
+  },
+  {
+    "id": "case-07-account-verification",
+    "category": "IMPERSONATION_SMISHING",
+    "expectedRiskLevel": "HIGH",
+    "sender": "OO은행 보안센터",
+    "message": "새 기기 접속으로 계정이 일시 제한되었습니다.\n제한 해제를 위해 주민번호 앞자리와 문자 인증번호를 회신해 주세요.",
+    "expectedReasons": ["금융기관 사칭", "개인정보와 인증번호 요구"],
+    "sourceTitle": "KISA 계정정보 탈취 스미싱 주의 권고",
+    "sourceUrl": "https://www.boho.or.kr/common/cmm/fms/FileDown.do?atchFileId=FILE_000000000084934&fileSn=1"
+  },
+  {
+    "id": "case-08-family-dinner",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "우리 아들",
+    "message": "엄마 오늘 수업 끝나고 6시쯤 집에 도착해.\n저녁 같이 먹자. 필요한 거 있으면 오는 길에 사 갈게.",
+    "expectedReasons": ["URL 없음", "송금·개인정보·긴급 행동 요구 없음"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-09-dental-appointment",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO치과",
+    "message": "8월 27일 오후 3시 정기 검진 예약 안내입니다.\n변경이 필요하면 병원 대표번호로 직접 전화해 주세요. 감사합니다.",
+    "expectedReasons": ["URL 없음", "결제·개인정보 요구 없음", "공식 대표번호로 직접 확인하도록 안내"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  },
+  {
+    "id": "case-10-delivery-complete",
+    "category": "SAFE",
+    "expectedRiskLevel": "LOW",
+    "sender": "OO택배",
+    "message": "고객님의 상품이 문 앞에 배송 완료되었습니다.\n배송 상세 내용은 주문하신 쇼핑몰의 공식 앱 주문 내역에서 확인해 주세요.",
+    "expectedReasons": ["문자 내 URL 없음", "개인정보·송금 요구 없음", "공식 앱에서 직접 확인하도록 안내"],
+    "sourceTitle": "합성 정상 대조군",
+    "sourceUrl": null
+  }
+]

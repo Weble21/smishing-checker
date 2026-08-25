@@ -1,0 +1,6 @@
+fastapi>=0.115,<1
+numpy>=1.26,<3
+paddleocr>=3.7,<4
+paddlepaddle>=3.2,<4
+python-multipart>=0.0.20,<1
+uvicorn[standard]>=0.35,<1
