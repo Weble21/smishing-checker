@@ -1,0 +1,83 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-2
+  WEB_REPOSITORY: smishing-checker-web
+  FASTAPI_REPOSITORY: smishing-checker-fastapi
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push web image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -f docker/web.Dockerfile \
+            -t $REGISTRY/$WEB_REPOSITORY:$TAG \
+            .
+          docker push $REGISTRY/$WEB_REPOSITORY:$TAG
+
+      - name: Build and push fastapi image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -f docker/fastapi.Dockerfile \
+            -t $REGISTRY/$FASTAPI_REPOSITORY:$TAG \
+            .
+          docker push $REGISTRY/$FASTAPI_REPOSITORY:$TAG
+
+                - name: Deploy to EC2 using SSM
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          TAG: ${{ github.sha }}
+        run: |
+          COMMAND_ID=$(aws ssm send-command \
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
+            --document-name "AWS-RunShellScript" \
+            --comment "Deploy smishing-checker" \
+            --parameters commands="[
+              \"cd /opt/smishing\",
+              \"aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REGISTRY\",
+              \"sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG=$TAG/' .env\",
+              \"docker compose --env-file .env -f compose.prod.yml pull\",
+              \"docker compose --env-file .env -f compose.prod.yml up -d\",
+              \"docker compose --env-file .env -f compose.prod.yml ps\"
+            ]" \
+            --query "Command.CommandId" \
+            --output text)
+
+          aws ssm wait command-executed \
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
+
+          aws ssm get-command-invocation \
+            --command-id "$COMMAND_ID" \
+            --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
