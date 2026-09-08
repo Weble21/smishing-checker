@@ -1,5 +1,5 @@
 name: Deploy to AWS
-
+#check
 on:
   push:
     branches:
@@ -54,7 +54,7 @@ jobs:
             .
           docker push $REGISTRY/$FASTAPI_REPOSITORY:$TAG
 
-                - name: Deploy to EC2 using SSM
+      - name: Deploy to EC2 using SSM
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           TAG: ${{ github.sha }}
