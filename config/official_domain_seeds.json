@@ -1,0 +1,55 @@
+{
+  "policy": {
+    "version": "2026-09-07",
+    "note": "공식 도메인은 정상 확정 조건 중 하나일 뿐이며 VirusTotal DANGEROUS 또는 문자 위험 신호보다 우선하지 않는다.",
+    "subdomain_matching": "exact_or_dot_suffix"
+  },
+  "official_services": [
+    {"category": "delivery", "brand": "CJ대한통운", "aliases": ["CJ대한통운", "대한통운"], "domains": ["cjlogistics.com"]},
+    {"category": "delivery", "brand": "한진택배", "aliases": ["한진", "한진택배"], "domains": ["hanjin.com"]},
+    {"category": "delivery", "brand": "롯데택배", "aliases": ["롯데택배", "롯데글로벌로지스"], "domains": ["lotteglogis.com"]},
+    {"category": "delivery", "brand": "우체국", "aliases": ["우체국", "우체국택배"], "domains": ["epost.go.kr"]},
+    {"category": "delivery", "brand": "로젠택배", "aliases": ["로젠", "로젠택배"], "domains": ["ilogen.com"]},
+
+    {"category": "bank", "brand": "KB국민은행", "aliases": ["KB국민은행", "국민은행", "KB스타뱅킹"], "domains": ["kbstar.com"]},
+    {"category": "bank", "brand": "신한은행", "aliases": ["신한은행", "신한SOL"], "domains": ["shinhan.com"]},
+    {"category": "bank", "brand": "우리은행", "aliases": ["우리은행", "우리WON뱅킹"], "domains": ["wooribank.com"]},
+    {"category": "bank", "brand": "하나은행", "aliases": ["하나은행", "하나원큐"], "domains": ["kebhana.com"]},
+    {"category": "bank", "brand": "IBK기업은행", "aliases": ["IBK기업은행", "기업은행"], "domains": ["ibk.co.kr"]},
+    {"category": "bank", "brand": "NH농협은행", "aliases": ["NH농협은행", "농협은행", "농협"], "domains": ["nonghyup.com"]},
+    {"category": "bank", "brand": "카카오뱅크", "aliases": ["카카오뱅크"], "domains": ["kakaobank.com"]},
+    {"category": "bank", "brand": "토스뱅크", "aliases": ["토스뱅크"], "domains": ["tossbank.com"]},
+
+    {"category": "card", "brand": "KB국민카드", "aliases": ["KB국민카드", "국민카드", "KB Pay"], "domains": ["kbcard.com"]},
+    {"category": "card", "brand": "신한카드", "aliases": ["신한카드", "신한 SOL페이"], "domains": ["shinhancard.com"]},
+    {"category": "card", "brand": "삼성카드", "aliases": ["삼성카드"], "domains": ["samsungcard.com"]},
+    {"category": "card", "brand": "현대카드", "aliases": ["현대카드"], "domains": ["hyundaicard.com"]},
+    {"category": "card", "brand": "롯데카드", "aliases": ["롯데카드"], "domains": ["lottecard.co.kr"]},
+    {"category": "card", "brand": "하나카드", "aliases": ["하나카드"], "domains": ["hanacard.co.kr"]},
+    {"category": "card", "brand": "BC카드", "aliases": ["BC카드", "비씨카드"], "domains": ["bccard.com"]},
+    {"category": "card", "brand": "우리카드", "aliases": ["우리카드"], "domains": ["wooricard.com"]},
+
+    {"category": "public", "brand": "정부24", "aliases": ["정부24"], "domains": ["gov.kr"]},
+    {"category": "public", "brand": "국세청", "aliases": ["국세청", "홈택스"], "domains": ["nts.go.kr", "hometax.go.kr"]},
+    {"category": "public", "brand": "국민건강보험", "aliases": ["국민건강보험", "건강보험공단"], "domains": ["nhis.or.kr"]},
+    {"category": "public", "brand": "경찰청", "aliases": ["경찰청", "경찰민원"], "domains": ["police.go.kr"]},
+    {"category": "public", "brand": "국민신문고", "aliases": ["국민신문고"], "domains": ["epeople.go.kr"]},
+    {"category": "public", "brand": "위택스", "aliases": ["위택스", "지방세"], "domains": ["wetax.go.kr"]},
+    {"category": "public", "brand": "한국인터넷진흥원", "aliases": ["한국인터넷진흥원", "KISA", "보호나라"], "domains": ["kisa.or.kr"]},
+
+    {"category": "shopping", "brand": "쿠팡", "aliases": ["쿠팡"], "domains": ["coupang.com"]},
+    {"category": "shopping", "brand": "G마켓", "aliases": ["G마켓", "지마켓"], "domains": ["gmarket.co.kr"]},
+    {"category": "shopping", "brand": "11번가", "aliases": ["11번가"], "domains": ["11st.co.kr"]},
+    {"category": "shopping", "brand": "옥션", "aliases": ["옥션"], "domains": ["auction.co.kr"]},
+    {"category": "shopping", "brand": "SSG.COM", "aliases": ["SSG", "쓱닷컴"], "domains": ["ssg.com"]},
+    {"category": "shopping", "brand": "롯데ON", "aliases": ["롯데ON", "롯데온"], "domains": ["lotteon.com"]}
+  ],
+  "messenger_services": [
+    {"brand": "카카오톡", "domains": ["open.kakao.com", "pf.kakao.com"]},
+    {"brand": "LINE", "domains": ["line.me"]},
+    {"brand": "Telegram", "domains": ["t.me", "telegram.me"]},
+    {"brand": "Discord", "domains": ["discord.gg"]},
+    {"brand": "WhatsApp", "domains": ["wa.me"]},
+    {"brand": "네이버 밴드", "domains": ["band.us"]}
+  ]
+}

@@ -1,0 +1,451 @@
+﻿id,message_text,url,url_category,mentioned_brand,domain_owner,semantic_match,overseas_sender,pii_request,label,data_origin,annotation_note
+1,로젠택배 등기/택배 접수 및 배송 정보를 안내드립니다.,https://www.ilogen.com/notice,official,로젠택배,로젠,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+2,"[KB국민은행] 89,700원이 입금되었습니다.",https://www.kbstar.com/service,official,KB국민은행,KB국민은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+3,"[롯데카드] 12,900원 승인되었습니다. 가맹점: 음식점",https://www.lottecard.co.kr/customer,official,롯데카드,롯데카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+4,[대한민국 정책브리핑] 전자문서 안내가 도착했습니다.,https://www.korea.kr/mypage,official,대한민국 정책브리핑,대한민국 정부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+5,[네이버쇼핑] 주문 상품이 배송 완료되었습니다.,https://www.naver.com/event,official,네이버쇼핑,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+6,지인과 공유한 LINE 링크입니다.,https://www.line.me/guide,messenger,LINE,LY Corporation,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+7,[Google] 보안 알림입니다. 계정 설정을 확인하세요.,https://www.google.com/main,official,Google,Google,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+8,CJ대한통운 배송 예정입니다. 오늘 상품을 받아보실 수 있습니다.,https://www.cjlogistics.com/notice,official,CJ대한통운,CJ대한통운,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+9,[하나은행] 금융거래 알림입니다. 자세한 내역은 공식 앱에서 확인하세요.,https://www.kebhana.com/service,official,하나은행,하나은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+10,"[삼성카드] 정기결제 승인 알림입니다. 35,000원",,unknown,삼성카드,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+11,[경찰청] 신청하신 민원의 처리 상태를 확인하세요.,https://www.police.go.kr/mypage,official,경찰청,경찰청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+12,[G마켓] 주문 상품이 배송 완료되었습니다.,https://www.gmarket.co.kr/event,official,G마켓,G마켓,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+13,지인과 공유한 카카오 링크입니다.,https://www.kakao.com/guide,official,카카오,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+14,[Microsoft] 보안 알림입니다. 계정 설정을 확인하세요.,https://www.microsoft.com/main,official,Microsoft,Microsoft,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+15,한진택배 배송 예정입니다. 오늘 상품을 받아보실 수 있습니다.,https://www.hanjin.com/notice,official,한진택배,한진,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+16,"[하나은행] 6,100원이 출금되었습니다.",,unknown,하나은행,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+17,"[하나카드] 정기결제 승인 알림입니다. 89,700원",https://www.hanacard.co.kr/customer,official,하나카드,하나카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+18,[홈택스] 신청하신 민원의 처리 상태를 확인하세요.,https://www.hometax.go.kr/mypage,official,홈택스,국세청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+19,[쿠팡] 주문 상품이 배송 완료되었습니다.,https://www.coupang.com/event,official,쿠팡,쿠팡,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+20,지인과 공유한 LINE 링크입니다.,https://www.line.me/guide,messenger,LINE,LY Corporation,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+21,[NAVER] 새로운 환경에서 로그인되었습니다.,https://www.naver.com/main,official,NAVER,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+22,CJ대한통운 상품 배송이 시작되었습니다. 배송 현황을 확인하세요.,https://www.cjlogistics.com/notice,official,CJ대한통운,CJ대한통운,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+23,[IBK기업은행] 계좌 이용내역 안내입니다.,https://www.ibk.co.kr/service,official,IBK기업은행,IBK기업은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+24,"[삼성카드] 50,000원 승인 취소되었습니다.",https://www.samsungcard.com/customer,official,삼성카드,삼성카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+25,[국세청] 공식 홈페이지에서 처리 결과를 확인할 수 있습니다.,https://www.nts.go.kr/mypage,official,국세청,국세청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+26,[롯데ON] 결제/주문 내역을 확인하세요.,https://www.lotteon.com/event,official,롯데ON,롯데쇼핑,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+27,카카오 오픈채팅 채널/대화방 안내입니다.,https://www.open.kakao.com/guide,messenger,카카오 오픈채팅,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+28,[Microsoft] 새로운 환경에서 로그인되었습니다.,https://www.microsoft.com/main,official,Microsoft,Microsoft,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+29,롯데택배 고객님의 상품이 배송 완료되었습니다.,https://www.lotteglogis.com/notice,official,롯데택배,롯데글로벌로지스,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+30,[우리은행] 계좌 이용내역 안내입니다.,https://www.wooribank.com/service,official,우리은행,우리은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+31,[KB국민카드] 카드 이용내역을 안내드립니다.,,unknown,KB국민카드,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+32,[경찰청] 공식 홈페이지에서 처리 결과를 확인할 수 있습니다.,https://www.police.go.kr/mypage,official,경찰청,경찰청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+33,[컬리] 주문 상품이 배송 완료되었습니다.,https://www.kurly.com/event,official,컬리,컬리,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+34,카카오 오픈채팅 채널/대화방 안내입니다.,https://www.open.kakao.com/guide,messenger,카카오 오픈채팅,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+35,[NAVER] 새로운 환경에서 로그인되었습니다.,https://www.naver.com/main,official,NAVER,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+36,롯데택배 상품 배송이 시작되었습니다. 배송 현황을 확인하세요.,https://www.lotteglogis.com/notice,official,롯데택배,롯데글로벌로지스,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+37,"[토스뱅크] 35,000원이 출금되었습니다.",,unknown,토스뱅크,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+38,"[우리카드] 정기결제 승인 알림입니다. 89,700원",https://www.wooricard.com/customer,official,우리카드,우리카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+39,[경찰청] 전자문서 안내가 도착했습니다.,https://www.police.go.kr/mypage,official,경찰청,경찰청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+40,[컬리] 주문이 정상적으로 완료되었습니다.,https://www.kurly.com/event,official,컬리,컬리,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+41,LINE 초대 링크입니다. 대화방에서 확인해주세요.,https://www.line.me/guide,messenger,LINE,LY Corporation,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+42,[NAVER] 새로운 환경에서 로그인되었습니다.,https://www.naver.com/main,official,NAVER,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+43,롯데택배 배송 예정입니다. 오늘 상품을 받아보실 수 있습니다.,https://www.lotteglogis.com/notice,official,롯데택배,롯데글로벌로지스,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+44,[신한은행] 계좌 이용내역 안내입니다.,https://www.shinhan.com/service,official,신한은행,신한은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+45,"[신한카드] 89,700원 승인 취소되었습니다.",https://www.shinhancard.com/customer,official,신한카드,신한카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+46,[대한민국 정책브리핑] 신청하신 민원의 처리 상태를 확인하세요.,https://www.korea.kr/mypage,official,대한민국 정책브리핑,대한민국 정부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+47,[컬리] 주문이 정상적으로 완료되었습니다.,https://www.kurly.com/event,official,컬리,컬리,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+48,지인과 공유한 카카오 링크입니다.,https://www.kakao.com/guide,official,카카오,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+49,[Microsoft] 비밀번호가 변경되었습니다.,https://www.microsoft.com/main,official,Microsoft,Microsoft,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+50,로젠택배 등기/택배 접수 및 배송 정보를 안내드립니다.,https://www.ilogen.com/notice,official,로젠택배,로젠,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+51,"[우리은행] 12,900원이 출금되었습니다.",https://www.wooribank.com/service,official,우리은행,우리은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+52,"[BC카드] 125,000원 승인 취소되었습니다.",,unknown,BC카드,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+53,[병무청] 신청하신 민원의 처리 상태를 확인하세요.,https://www.mma.go.kr/mypage,official,병무청,병무청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+54,[롯데ON] 주문이 정상적으로 완료되었습니다.,https://www.lotteon.com/event,official,롯데ON,롯데쇼핑,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+55,지인과 공유한 LINE 링크입니다.,https://www.line.me/guide,messenger,LINE,LY Corporation,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+56,[NAVER] 비밀번호가 변경되었습니다.,https://www.naver.com/main,official,NAVER,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+57,우체국 배송 예정입니다. 오늘 상품을 받아보실 수 있습니다.,https://www.epost.go.kr/notice,official,우체국,우정사업본부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+58,"[KB국민은행] 12,900원이 출금되었습니다.",,unknown,KB국민은행,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+59,[신한카드] 카드 이용내역을 안내드립니다.,https://www.shinhancard.com/customer,official,신한카드,신한카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+60,[대한민국 정책브리핑] 신청하신 민원의 처리 상태를 확인하세요.,https://www.korea.kr/mypage,official,대한민국 정책브리핑,대한민국 정부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+61,[G마켓] 주문하신 상품의 배송이 시작되었습니다.,https://www.gmarket.co.kr/event,official,G마켓,G마켓,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+62,카카오 오픈채팅 초대 링크입니다. 대화방에서 확인해주세요.,https://www.open.kakao.com/guide,messenger,카카오 오픈채팅,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+63,[NAVER] 비밀번호가 변경되었습니다.,https://www.naver.com/main,official,NAVER,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+64,CJ대한통운 상품 배송이 시작되었습니다. 배송 현황을 확인하세요.,https://www.cjlogistics.com/notice,official,CJ대한통운,CJ대한통운,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+65,"[케이뱅크] 125,000원이 입금되었습니다.",https://www.kbanknow.com/service,official,케이뱅크,케이뱅크,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+66,"[하나카드] 89,700원 승인되었습니다. 가맹점: 주유소",https://www.hanacard.co.kr/customer,official,하나카드,하나카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+67,[병무청] 신청 내역 관련 안내입니다.,https://www.mma.go.kr/mypage,official,병무청,병무청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+68,[11번가] 주문이 정상적으로 완료되었습니다.,https://www.11st.co.kr/event,official,11번가,11번가,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+69,지인과 공유한 카카오톡 채널 링크입니다.,https://www.pf.kakao.com/guide,messenger,카카오톡 채널,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+70,[Samsung] 비밀번호가 변경되었습니다.,https://www.samsung.com/main,official,Samsung,Samsung Electronics,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+71,롯데택배 상품 배송이 시작되었습니다. 배송 현황을 확인하세요.,https://www.lotteglogis.com/notice,official,롯데택배,롯데글로벌로지스,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+72,"[우리은행] 125,000원이 출금되었습니다.",https://www.wooribank.com/service,official,우리은행,우리은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+73,"[KB국민카드] 50,000원 승인 취소되었습니다.",,unknown,KB국민카드,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+74,[경찰청] 전자문서 안내가 도착했습니다.,https://www.police.go.kr/mypage,official,경찰청,경찰청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+75,[롯데ON] 결제/주문 내역을 확인하세요.,https://www.lotteon.com/event,official,롯데ON,롯데쇼핑,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+76,카카오톡 채널 초대 링크입니다. 대화방에서 확인해주세요.,https://www.pf.kakao.com/guide,messenger,카카오톡 채널,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+77,[NAVER] 비밀번호가 변경되었습니다.,https://www.naver.com/main,official,NAVER,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+78,우체국 등기/택배 접수 및 배송 정보를 안내드립니다.,https://www.epost.go.kr/notice,official,우체국,우정사업본부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+79,[NH농협은행] 계좌 이용내역 안내입니다.,,unknown,NH농협은행,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+80,"[KB국민카드] 6,100원 승인 취소되었습니다.",https://www.kbcard.com/customer,official,KB국민카드,KB국민카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+81,[경찰청] 공식 홈페이지에서 처리 결과를 확인할 수 있습니다.,https://www.police.go.kr/mypage,official,경찰청,경찰청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+82,[네이버쇼핑] 주문이 정상적으로 완료되었습니다.,https://www.naver.com/event,official,네이버쇼핑,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+83,카카오톡 채널 채널/대화방 안내입니다.,https://www.pf.kakao.com/guide,messenger,카카오톡 채널,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+84,[Google] 보안 알림입니다. 계정 설정을 확인하세요.,https://www.google.com/main,official,Google,Google,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+85,롯데택배 배송 예정입니다. 오늘 상품을 받아보실 수 있습니다.,https://www.lotteglogis.com/notice,official,롯데택배,롯데글로벌로지스,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+86,"[우리은행] 12,900원이 입금되었습니다.",https://www.wooribank.com/service,official,우리은행,우리은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+87,[신한카드] 카드 이용내역을 안내드립니다.,https://www.shinhancard.com/customer,official,신한카드,신한카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+88,[국민연금공단] 전자문서 안내가 도착했습니다.,https://www.nps.or.kr/mypage,official,국민연금공단,국민연금공단,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+89,[쿠팡] 주문 상품이 배송 완료되었습니다.,https://www.coupang.com/event,official,쿠팡,쿠팡,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+90,카카오 초대 링크입니다. 대화방에서 확인해주세요.,https://www.kakao.com/guide,official,카카오,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+91,[NAVER] 비밀번호가 변경되었습니다.,https://www.naver.com/main,official,NAVER,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+92,한진택배 등기/택배 접수 및 배송 정보를 안내드립니다.,https://www.hanjin.com/notice,official,한진택배,한진,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+93,"[우리은행] 50,000원이 출금되었습니다.",https://www.wooribank.com/service,official,우리은행,우리은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+94,"[하나카드] 50,000원 승인되었습니다. 가맹점: 주유소",,unknown,하나카드,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+95,[대한민국 정책브리핑] 공식 홈페이지에서 처리 결과를 확인할 수 있습니다.,https://www.korea.kr/mypage,official,대한민국 정책브리핑,대한민국 정부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+96,[옥션] 주문이 정상적으로 완료되었습니다.,https://www.auction.co.kr/event,official,옥션,옥션,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+97,카카오 오픈채팅 채널/대화방 안내입니다.,https://www.open.kakao.com/guide,messenger,카카오 오픈채팅,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+98,[Microsoft] 비밀번호가 변경되었습니다.,https://www.microsoft.com/main,official,Microsoft,Microsoft,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+99,CJ대한통운 상품 배송이 시작되었습니다. 배송 현황을 확인하세요.,https://www.cjlogistics.com/notice,official,CJ대한통운,CJ대한통운,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+100,"[우리은행] 125,000원이 입금되었습니다.",,unknown,우리은행,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+101,[하나카드] 카드 이용내역을 안내드립니다.,https://www.hanacard.co.kr/customer,official,하나카드,하나카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+102,[정부24] 공식 홈페이지에서 처리 결과를 확인할 수 있습니다.,https://www.gov.kr/mypage,official,정부24,대한민국 정부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+103,[컬리] 주문이 정상적으로 완료되었습니다.,https://www.kurly.com/event,official,컬리,컬리,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+104,지인과 공유한 카카오 링크입니다.,https://www.kakao.com/guide,official,카카오,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+105,[NAVER] 새로운 환경에서 로그인되었습니다.,https://www.naver.com/main,official,NAVER,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+106,롯데택배 상품 배송이 시작되었습니다. 배송 현황을 확인하세요.,https://www.lotteglogis.com/notice,official,롯데택배,롯데글로벌로지스,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+107,[케이뱅크] 금융거래 알림입니다. 자세한 내역은 공식 앱에서 확인하세요.,https://www.kbanknow.com/service,official,케이뱅크,케이뱅크,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+108,"[롯데카드] 1,230,000원 승인되었습니다. 가맹점: 온라인쇼핑",https://www.lottecard.co.kr/customer,official,롯데카드,롯데카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+109,[국세청] 공식 홈페이지에서 처리 결과를 확인할 수 있습니다.,https://www.nts.go.kr/mypage,official,국세청,국세청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+110,[SSG.COM] 주문하신 상품의 배송이 시작되었습니다.,https://www.ssg.com/event,official,SSG.COM,SSG.COM,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+111,LINE 채널/대화방 안내입니다.,https://www.line.me/guide,messenger,LINE,LY Corporation,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+112,[Samsung] 비밀번호가 변경되었습니다.,https://www.samsung.com/main,official,Samsung,Samsung Electronics,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+113,우체국 고객님의 상품이 배송 완료되었습니다.,https://www.epost.go.kr/notice,official,우체국,우정사업본부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+114,"[카카오뱅크] 89,700원이 입금되었습니다.",https://www.kakaobank.com/service,official,카카오뱅크,카카오뱅크,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+115,"[KB국민카드] 정기결제 승인 알림입니다. 6,100원",,unknown,KB국민카드,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+116,[국민연금공단] 신청 내역 관련 안내입니다.,https://www.nps.or.kr/mypage,official,국민연금공단,국민연금공단,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+117,[컬리] 주문하신 상품의 배송이 시작되었습니다.,https://www.kurly.com/event,official,컬리,컬리,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+118,지인과 공유한 카카오 오픈채팅 링크입니다.,https://www.open.kakao.com/guide,messenger,카카오 오픈채팅,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+119,[Google] 보안 알림입니다. 계정 설정을 확인하세요.,https://www.google.com/main,official,Google,Google,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+120,CJ대한통운 고객님의 상품이 배송 완료되었습니다.,https://www.cjlogistics.com/notice,official,CJ대한통운,CJ대한통운,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+121,"[신한은행] 125,000원이 입금되었습니다.",,unknown,신한은행,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+122,[NH농협카드] 카드 이용내역을 안내드립니다.,https://www.nonghyup.com/customer,official,NH농협카드,NH농협카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+123,[국세청] 신청하신 민원의 처리 상태를 확인하세요.,https://www.nts.go.kr/mypage,official,국세청,국세청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+124,[SSG.COM] 주문이 정상적으로 완료되었습니다.,https://www.ssg.com/event,official,SSG.COM,SSG.COM,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+125,지인과 공유한 LINE 링크입니다.,https://www.line.me/guide,messenger,LINE,LY Corporation,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+126,[Microsoft] 새로운 환경에서 로그인되었습니다.,https://www.microsoft.com/main,official,Microsoft,Microsoft,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+127,우체국 상품 배송이 시작되었습니다. 배송 현황을 확인하세요.,https://www.epost.go.kr/notice,official,우체국,우정사업본부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+128,[NH농협은행] 계좌 이용내역 안내입니다.,https://www.nhbank.com/service,official,NH농협은행,NH농협은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+129,"[현대카드] 6,100원 승인 취소되었습니다.",https://www.hyundaicard.com/customer,official,현대카드,현대카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+130,[정부24] 신청 내역 관련 안내입니다.,https://www.gov.kr/mypage,official,정부24,대한민국 정부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+131,[옥션] 주문 상품이 배송 완료되었습니다.,https://www.auction.co.kr/event,official,옥션,옥션,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+132,지인과 공유한 카카오톡 채널 링크입니다.,https://www.pf.kakao.com/guide,messenger,카카오톡 채널,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+133,[Google] 새로운 환경에서 로그인되었습니다.,https://www.google.com/main,official,Google,Google,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+134,한진택배 배송 예정입니다. 오늘 상품을 받아보실 수 있습니다.,https://www.hanjin.com/notice,official,한진택배,한진,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+135,"[신한은행] 1,230,000원이 입금되었습니다.",https://www.shinhan.com/service,official,신한은행,신한은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+136,[우리카드] 카드 이용내역을 안내드립니다.,,unknown,우리카드,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+137,[고용24] 신청 내역 관련 안내입니다.,https://www.work24.go.kr/mypage,official,고용24,고용노동부/한국고용정보원,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+138,[옥션] 주문하신 상품의 배송이 시작되었습니다.,https://www.auction.co.kr/event,official,옥션,옥션,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+139,카카오톡 채널 초대 링크입니다. 대화방에서 확인해주세요.,https://www.pf.kakao.com/guide,messenger,카카오톡 채널,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+140,[Google] 비밀번호가 변경되었습니다.,https://www.google.com/main,official,Google,Google,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+141,롯데택배 등기/택배 접수 및 배송 정보를 안내드립니다.,https://www.lotteglogis.com/notice,official,롯데택배,롯데글로벌로지스,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+142,"[IBK기업은행] 1,230,000원이 입금되었습니다.",,unknown,IBK기업은행,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+143,[KB국민카드] 카드 이용내역을 안내드립니다.,https://www.kbcard.com/customer,official,KB국민카드,KB국민카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+144,[정부24] 신청 내역 관련 안내입니다.,https://www.gov.kr/mypage,official,정부24,대한민국 정부,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+145,[G마켓] 주문이 정상적으로 완료되었습니다.,https://www.gmarket.co.kr/event,official,G마켓,G마켓,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+146,카카오 초대 링크입니다. 대화방에서 확인해주세요.,https://www.kakao.com/guide,official,카카오,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+147,[Microsoft] 보안 알림입니다. 계정 설정을 확인하세요.,https://www.microsoft.com/main,official,Microsoft,Microsoft,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+148,CJ대한통운 등기/택배 접수 및 배송 정보를 안내드립니다.,https://www.cjlogistics.com/notice,official,CJ대한통운,CJ대한통운,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+149,[우리은행] 계좌 이용내역 안내입니다.,https://www.wooribank.com/service,official,우리은행,우리은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+150,"[신한카드] 6,100원 승인되었습니다. 가맹점: 음식점",https://www.shinhancard.com/customer,official,신한카드,신한카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+151,[국민연금공단] 신청하신 민원의 처리 상태를 확인하세요.,https://www.nps.or.kr/mypage,official,국민연금공단,국민연금공단,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+152,[SSG.COM] 주문이 정상적으로 완료되었습니다.,https://www.ssg.com/event,official,SSG.COM,SSG.COM,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+153,카카오 오픈채팅 초대 링크입니다. 대화방에서 확인해주세요.,https://www.open.kakao.com/guide,messenger,카카오 오픈채팅,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+154,[Samsung] 보안 알림입니다. 계정 설정을 확인하세요.,https://www.samsung.com/main,official,Samsung,Samsung Electronics,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+155,CJ대한통운 상품 배송이 시작되었습니다. 배송 현황을 확인하세요.,https://www.cjlogistics.com/notice,official,CJ대한통운,CJ대한통운,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+156,"[신한은행] 6,100원이 입금되었습니다.",https://www.shinhan.com/service,official,신한은행,신한은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+157,[NH농협카드] 카드 이용내역을 안내드립니다.,,unknown,NH농협카드,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+158,[홈택스] 신청하신 민원의 처리 상태를 확인하세요.,https://www.hometax.go.kr/mypage,official,홈택스,국세청,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+159,[쿠팡] 주문 상품이 배송 완료되었습니다.,https://www.coupang.com/event,official,쿠팡,쿠팡,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+160,LINE 채널/대화방 안내입니다.,https://www.line.me/guide,messenger,LINE,LY Corporation,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+161,[Microsoft] 보안 알림입니다. 계정 설정을 확인하세요.,https://www.microsoft.com/main,official,Microsoft,Microsoft,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+162,롯데택배 배송 예정입니다. 오늘 상품을 받아보실 수 있습니다.,https://www.lotteglogis.com/notice,official,롯데택배,롯데글로벌로지스,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+163,"[토스뱅크] 35,000원이 출금되었습니다.",,unknown,토스뱅크,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+164,[신한카드] 카드 이용내역을 안내드립니다.,https://www.shinhancard.com/customer,official,신한카드,신한카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+165,[국민연금공단] 전자문서 안내가 도착했습니다.,https://www.nps.or.kr/mypage,official,국민연금공단,국민연금공단,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+166,[11번가] 결제/주문 내역을 확인하세요.,https://www.11st.co.kr/event,official,11번가,11번가,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+167,LINE 채널/대화방 안내입니다.,https://www.line.me/guide,messenger,LINE,LY Corporation,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+168,[NAVER] 새로운 환경에서 로그인되었습니다.,https://www.naver.com/main,official,NAVER,NAVER,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+169,CJ대한통운 등기/택배 접수 및 배송 정보를 안내드립니다.,https://www.cjlogistics.com/notice,official,CJ대한통운,CJ대한통운,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+170,"[하나은행] 125,000원이 입금되었습니다.",https://www.kebhana.com/service,official,하나은행,하나은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+171,"[BC카드] 정기결제 승인 알림입니다. 125,000원",https://www.bccard.com/customer,official,BC카드,BC카드,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+172,[고용24] 전자문서 안내가 도착했습니다.,https://www.work24.go.kr/mypage,official,고용24,고용노동부/한국고용정보원,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+173,[롯데ON] 주문이 정상적으로 완료되었습니다.,https://www.lotteon.com/event,official,롯데ON,롯데쇼핑,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+174,지인과 공유한 카카오톡 채널 링크입니다.,https://www.pf.kakao.com/guide,messenger,카카오톡 채널,Kakao,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+175,[Google] 비밀번호가 변경되었습니다.,https://www.google.com/main,official,Google,Google,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+176,로젠택배 배송 예정입니다. 오늘 상품을 받아보실 수 있습니다.,https://www.ilogen.com/notice,official,로젠택배,로젠,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+177,"[IBK기업은행] 50,000원이 입금되었습니다.",https://www.ibk.co.kr/service,official,IBK기업은행,IBK기업은행,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+178,"[NH농협카드] 89,700원 승인되었습니다. 가맹점: 카페",,unknown,NH농협카드,unknown,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+179,[고용24] 공식 홈페이지에서 처리 결과를 확인할 수 있습니다.,https://www.work24.go.kr/mypage,official,고용24,고용노동부/한국고용정보원,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+180,[11번가] 주문 상품이 배송 완료되었습니다.,https://www.11st.co.kr/event,official,11번가,11번가,True,False,False,NORMAL,synthetic,정상 공식 서비스/알림 패턴. 공식 도메인 자체만으로 안전 판정하지 않음.
+181,[국민연금공단] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.line.me/notice,messenger,국민연금공단,LY Corporation,False,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+182,[롯데택배] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-1.example/r/0001,shortener,롯데택배,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+183,[우체국] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-2.example/check,unknown,우체국,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+184,고용24 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-24-3.example/check,unknown,고용24,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+185,[신한카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.line.me/event,messenger,신한카드,LY Corporation,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+186,[NH농협카드] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-5.example/r/0005,shortener,NH농협카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+187,[CJ대한통운] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-cj-6.example/check,unknown,CJ대한통운,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+188,국세청 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-7.example/check,unknown,국세청,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+189,[CJ대한통운] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.open.kakao.com/service,messenger,CJ대한통운,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+190,[정부24] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-9.example/r/0009,shortener,정부24,unknown,True,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+191,[롯데ON] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-on-10.example/check,unknown,롯데ON,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+192,롯데택배 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-11.example/check,unknown,롯데택배,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+193,[우리카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/guide,messenger,우리카드,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+194,[CJ대한통운] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-13.example/r/0013,shortener,CJ대한통운,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+195,[우체국] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-14.example/check,unknown,우체국,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+196,병무청 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-15.example/check,unknown,병무청,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+197,[롯데ON] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/customer,messenger,롯데ON,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+198,[KB국민카드] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-17.example/r/0017,shortener,KB국민카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+199,[KB국민카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-kb-18.example/check,unknown,KB국민카드,unknown,True,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+200,국세청 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-19.example/check,unknown,국세청,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+201,[경찰청] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.line.me/main,messenger,경찰청,LY Corporation,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+202,[옥션] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-21.example/r/0021,shortener,옥션,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+203,[케이뱅크] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-22.example/check,unknown,케이뱅크,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+204,롯데택배 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-23.example/check,unknown,롯데택배,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+205,[11번가] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/mypage,messenger,11번가,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+206,[KB국민은행] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-25.example/r/0025,shortener,KB국민은행,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+207,[BC카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-bc-26.example/check,unknown,BC카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+208,우리카드 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-27.example/check,unknown,우리카드,unknown,False,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+209,[경찰청] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.line.me/notice,messenger,경찰청,LY Corporation,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+210,[우체국] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-29.example/r/0029,shortener,우체국,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+211,[G마켓] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-g-30.example/check,unknown,G마켓,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+212,롯데ON 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-on-31.example/check,unknown,롯데ON,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+213,[컬리] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/event,messenger,컬리,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+214,[국민연금공단] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-33.example/r/0033,shortener,국민연금공단,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+215,[BC카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-bc-34.example/check,unknown,BC카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+216,CJ대한통운 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-cj-35.example/check,unknown,CJ대한통운,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+217,[SSG.COM] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/service,messenger,SSG.COM,Kakao,False,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+218,[경찰청] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-37.example/r/0037,shortener,경찰청,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+219,[11번가] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-11-38.example/check,unknown,11번가,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+220,IBK기업은행 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-ibk-39.example/check,unknown,IBK기업은행,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+221,[NH농협카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/guide,messenger,NH농협카드,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+222,[정부24] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-41.example/r/0041,shortener,정부24,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+223,[한진택배] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-42.example/check,unknown,한진택배,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+224,G마켓 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-g-43.example/check,unknown,G마켓,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+225,[케이뱅크] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.open.kakao.com/customer,messenger,케이뱅크,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+226,[11번가] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-45.example/r/0045,shortener,11번가,unknown,True,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+227,[롯데카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-46.example/check,unknown,롯데카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+228,SSG.COM 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-ssg-com-47.example/check,unknown,SSG.COM,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+229,[NH농협카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.open.kakao.com/main,messenger,NH농협카드,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+230,[하나카드] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-49.example/r/0049,shortener,하나카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+231,[KB국민은행] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-kb-50.example/check,unknown,KB국민은행,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+232,컬리 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-51.example/check,unknown,컬리,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+233,[KB국민카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.open.kakao.com/mypage,messenger,KB국민카드,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+234,[쿠팡] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-53.example/r/0053,shortener,쿠팡,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+235,[로젠택배] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-54.example/check,unknown,로젠택배,unknown,True,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+236,SSG.COM 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-ssg-com-55.example/check,unknown,SSG.COM,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+237,[쿠팡] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.open.kakao.com/notice,messenger,쿠팡,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+238,[삼성카드] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-57.example/r/0057,shortener,삼성카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+239,[11번가] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-11-58.example/check,unknown,11번가,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+240,롯데택배 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-59.example/check,unknown,롯데택배,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+241,[경찰청] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.open.kakao.com/event,messenger,경찰청,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+242,[국민연금공단] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-61.example/r/0061,shortener,국민연금공단,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+243,[롯데ON] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-on-62.example/check,unknown,롯데ON,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+244,KB국민카드 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-kb-63.example/check,unknown,KB국민카드,unknown,False,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+245,[CJ대한통운] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.open.kakao.com/service,messenger,CJ대한통운,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+246,[토스뱅크] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-65.example/r/0065,shortener,토스뱅크,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+247,[KB국민카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-kb-66.example/check,unknown,KB국민카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+248,경찰청 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-67.example/check,unknown,경찰청,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+249,[국세청] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.open.kakao.com/guide,messenger,국세청,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+250,[IBK기업은행] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-69.example/r/0069,shortener,IBK기업은행,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+251,[쿠팡] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-70.example/check,unknown,쿠팡,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+252,삼성카드 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-71.example/check,unknown,삼성카드,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+253,[KB국민카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/customer,messenger,KB국민카드,Kakao,False,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+254,[11번가] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-73.example/r/0073,shortener,11번가,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+255,[정부24] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-24-74.example/check,unknown,정부24,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+256,G마켓 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-g-75.example/check,unknown,G마켓,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+257,[BC카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/main,messenger,BC카드,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+258,[롯데카드] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-77.example/r/0077,shortener,롯데카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+259,[삼성카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-78.example/check,unknown,삼성카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+260,국민건강보험 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-79.example/check,unknown,국민건강보험,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+261,[하나카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/mypage,messenger,하나카드,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+262,[국민건강보험] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-81.example/r/0081,shortener,국민건강보험,unknown,True,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+263,[삼성카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-82.example/check,unknown,삼성카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+264,로젠택배 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-83.example/check,unknown,로젠택배,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+265,[현대카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/notice,messenger,현대카드,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+266,[CJ대한통운] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-85.example/r/0085,shortener,CJ대한통운,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+267,[신한은행] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-86.example/check,unknown,신한은행,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+268,IBK기업은행 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-ibk-87.example/check,unknown,IBK기업은행,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+269,[네이버쇼핑] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/event,messenger,네이버쇼핑,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+270,[NH농협은행] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-89.example/r/0089,shortener,NH농협은행,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+271,[국민연금공단] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-90.example/check,unknown,국민연금공단,unknown,True,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+272,G마켓 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-g-91.example/check,unknown,G마켓,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+273,[롯데ON] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.line.me/service,messenger,롯데ON,LY Corporation,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+274,[현대카드] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-93.example/r/0093,shortener,현대카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+275,[국민연금공단] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-94.example/check,unknown,국민연금공단,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+276,병무청 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-95.example/check,unknown,병무청,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+277,[삼성카드] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.line.me/guide,messenger,삼성카드,LY Corporation,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+278,[옥션] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-97.example/r/0097,shortener,옥션,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+279,[정부24] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-24-98.example/check,unknown,정부24,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+280,NH농협카드 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-nh-99.example/check,unknown,NH농협카드,unknown,False,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+281,[국세청] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/customer,messenger,국세청,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+282,[삼성카드] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-101.example/r/0101,shortener,삼성카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+283,[KB국민카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-kb-102.example/check,unknown,KB국민카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+284,토스뱅크 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-103.example/check,unknown,토스뱅크,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+285,[카카오뱅크] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/main,messenger,카카오뱅크,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+286,[국민건강보험] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-105.example/r/0105,shortener,국민건강보험,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+287,[SSG.COM] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-ssg-com-106.example/check,unknown,SSG.COM,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+288,롯데ON 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-on-107.example/check,unknown,롯데ON,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+289,[경찰청] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.open.kakao.com/mypage,messenger,경찰청,Kakao,False,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+290,[KB국민카드] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-109.example/r/0109,shortener,KB국민카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+291,[하나카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-110.example/check,unknown,하나카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+292,네이버쇼핑 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-111.example/check,unknown,네이버쇼핑,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+293,[NH농협은행] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/notice,messenger,NH농협은행,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+294,[신한카드] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-113.example/r/0113,shortener,신한카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+295,[삼성카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-114.example/check,unknown,삼성카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+296,롯데택배 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-brand-115.example/check,unknown,롯데택배,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+297,[NH농협은행] 상담 담당자가 메신저로 안내드립니다. 링크의 소유 기관을 확인하세요.,https://www.pf.kakao.com/event,messenger,NH농협은행,Kakao,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+298,[롯데ON] 이벤트/배송 안내입니다. 단축 링크에서 내용을 확인하세요.,https://short-link-117.example/r/0117,shortener,롯데ON,unknown,True,True,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+299,[신한카드] 안내 메시지입니다. 링크를 열기 전 발신자와 도메인을 확인하세요.,https://notice-brand-118.example/check,unknown,신한카드,unknown,True,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+300,KB국민카드 관련 고객 안내입니다. 외부 페이지에서 상세 내용을 확인할 수 있습니다.,https://notice-kb-119.example/check,unknown,KB국민카드,unknown,False,False,False,CAUTION,synthetic,추가 확인이 필요한 패턴: 메신저/단축/미확인 도메인 또는 브랜드-도메인 불일치.
+301,IBK기업은행 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://ibk-verify-0.example/login,phishing,IBK기업은행,unknown,False,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+302,"[11번가] 해외결제 50,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://11-verify-1.example/login,phishing,11번가,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+303,[경찰청] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-2.example/login,phishing,경찰청,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+304,[KB국민은행] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://kb-verify-3.example/login,phishing,KB국민은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+305,[G마켓] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://g-verify-4.example/login,phishing,G마켓,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+306,[한진택배] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-5.example/install,malware,한진택배,unknown,False,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+307,국민연금공단 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-6.example/login,phishing,국민연금공단,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+308,"[신한카드] 해외결제 89,700원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-7.example/login,phishing,신한카드,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+309,[쿠팡] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-8.example/login,phishing,쿠팡,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+310,[신한은행] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-9.example/login,phishing,신한은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+311,[NAVER] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://naver-verify-10.example/login,phishing,NAVER,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+312,[SSG.COM] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-ssg-com-11.example/install,malware,SSG.COM,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+313,우리카드 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-12.example/login,phishing,우리카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+314,"[경찰청] 해외결제 50,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-13.example/login,phishing,경찰청,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+315,[쿠팡] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-14.example/login,phishing,쿠팡,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+316,[신한은행] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-15.example/login,phishing,신한은행,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+317,[KB국민카드] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://kb-verify-16.example/login,phishing,KB국민카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+318,[대한민국 정책브리핑] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-17.example/install,malware,대한민국 정책브리핑,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+319,정부24 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://24-verify-18.example/login,phishing,정부24,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+320,"[롯데ON] 해외결제 89,700원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://on-verify-19.example/login,phishing,롯데ON,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+321,[국민건강보험] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-20.example/login,phishing,국민건강보험,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+322,[우리은행] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-21.example/login,phishing,우리은행,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+323,[NAVER] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://naver-verify-22.example/login,phishing,NAVER,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+324,[하나카드] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-23.example/install,malware,하나카드,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+325,경찰청 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-24.example/login,phishing,경찰청,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+326,"[경찰청] 해외결제 89,700원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-25.example/login,phishing,경찰청,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+327,[삼성카드] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-26.example/login,phishing,삼성카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+328,[현대카드] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-27.example/login,phishing,현대카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+329,[하나카드] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://brand-verify-28.example/login,phishing,하나카드,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+330,[롯데카드] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-29.example/install,malware,롯데카드,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+331,로젠택배 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-30.example/login,phishing,로젠택배,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+332,"[11번가] 해외결제 1,230,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://11-verify-31.example/login,phishing,11번가,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+333,[KB국민카드] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://kb-verify-32.example/login,phishing,KB국민카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+334,[경찰청] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-33.example/login,phishing,경찰청,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+335,[SSG.COM] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://ssg-com-verify-34.example/login,phishing,SSG.COM,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+336,[대한민국 정책브리핑] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-35.example/install,malware,대한민국 정책브리핑,unknown,False,True,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+337,KB국민은행 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://kb-verify-36.example/login,phishing,KB국민은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+338,"[케이뱅크] 해외결제 35,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-37.example/login,phishing,케이뱅크,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+339,[국민연금공단] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-38.example/login,phishing,국민연금공단,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+340,[우리카드] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-39.example/login,phishing,우리카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+341,[우리카드] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://brand-verify-40.example/login,phishing,우리카드,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+342,[쿠팡] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-41.example/install,malware,쿠팡,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+343,옥션 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-42.example/login,phishing,옥션,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+344,"[NH농협은행] 해외결제 89,700원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://nh-verify-43.example/login,phishing,NH농협은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+345,[국세청] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-44.example/login,phishing,국세청,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+346,[NAVER] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://naver-verify-45.example/login,phishing,NAVER,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+347,[11번가] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://11-verify-46.example/login,phishing,11번가,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+348,[네이버쇼핑] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-47.example/install,malware,네이버쇼핑,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+349,BC카드 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://bc-verify-48.example/login,phishing,BC카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+350,"[쿠팡] 해외결제 6,100원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-49.example/login,phishing,쿠팡,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+351,[SSG.COM] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://ssg-com-verify-50.example/login,phishing,SSG.COM,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+352,[쿠팡] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-51.example/login,phishing,쿠팡,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+353,[G마켓] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://g-verify-52.example/login,phishing,G마켓,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+354,[케이뱅크] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-53.example/install,malware,케이뱅크,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+355,우체국 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-54.example/login,phishing,우체국,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+356,"[정부24] 해외결제 125,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://24-verify-55.example/login,phishing,정부24,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+357,[11번가] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://11-verify-56.example/login,phishing,11번가,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+358,[쿠팡] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-57.example/login,phishing,쿠팡,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+359,[CJ대한통운] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://cj-verify-58.example/login,phishing,CJ대한통운,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+360,[고용24] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-24-59.example/install,malware,고용24,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+361,로젠택배 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-60.example/login,phishing,로젠택배,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+362,"[쿠팡] 해외결제 35,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-61.example/login,phishing,쿠팡,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+363,[우리은행] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-62.example/login,phishing,우리은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+364,[NH농협카드] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://nh-verify-63.example/login,phishing,NH농협카드,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+365,[NH농협은행] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://nh-verify-64.example/login,phishing,NH농협은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+366,[정부24] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-24-65.example/install,malware,정부24,unknown,False,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+367,KB국민은행 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://kb-verify-66.example/login,phishing,KB국민은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+368,"[신한은행] 해외결제 6,100원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-67.example/login,phishing,신한은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+369,[우리카드] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-68.example/login,phishing,우리카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+370,[한진택배] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-69.example/login,phishing,한진택배,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+371,[CJ대한통운] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://cj-verify-70.example/login,phishing,CJ대한통운,unknown,False,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+372,[롯데택배] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-71.example/install,malware,롯데택배,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+373,IBK기업은행 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://ibk-verify-72.example/login,phishing,IBK기업은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+374,"[IBK기업은행] 해외결제 1,230,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://ibk-verify-73.example/login,phishing,IBK기업은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+375,[롯데카드] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-74.example/login,phishing,롯데카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+376,[Microsoft] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://microsoft-verify-75.example/login,phishing,Microsoft,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+377,[SSG.COM] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://ssg-com-verify-76.example/login,phishing,SSG.COM,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+378,[CJ대한통운] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-cj-77.example/install,malware,CJ대한통운,unknown,True,True,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+379,롯데택배 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-78.example/login,phishing,롯데택배,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+380,"[컬리] 해외결제 6,100원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-79.example/login,phishing,컬리,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+381,[신한은행] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-80.example/login,phishing,신한은행,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+382,[국세청] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-81.example/login,phishing,국세청,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+383,[NH농협은행] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://nh-verify-82.example/login,phishing,NH농협은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+384,[국세청] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-83.example/install,malware,국세청,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+385,CJ대한통운 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://cj-verify-84.example/login,phishing,CJ대한통운,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+386,"[롯데택배] 해외결제 1,230,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-85.example/login,phishing,롯데택배,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+387,[현대카드] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-86.example/login,phishing,현대카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+388,[11번가] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://11-verify-87.example/login,phishing,11번가,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+389,[Samsung] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://samsung-verify-88.example/login,phishing,Samsung,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+390,[컬리] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-89.example/install,malware,컬리,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+391,하나카드 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-90.example/login,phishing,하나카드,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+392,"[병무청] 해외결제 89,700원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-91.example/login,phishing,병무청,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+393,[KB국민카드] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://kb-verify-92.example/login,phishing,KB국민카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+394,[케이뱅크] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-93.example/login,phishing,케이뱅크,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+395,[경찰청] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://brand-verify-94.example/login,phishing,경찰청,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+396,[케이뱅크] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-95.example/install,malware,케이뱅크,unknown,False,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+397,한진택배 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-96.example/login,phishing,한진택배,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+398,"[카카오뱅크] 해외결제 35,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-97.example/login,phishing,카카오뱅크,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+399,[국민연금공단] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-98.example/login,phishing,국민연금공단,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+400,[CJ대한통운] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://cj-verify-99.example/login,phishing,CJ대한통운,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+401,[고용24] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://24-verify-100.example/login,phishing,고용24,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+402,[쿠팡] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-101.example/install,malware,쿠팡,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+403,11번가 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://11-verify-102.example/login,phishing,11번가,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+404,"[KB국민카드] 해외결제 89,700원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://kb-verify-103.example/login,phishing,KB국민카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+405,[롯데ON] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://on-verify-104.example/login,phishing,롯데ON,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+406,[국세청] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-105.example/login,phishing,국세청,unknown,False,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+407,[대한민국 정책브리핑] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://brand-verify-106.example/login,phishing,대한민국 정책브리핑,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+408,[옥션] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-107.example/install,malware,옥션,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+409,로젠택배 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-108.example/login,phishing,로젠택배,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+410,"[현대카드] 해외결제 50,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-109.example/login,phishing,현대카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+411,[현대카드] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-110.example/login,phishing,현대카드,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+412,[CJ대한통운] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://cj-verify-111.example/login,phishing,CJ대한통운,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+413,[CJ대한통운] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://cj-verify-112.example/login,phishing,CJ대한통운,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+414,[NH농협카드] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-nh-113.example/install,malware,NH농협카드,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+415,SSG.COM 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://ssg-com-verify-114.example/login,phishing,SSG.COM,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+416,"[국세청] 해외결제 6,100원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-115.example/login,phishing,국세청,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+417,[NAVER] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://naver-verify-116.example/login,phishing,NAVER,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+418,[롯데카드] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-117.example/login,phishing,롯데카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+419,[Google] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://google-verify-118.example/login,phishing,Google,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+420,[11번가] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-11-119.example/install,malware,11번가,unknown,True,True,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+421,롯데ON 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://on-verify-120.example/login,phishing,롯데ON,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+422,"[G마켓] 해외결제 35,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://g-verify-121.example/login,phishing,G마켓,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+423,[롯데카드] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-122.example/login,phishing,롯데카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+424,[국민건강보험] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-123.example/login,phishing,국민건강보험,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+425,[국민건강보험] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://brand-verify-124.example/login,phishing,국민건강보험,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+426,[BC카드] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-bc-125.example/install,malware,BC카드,unknown,False,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+427,토스뱅크 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-126.example/login,phishing,토스뱅크,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+428,"[현대카드] 해외결제 1,230,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-127.example/login,phishing,현대카드,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+429,[우리은행] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-128.example/login,phishing,우리은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+430,[고용24] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://24-verify-129.example/login,phishing,고용24,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+431,[CJ대한통운] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://cj-verify-130.example/login,phishing,CJ대한통운,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+432,[11번가] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-11-131.example/install,malware,11번가,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+433,우리은행 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-132.example/login,phishing,우리은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+434,"[롯데택배] 해외결제 1,230,000원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-133.example/login,phishing,롯데택배,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+435,[NH농협은행] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://nh-verify-134.example/login,phishing,NH농협은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+436,[국민연금공단] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-135.example/login,phishing,국민연금공단,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+437,[NH농협은행] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://nh-verify-136.example/login,phishing,NH농협은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+438,[케이뱅크] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-137.example/install,malware,케이뱅크,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+439,신한은행 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-138.example/login,phishing,신한은행,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+440,"[옥션] 해외결제 6,100원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://brand-verify-139.example/login,phishing,옥션,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+441,[로젠택배] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-140.example/login,phishing,로젠택배,unknown,False,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+442,[고용24] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://24-verify-141.example/login,phishing,고용24,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+443,[국민연금공단] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://brand-verify-142.example/login,phishing,국민연금공단,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+444,[삼성카드] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-brand-143.example/install,malware,삼성카드,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+445,경찰청 주소 오류로 배송/처리가 중단되었습니다. 즉시 주소와 연락처를 입력하세요.,https://brand-verify-144.example/login,phishing,경찰청,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+446,"[NH농협카드] 해외결제 12,900원 승인. 본인이 아니면 아래에서 취소하고 주민번호를 입력하세요.",https://nh-verify-145.example/login,phishing,NH농협카드,unknown,False,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+447,[대한민국 정책브리핑] 계정이 잠겼습니다. 10분 안에 본인인증 정보를 입력하지 않으면 사용이 중지됩니다.,https://brand-verify-146.example/login,phishing,대한민국 정책브리핑,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+448,[롯데카드] 미납 금액/과태료가 있습니다. 즉시 납부 정보를 입력하세요.,https://brand-verify-147.example/login,phishing,롯데카드,unknown,True,True,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+449,[우체국] 환급금이 있습니다. 계좌번호와 인증번호를 입력하면 지급됩니다.,https://brand-verify-148.example/login,phishing,우체국,unknown,True,False,True,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.
+450,[롯데ON] 보안 점검이 필요합니다. 앱을 설치하고 인증을 완료하세요.,https://security-update-on-149.example/install,malware,롯데ON,unknown,True,False,False,RISK,synthetic,안전한 예약 도메인(.example)로 생성한 위험 학습 예시.

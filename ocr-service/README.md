@@ -1,37 +1,12 @@
-# 로컬 PaddleOCR 서비스
+# 통합 FastAPI 분석 서비스
 
-휴대폰에서 업로드한 이미지는 Spring Boot가 이 로컬 서비스에 메모리로 전달합니다. OCR 서비스는 파일을 디스크에 저장하지 않습니다.
+기존 PaddleOCR `/ocr` API에 KoELECTRA 문자 분류, URL 구조·VirusTotal 평판 분석, 이미지 통합 `/analyze` API를 추가했습니다. 자세한 설치, 환경변수와 실행 방법은 프로젝트 루트의 `README.md`를 참고하세요.
 
-## 설치
+주요 함수는 다음 모듈에 분리되어 있습니다.
 
-프로젝트 루트에서 Python 3.10~3.12 환경으로 실행합니다.
+- `smishing_api/ocr.py`: PaddleOCR 지연 로딩과 문자 추출
+- `smishing_api/text_model.py`: 저장된 이진 KoELECTRA 지연 로딩과 CUDA/CPU 추론
+- `smishing_api/url_analysis.py`: URL 추출·정규화·구조 검사·VirusTotal 조회
+- `smishing_api/risk.py`: 문자 결과와 URL 결과 종합
 
-```powershell
-python -m venv ocr-service/.venv
-ocr-service/.venv/Scripts/python.exe -m pip install --upgrade pip
-ocr-service/.venv/Scripts/python.exe -m pip install -r ocr-service/requirements.txt
-```
-
-## 실행
-
-```powershell
-ocr-service/.venv/Scripts/python.exe -m uvicorn app:app `
-  --app-dir ocr-service `
-  --host 127.0.0.1 `
-  --port 8001
-```
-
-첫 OCR 요청에서는 한국어 PP-OCRv5 모델을 내려받기 때문에 시간이 더 걸릴 수 있습니다. 기본값은 CPU이며 GPU를 사용하려면 PaddlePaddle 설치와 `OCR_DEVICE` 값을 환경에 맞게 별도로 설정해야 합니다.
-
-정상 실행 확인:
-
-```powershell
-Invoke-RestMethod http://127.0.0.1:8001/health
-```
-
-이미지 OCR 확인:
-
-```powershell
-curl.exe -F "image=@evaluation/images/case-01-delivery-address.png;type=image/png" `
-  http://127.0.0.1:8001/ocr
-```
+서비스는 업로드 파일을 디스크에 저장하지 않으며, 대상 URL에 접속하지 않고 VirusTotal의 기존 보고서만 조회합니다.

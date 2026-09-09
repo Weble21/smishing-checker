@@ -1,12 +1,13 @@
-name: Deploy to AWS
-#check
+name: CI and Deploy to AWS
+
 on:
+  pull_request:
+    branches: [main]
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
-  id-token: write
   contents: read
 
 env:
@@ -15,69 +16,78 @@ env:
   FASTAPI_REPOSITORY: smishing-checker-fastapi
 
 jobs:
-  deploy:
+  test:
+    name: Test API and web
     runs-on: ubuntu-latest
-
+    timeout-minutes: 20
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: ocr-service/requirements-test.txt
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Validate source and deployment scripts
+        run: |
+          python -m compileall -q ocr-service/app.py ocr-service/smishing_api ocr-service/tests docker/start-api.py scripts/deploy_ssm.py
+          bash -n scripts/deploy-ec2.sh
+          IMAGE_TAG="$GITHUB_SHA" docker compose --env-file /dev/null -f compose.prod.yml config --quiet
+      - name: Test FastAPI and deployment orchestration
+        run: |
+          python -m pip install -r ocr-service/requirements-test.txt
+          python -m pytest ocr-service/tests scripts/tests -q
+      - name: Test Spring
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon test
 
+  deploy:
+    name: Build and deploy
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    concurrency:
+      group: production-deployment
+      cancel-in-progress: false
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
-
       - name: Login to ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-
-      - name: Build and push web image
+      - name: Build images
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           TAG: ${{ github.sha }}
         run: |
-          docker build \
-            -f docker/web.Dockerfile \
-            -t $REGISTRY/$WEB_REPOSITORY:$TAG \
-            .
-          docker push $REGISTRY/$WEB_REPOSITORY:$TAG
-
-      - name: Build and push fastapi image
+          docker build -f docker/web.Dockerfile -t "$REGISTRY/$WEB_REPOSITORY:$TAG" .
+          docker build -f docker/fastapi.Dockerfile -t "$REGISTRY/$FASTAPI_REPOSITORY:$TAG" .
+      - name: Push images
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           TAG: ${{ github.sha }}
         run: |
-          docker build \
-            -f docker/fastapi.Dockerfile \
-            -t $REGISTRY/$FASTAPI_REPOSITORY:$TAG \
-            .
-          docker push $REGISTRY/$FASTAPI_REPOSITORY:$TAG
-
-      - name: Deploy to EC2 using SSM
+          docker push "$REGISTRY/$WEB_REPOSITORY:$TAG"
+          docker push "$REGISTRY/$FASTAPI_REPOSITORY:$TAG"
+      - name: Deploy and verify EC2 using SSM
+        timeout-minutes: 42
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           TAG: ${{ github.sha }}
-        run: |
-          COMMAND_ID=$(aws ssm send-command \
-            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
-            --document-name "AWS-RunShellScript" \
-            --comment "Deploy smishing-checker" \
-            --parameters commands="[
-              \"cd /opt/smishing\",
-              \"aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REGISTRY\",
-              \"sed -i 's/^IMAGE_TAG=.*/IMAGE_TAG=$TAG/' .env\",
-              \"docker compose --env-file .env -f compose.prod.yml pull\",
-              \"docker compose --env-file .env -f compose.prod.yml up -d\",
-              \"docker compose --env-file .env -f compose.prod.yml ps\"
-            ]" \
-            --query "Command.CommandId" \
-            --output text)
-
-          aws ssm wait command-executed \
-            --command-id "$COMMAND_ID" \
-            --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
-
-          aws ssm get-command-invocation \
-            --command-id "$COMMAND_ID" \
-            --instance-id "${{ secrets.EC2_INSTANCE_ID }}"
+          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
+        run: python scripts/deploy_ssm.py

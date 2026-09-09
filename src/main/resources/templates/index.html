@@ -30,7 +30,7 @@
                     <svg viewBox="0 0 48 48"><path d="M9 16h7l3-5h10l3 5h7a4 4 0 0 1 4 4v17a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V20a4 4 0 0 1 4-4Z"/><circle cx="24" cy="28" r="8"/></svg>
                 </span>
                 <h2>사진 선택하기</h2>
-                <p id="uploadHint">캡쳐본이나 문자 내용이 잘 보이게 올려주세요</p>
+                <p id="uploadHint">캡쳐본이나 문자 내용이 잘 보이게 올려주세요!!</p>
             </div>
             <div class="preview" id="previewState" hidden>
                 <img id="imagePreview" alt="선택한 문자 화면 미리보기">
@@ -39,6 +39,7 @@
             <button class="primary-button analyze-button" id="analyzeButton" type="button" hidden>
                 이 사진 분석하기
             </button>
+            <p class="analysis-hint" id="analysisHint" role="status" hidden>분석에는 대략 5초 정도 걸립니다.</p>
             <button class="primary-button" id="selectButton" type="button">사진 선택하기</button>
             <p class="file-error" id="fileError" role="alert" aria-live="polite"></p>
         </section>

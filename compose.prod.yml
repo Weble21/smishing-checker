@@ -1,0 +1,56 @@
+name: smishing-checker
+
+services:
+  fastapi:
+    image: ${ECR_REGISTRY:-006870472363.dkr.ecr.ap-northeast-2.amazonaws.com}/smishing-checker-fastapi:${IMAGE_TAG:?IMAGE_TAG is required}
+
+    restart: unless-stopped
+
+    environment:
+      SMISHING_PROJECT_DIR: /app
+      SMISHING_MODEL_DIR: /models/text
+      URL_MODEL_PATH: /models/url/model
+      OCR_CACHE_DIR: /app/.cache/ocr
+      OCR_DEVICE: cpu
+      VT_API_KEY: ${VT_API_KEY:-}
+      VT_TIMEOUT_SECONDS: "5"
+      OMP_NUM_THREADS: "2"
+
+    volumes:
+      - /opt/smishing/models/text:/models/text:ro
+      - /opt/smishing/models/url/model:/models/url/model:ro
+      - /opt/smishing/models/url/internal_test_metrics.json:/models/url/internal_test_metrics.json:ro
+      - ocr-cache:/app/.cache/ocr
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import json,urllib.request; d=json.load(urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=10)); assert d['urlModel']['loaded'] and d['textModel']['loaded'] and d['ocr']['loaded']"
+        ]
+      interval: 20s
+      timeout: 15s
+      retries: 5
+      start_period: 300s
+
+  web:
+    image: ${ECR_REGISTRY:-006870472363.dkr.ecr.ap-northeast-2.amazonaws.com}/smishing-checker-web:${IMAGE_TAG:?IMAGE_TAG is required}
+
+    restart: unless-stopped
+
+    environment:
+      AI_BASE_URL: http://fastapi:8000
+      AI_READ_TIMEOUT: 120s
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=50
+
+    depends_on:
+      fastapi:
+        condition: service_healthy
+
+    ports:
+      - "8080:8080"
+
+volumes:
+  ocr-cache:

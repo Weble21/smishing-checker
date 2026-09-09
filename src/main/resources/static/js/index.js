@@ -9,6 +9,7 @@
   const input = document.querySelector("#imageInput");
   const selectButton = document.querySelector("#selectButton");
   const analyzeButton = document.querySelector("#analyzeButton");
+  const analysisHint = document.querySelector("#analysisHint");
   const uploadCard = document.querySelector("#uploadCard");
   const emptyState = document.querySelector("#emptyState");
   const previewState = document.querySelector("#previewState");
@@ -95,7 +96,14 @@
     const formData = new FormData();
     formData.append("image", selectedFile);
     analyzeButton.disabled = true;
-    analyzeButton.textContent = "확인하고 있어요...";
+    analyzeButton.setAttribute("aria-label", "확인하고 있어요");
+    analysisHint.hidden = false;
+    let dots = 1;
+    analyzeButton.textContent = "확인하고 있어요.";
+    const loadingTimer = window.setInterval(() => {
+      dots = (dots % 3) + 1;
+      analyzeButton.textContent = `확인하고 있어요${".".repeat(dots)}`;
+    }, 500);
 
     try {
       const response = await fetch("/api/v1/messages/analyze", {
@@ -113,6 +121,9 @@
     } catch (error) {
       showError(error.message || "사진을 분석하지 못했어요.");
     } finally {
+      window.clearInterval(loadingTimer);
+      analysisHint.hidden = true;
+      analyzeButton.removeAttribute("aria-label");
       analyzeButton.disabled = false;
       analyzeButton.textContent = "이 사진 분석하기";
     }

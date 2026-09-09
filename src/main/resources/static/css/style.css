@@ -162,13 +162,21 @@ input {
     margin-bottom: 10px;
 }
 
-.analyze-button + .primary-button {
+.analysis-hint {
+    margin: 8px 0 12px;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.analyze-button ~ .primary-button {
     border: 1px solid #9aa7bd;
     color: #465167;
     background: white;
 }
 
-.analyze-button + .primary-button:hover {
+.analyze-button ~ .primary-button:hover {
     background: #f4f6fa;
 }
 

@@ -1,0 +1,51 @@
+﻿service_group,brand,registered_domain,domain_owner,url_category,source_url,usage_note
+택배,CJ대한통운,cjlogistics.com,CJ대한통운,official,https://www.cjlogistics.com/ko/main,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+택배,한진택배,hanjin.com,한진,official,https://www.hanjin.com/kor/Main.do,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+택배,롯데택배,lotteglogis.com,롯데글로벌로지스,official,https://www.lotteglogis.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+택배,로젠택배,ilogen.com,로젠,official,https://www.ilogen.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+택배,우체국,epost.go.kr,우정사업본부,official,https://www.epost.go.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+은행,KB국민은행,kbstar.com,KB국민은행,official,https://www.kbstar.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+은행,신한은행,shinhan.com,신한은행,official,https://www.shinhan.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+은행,하나은행,kebhana.com,하나은행,official,https://www.kebhana.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+은행,우리은행,wooribank.com,우리은행,official,https://www.wooribank.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+은행,NH농협은행,nhbank.com,NH농협은행,official,https://www.nhbank.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+은행,IBK기업은행,ibk.co.kr,IBK기업은행,official,https://www.ibk.co.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+은행,카카오뱅크,kakaobank.com,카카오뱅크,official,https://www.kakaobank.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+은행,토스뱅크,tossbank.com,토스뱅크,official,https://www.tossbank.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+은행,케이뱅크,kbanknow.com,케이뱅크,official,https://www.kbanknow.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+카드,삼성카드,samsungcard.com,삼성카드,official,https://www.samsungcard.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+카드,신한카드,shinhancard.com,신한카드,official,https://www.shinhancard.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+카드,KB국민카드,kbcard.com,KB국민카드,official,https://card.kbcard.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+카드,현대카드,hyundaicard.com,현대카드,official,https://www.hyundaicard.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+카드,롯데카드,lottecard.co.kr,롯데카드,official,https://www.lottecard.co.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+카드,하나카드,hanacard.co.kr,하나카드,official,https://www.hanacard.co.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+카드,우리카드,wooricard.com,우리카드,official,https://pc.wooricard.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+카드,BC카드,bccard.com,BC카드,official,https://www.bccard.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+카드,NH농협카드,nonghyup.com,NH농협카드,official,https://card.nonghyup.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+공공,정부24,gov.kr,대한민국 정부,official,https://www.gov.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+공공,국세청,nts.go.kr,국세청,official,https://www.nts.go.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+공공,홈택스,hometax.go.kr,국세청,official,https://www.hometax.go.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+공공,국민건강보험,nhis.or.kr,국민건강보험공단,official,https://www.nhis.or.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+공공,국민연금공단,nps.or.kr,국민연금공단,official,https://www.nps.or.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+공공,경찰청,police.go.kr,경찰청,official,https://www.police.go.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+공공,병무청,mma.go.kr,병무청,official,https://www.mma.go.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+공공,고용24,work24.go.kr,고용노동부/한국고용정보원,official,https://www.work24.go.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+공공,대한민국 정책브리핑,korea.kr,대한민국 정부,official,https://www.korea.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+쇼핑,쿠팡,coupang.com,쿠팡,official,https://www.coupang.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+쇼핑,11번가,11st.co.kr,11번가,official,https://www.11st.co.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+쇼핑,G마켓,gmarket.co.kr,G마켓,official,https://www.gmarket.co.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+쇼핑,옥션,auction.co.kr,옥션,official,https://www.auction.co.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+쇼핑,SSG.COM,ssg.com,SSG.COM,official,https://www.ssg.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+쇼핑,롯데ON,lotteon.com,롯데쇼핑,official,https://www.lotteon.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+쇼핑,컬리,kurly.com,컬리,official,https://www.kurly.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+쇼핑,네이버쇼핑,naver.com,NAVER,official,https://shopping.naver.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+메신저,카카오,kakao.com,Kakao,official,https://www.kakao.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+메신저,카카오 오픈채팅,open.kakao.com,Kakao,messenger,https://open.kakao.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+메신저,카카오톡 채널,pf.kakao.com,Kakao,messenger,https://pf.kakao.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+메신저,LINE,line.me,LY Corporation,messenger,https://line.me/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+계정,NAVER,naver.com,NAVER,official,https://www.naver.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+계정,Google,google.com,Google,official,https://www.google.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+계정,Microsoft,microsoft.com,Microsoft,official,https://www.microsoft.com/ko-kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+계정,Samsung,samsung.com,Samsung Electronics,official,https://www.samsung.com/sec/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+배달앱,배달의민족,baemin.com,우아한형제들,official,https://www.baemin.com/,배달의민족 공식 서비스 도메인.
+배달앱,배달의민족,baemin.go.link,우아한형제들,official,,문자/앱 딥링크에서 관찰된 도메인. 실제 운영 시 redirect/final_domain 검증 권장.

@@ -1,0 +1,60 @@
+name: smishing-checker
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: docker/fastapi.Dockerfile
+    restart: unless-stopped
+    environment:
+      SMISHING_PROJECT_DIR: /app
+      SMISHING_MODEL_DIR: /models/text
+      URL_MODEL_PATH: /models/url/model
+      OCR_CACHE_DIR: /app/.cache/ocr
+      OCR_DEVICE: cpu
+      VT_API_KEY: ${VT_API_KEY:-}
+      VT_TIMEOUT_SECONDS: "5"
+      OMP_NUM_THREADS: "2"
+    volumes:
+      - type: bind
+        source: ${DOCKER_TEXT_MODEL_DIR:-./experiments/koelectra-baseline-v2-20260907T015430973273Z/checkpoints/checkpoint-497}
+        target: /models/text
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./experiments/canine-url-v1/model
+        target: /models/url/model
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./experiments/canine-url-v1/internal_test_metrics.json
+        target: /models/url/internal_test_metrics.json
+        read_only: true
+        bind:
+          create_host_path: false
+      - ocr-cache:/app/.cache/ocr
+    ports:
+      - "127.0.0.1:${DOCKER_API_PORT:-18000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json,urllib.request; d=json.load(urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=10)); assert d['urlModel']['loaded'] and d['textModel']['loaded'] and d['ocr']['loaded']"]
+      interval: 20s
+      timeout: 15s
+      retries: 5
+      start_period: 300s
+  web:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+    restart: unless-stopped
+    environment:
+      AI_BASE_URL: http://fastapi:8000
+      AI_READ_TIMEOUT: 120s
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=50
+    depends_on:
+      fastapi:
+        condition: service_healthy
+    ports:
+      - "${DOCKER_WEB_PORT:-18080}:8080"
+volumes:
+  ocr-cache:

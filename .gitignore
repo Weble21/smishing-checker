@@ -5,8 +5,22 @@ HELP.md
 .gradle
 build/
 ocr-service/.venv/
-ocr-service/__pycache__/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
 .cache/
+
+# Training artifacts stay on the local machine / model server, not in Git.
+/experiments/
+/model/
+/dataset/open/
+/dataset/archive/
+/KOR_phishing_data_BoW/
+/KOR_phishing_data_raw/
+*.safetensors
+*.pt
+*.pth
+
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

@@ -1,0 +1,6 @@
+# Offline API/policy tests mock model inference; no model downloads needed.
+fastapi>=0.115,<1
+httpx>=0.27,<1
+python-multipart>=0.0.20,<1
+pytest>=8.3,<9
+pytest-asyncio>=0.24,<1
