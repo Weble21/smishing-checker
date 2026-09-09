@@ -37,7 +37,7 @@ step "Open deployment directory"
 cd "${DEPLOY_DIR:-/opt/smishing}"
 
 step "Check required tools"
-for tool in docker aws curl flock base64 mktemp awk cp mv rm grep; do
+for tool in docker aws curl flock base64 mktemp awk cp mv rm grep sleep; do
   if ! command -v "$tool" >/dev/null; then
     echo "Missing required tool: $tool" >&2
     exit 1
@@ -96,8 +96,22 @@ step "Start services and wait for readiness"
 docker compose --env-file .env -f compose.prod.yml up -d --wait --wait-timeout 900
 # The web service has no container healthcheck; verify its HTTP endpoint too.
 step "Check web HTTP response"
-curl --fail --silent --show-error --retry 24 --retry-delay 5 \
-  --retry-connrefused --retry-max-time 150 --max-time 5 \
-  http://127.0.0.1:8080/ > /dev/null
+# Docker running does not mean Spring is listening yet. Retry even when the
+# published port accepts TCP but resets it before the HTTP server is ready.
+for attempt in {1..30}; do
+  if curl --fail --silent --show-error --connect-timeout 3 --max-time 5 \
+    http://127.0.0.1:8080/ > /dev/null; then
+    echo "[deploy] Web HTTP check passed (attempt $attempt/30)"
+    break
+  else
+    http_result=$?
+  fi
+  if [ "$attempt" -eq 30 ]; then
+    echo "[deploy] Web did not become ready after 30 attempts (curl exit=$http_result)." >&2
+    exit "$http_result"
+  fi
+  echo "[deploy] Waiting for web startup (attempt $attempt/30, curl exit=$http_result)"
+  sleep 5
+done
 docker compose --env-file .env -f compose.prod.yml ps
 echo "Deployment verified: $TAG"

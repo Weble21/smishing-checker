@@ -36,8 +36,14 @@ exit 0
 ''',
         "aws": "echo fake-password\n",
         "flock": 'if [ "$FAIL_AT" = lock ]; then exit 1; fi\nexit 0\n',
+        "sleep": 'echo sleep >> "$COMMAND_LOG"\n',
         "curl": '''echo curl >> "$COMMAND_LOG"
 if [ "$FAIL_AT" = curl ]; then exit 22; fi
+if [ "$FAIL_AT" = reset-always ]; then exit 56; fi
+if [ "$FAIL_AT" = reset-once ] && [ ! -f "$DEPLOY_DIR/http-attempted" ]; then
+  touch "$DEPLOY_DIR/http-attempted"
+  exit 56
+fi
 ''',
     }
     for name, content in stubs.items():
@@ -101,6 +107,25 @@ def test_missing_model_fails_before_docker_changes(server):
     assert not (server / "commands.log").exists()
     assert "Missing required deployment file: models/text/config.json" in result.stderr
     assert "FAILED: stage=Check environment and model files" in result.stderr
+
+
+def test_web_connection_reset_during_startup_is_retried(server):
+    result = run_deploy(server, "reset-once")
+    assert result.returncode == 0, result.stderr
+    assert "curl exit=56" in result.stdout
+    assert "Web HTTP check passed (attempt 2/30)" in result.stdout
+    assert "Deployment verified: new-tag" in result.stdout
+
+
+def test_persistent_connection_reset_is_a_bounded_failure(server):
+    result = run_deploy(server, "reset-always")
+    assert result.returncode == 56
+    commands = (server / "commands.log").read_text().splitlines()
+    assert commands.count("curl") == 30
+    assert commands.count("sleep") == 29
+    assert "Web did not become ready after 30 attempts" in result.stderr
+    assert "Deployment verified" not in result.stdout
+    assert "logs --no-color --tail 100" in "\n".join(commands)
 
 
 @pytest.mark.parametrize("failure,message,stage", [
