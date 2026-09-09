@@ -65,6 +65,7 @@ jobs:
       - name: Inspect OIDC claims
         env:
           ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
         run: |
           python - <<'PY'
           import base64
@@ -73,6 +74,9 @@ jobs:
           import re
           import urllib.parse
           import urllib.request
+          from scripts.deploy_ssm import deployment_instance_id
+
+          deployment_instance_id()
 
           role = os.environ.get("ROLE_ARN", "")
           if not re.fullmatch(r"arn:aws:iam::\d{12}:role/[A-Za-z0-9_+=,.@/-]+", role):

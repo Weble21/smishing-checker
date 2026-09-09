@@ -25,7 +25,9 @@ def server(tmp_path):
     stubs = {
         "docker": '''printf '%s\\n' "docker $*" >> "$COMMAND_LOG"
 case "$*" in
-  'compose up --help') echo '--wait-timeout'; exit 0 ;;
+  'compose up --help')
+    if [ "$FAIL_AT" = compose-version ]; then echo '--detach'; else echo '--wait-timeout'; fi
+    exit 0 ;;
   login*) cat >/dev/null ;;
 esac
 if [[ "$FAIL_AT" == pull && "$*" == *' pull' ]]; then exit 42; fi
@@ -33,7 +35,7 @@ if [[ "$FAIL_AT" == up && "$*" == *' up -d '* ]]; then exit 43; fi
 exit 0
 ''',
         "aws": "echo fake-password\n",
-        "flock": "exit 0\n",
+        "flock": 'if [ "$FAIL_AT" = lock ]; then exit 1; fi\nexit 0\n',
         "curl": '''echo curl >> "$COMMAND_LOG"
 if [ "$FAIL_AT" = curl ]; then exit 22; fi
 ''',
@@ -97,3 +99,18 @@ def test_missing_model_fails_before_docker_changes(server):
     result = run_deploy(server)
     assert result.returncode != 0
     assert not (server / "commands.log").exists()
+    assert "Missing required deployment file: models/text/config.json" in result.stderr
+    assert "FAILED: stage=Check environment and model files" in result.stderr
+
+
+@pytest.mark.parametrize("failure,message,stage", [
+    ("lock", "Could not acquire .deploy.lock", "Acquire deployment lock"),
+    ("compose-version", "Docker Compose must support", "Check Docker Compose capabilities"),
+])
+def test_preflight_failure_has_actionable_diagnostics(server, failure, message, stage):
+    result = run_deploy(server, failure)
+    assert result.returncode != 0
+    assert message in result.stderr
+    assert f"FAILED: stage={stage}" in result.stderr
+    assert (server / "compose.prod.yml").read_text() == "old compose"
+    assert "IMAGE_TAG=old" in (server / ".env").read_text()

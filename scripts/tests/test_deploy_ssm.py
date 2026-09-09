@@ -13,6 +13,25 @@ deploy = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(deploy)
 
 
+@pytest.mark.parametrize("value", [None, "", " ", "i-REPLACE_ME", "127.0.0.1", " i-0123456789abcdef0", "i-0123456789abcdef0\n"])
+def test_invalid_instance_id_stops_before_aws(monkeypatch, value):
+    if value is None:
+        monkeypatch.delenv("EC2_INSTANCE_ID", raising=False)
+    else:
+        monkeypatch.setenv("EC2_INSTANCE_ID", value)
+    def unexpected_aws(*args):
+        pytest.fail("AWS must not be called with an invalid instance ID")
+    monkeypatch.setattr(deploy, "aws", unexpected_aws)
+    with pytest.raises(ValueError, match="EC2_INSTANCE_ID"):
+        deploy.main()
+
+
+@pytest.mark.parametrize("value", ["i-01234567", "i-0123456789abcdef0"])
+def test_valid_instance_id(monkeypatch, value):
+    monkeypatch.setenv("EC2_INSTANCE_ID", value)
+    assert deploy.deployment_instance_id() == value
+
+
 def test_command_transfers_exact_checked_out_compose(monkeypatch):
     for key, value in {"TAG": "abc123", "REGISTRY": "example.ecr", "AWS_REGION": "ap-northeast-2"}.items():
         monkeypatch.setenv(key, value)

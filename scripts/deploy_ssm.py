@@ -5,11 +5,21 @@ import base64
 import json
 import os
 from pathlib import Path
+import re
 import shlex
 import subprocess
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def deployment_instance_id() -> str:
+    value = os.environ.get("EC2_INSTANCE_ID", "")
+    if not value.strip():
+        raise ValueError("EC2_INSTANCE_ID is empty. Add the EC2 instance ID to GitHub Repository secrets.")
+    if not re.fullmatch(r"i-(?:[0-9a-f]{8}|[0-9a-f]{17})", value):
+        raise ValueError("EC2_INSTANCE_ID must be an EC2 ID (i- followed by 8 or 17 hex characters), without spaces; not an ARN or IP address.")
+    return value
 
 
 def remote_command() -> str:
@@ -57,7 +67,7 @@ def wait_for_command(command_id: str, instance_id: str, timeout: int = 2400) -> 
 
 
 def main() -> None:
-    instance_id = os.environ["EC2_INSTANCE_ID"]
+    instance_id = deployment_instance_id()
     result = aws(
         "send-command", "--instance-ids", instance_id,
         "--document-name", "AWS-RunShellScript", "--timeout-seconds", "120",
@@ -74,4 +84,6 @@ if __name__ == "__main__":
         main()
     except subprocess.CalledProcessError as error:
         print(error.stderr, flush=True)
-        raise
+        raise SystemExit(error.returncode) from None
+    except ValueError as error:
+        raise SystemExit(str(error)) from None
