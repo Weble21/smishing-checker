@@ -64,6 +64,26 @@ class FastApiAnalysisClientTests {
     }
 
     @Test
+    void rejectsMissingRiskLevel() {
+        RestClient.Builder builder = RestClient.builder();
+        MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+        server.expect(requestTo("http://localhost:8000/analyze"))
+                .andRespond(withSuccess("""
+                        {"summary": "분석 결과", "reasons": [], "actions": []}
+                        """, MediaType.APPLICATION_JSON));
+        FastApiAnalysisClient client = new FastApiAnalysisClient(
+                builder.build(), "http://localhost:8000"
+        );
+
+        ExternalApiException exception = assertThrows(
+                ExternalApiException.class,
+                () -> client.analyze(new byte[]{1}, "image/png")
+        );
+        assertEquals("INVALID_RESPONSE", exception.errorCode());
+        server.verify();
+    }
+
+    @Test
     void mapsTimeout() {
         RestClient.Builder builder = RestClient.builder();
         MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();

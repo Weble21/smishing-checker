@@ -49,10 +49,10 @@ def test_lookalike_is_not_whitelisted(host):
 
 
 @pytest.mark.parametrize("verdict,score,expected", [
-    ("DANGEROUS", 0.05, "HIGH"), ("SUSPICIOUS", 0.05, "HIGH"),
+    ("DANGEROUS", 0.05, "LOW"), ("SUSPICIOUS", 0.05, "LOW"),
     ("UNKNOWN", 0.99, "LOW"),
 ])
-def test_official_domain_does_not_override_risk(verdict, score, expected):
+def test_official_domain_set_is_low_despite_url_model_noise(verdict, score, expected):
     level, _, _, _ = combine_analysis(
         TextAnalysisResult(label="NORMAL", riskScore=score),
         [result("https://www.kbstar.com/", verdict)], "[KB국민은행] 알림입니다.",

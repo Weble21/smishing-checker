@@ -18,6 +18,7 @@ from smishing_api.risk import combine_analysis
 from smishing_api.schemas import (
     IntegratedAnalysisResponse,
     OcrResponse,
+    UrlAnalysisResult,
     UrlAnalyzeRequest,
     UrlAnalyzeResponse,
 )
@@ -42,41 +43,20 @@ def health() -> dict[str, object]:
 
 @app.post("/ocr", response_model=OcrResponse)
 async def recognize(image: UploadFile = File(...)) -> OcrResponse:
-    image_bytes = await _read_valid_image(image)
-    try:
-        return await run_in_threadpool(extract_text, image_bytes)
-    except ValueError as exception:
-        raise HTTPException(status_code=422, detail="Invalid image") from exception
-    except Exception as exception:
-        logger.exception("OCR inference failed")
-        raise HTTPException(status_code=503, detail="OCR inference failed") from exception
+    return await _recognize_image(image)
 
 
 @app.post("/url/analyze", response_model=UrlAnalyzeResponse)
 async def analyze_urls(request: UrlAnalyzeRequest) -> UrlAnalyzeResponse:
-    candidates = extract_urls(request.text)
-    async with httpx.AsyncClient(
-        timeout=VT_TIMEOUT_SECONDS,
-        follow_redirects=False,
-    ) as client:
-        results = await asyncio.gather(
-            *(analyze_url(url, client=client) for url in candidates)
-        )
-    return UrlAnalyzeResponse(urlCount=len(results), results=list(results))
+    results = await _analyze_text_urls(request.text)
+    return UrlAnalyzeResponse(urlCount=len(results), results=results)
 
 
 @app.post("/analyze", response_model=IntegratedAnalysisResponse)
 async def analyze_image(
     image: UploadFile = File(...),
 ) -> IntegratedAnalysisResponse:
-    image_bytes = await _read_valid_image(image)
-    try:
-        ocr_result = await run_in_threadpool(extract_text, image_bytes)
-    except ValueError as exception:
-        raise HTTPException(status_code=422, detail="Invalid image") from exception
-    except Exception as exception:
-        logger.exception("OCR inference failed")
-        raise HTTPException(status_code=503, detail="OCR inference failed") from exception
+    ocr_result = await _recognize_image(image)
 
     if not ocr_result.text or ocr_result.confidence < OCR_MIN_CONFIDENCE:
         raise HTTPException(
@@ -93,16 +73,7 @@ async def analyze_image(
             detail="Text model inference failed",
         ) from exception
 
-    candidates = extract_urls(ocr_result.text)
-    async with httpx.AsyncClient(
-        timeout=VT_TIMEOUT_SECONDS,
-        follow_redirects=False,
-    ) as client:
-        url_results = list(
-            await asyncio.gather(
-                *(analyze_url(url, client=client) for url in candidates)
-            )
-        )
+    url_results = await _analyze_text_urls(ocr_result.text)
 
     risk_level, summary, reasons, actions = combine_analysis(
         text_result,
@@ -118,6 +89,30 @@ async def analyze_image(
         reasons=reasons,
         actions=actions,
     )
+
+
+async def _recognize_image(image: UploadFile) -> OcrResponse:
+    image_bytes = await _read_valid_image(image)
+    try:
+        return await run_in_threadpool(extract_text, image_bytes)
+    except ValueError as exception:
+        raise HTTPException(status_code=422, detail="Invalid image") from exception
+    except Exception as exception:
+        logger.exception("OCR inference failed")
+        raise HTTPException(status_code=503, detail="OCR inference failed") from exception
+
+
+async def _analyze_text_urls(text: str) -> list[UrlAnalysisResult]:
+    candidates = extract_urls(text)
+    if not candidates:
+        return []
+    async with httpx.AsyncClient(
+        timeout=VT_TIMEOUT_SECONDS,
+        follow_redirects=False,
+    ) as client:
+        return list(await asyncio.gather(
+            *(analyze_url(url, client=client) for url in candidates)
+        ))
 
 
 async def _read_valid_image(image: UploadFile) -> bytes:

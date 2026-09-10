@@ -37,8 +37,6 @@
 | `OCR_MIN_CONFIDENCE` | `0.55` | 통합 분석을 진행할 최소 OCR 신뢰도 |
 | `OCR_CACHE_DIR` | `.cache/ocr` | PaddleOCR 모델 캐시 경로 |
 
-`HF_TOKEN`, `OCR_API_URL`은 원격 저장소의 이전 개별 분석 클라이언트 호환 설정이며 현재 기본 통합 흐름에서는 사용하지 않습니다.
-
 ## FastAPI 설치와 실행
 
 Python 3.10~3.12 가상환경을 권장합니다. CUDA용 PyTorch와 PaddlePaddle은 로컬 CUDA 환경에 맞는 공식 빌드를 먼저 설치한 뒤 나머지 요구사항을 설치하세요. CPU에서도 추론할 수 있습니다.

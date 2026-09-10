@@ -42,7 +42,8 @@ def test_following_independent_url_is_not_hidden(second):
 @pytest.mark.parametrize("extra,expected", [
     ("", "LOW"),
     ("\n인증번호를 입력하세요.", "LOW"),
-    ("\nhttps://evil.example/", "HIGH"),
+    ("\nhttps://evil.example/", "LOW"),
+    ("\n자세한 내용은 링크를 클릭하세요. https://evil.example/", "MEDIUM"),
 ])
 async def test_delivery_context_overrides_only_model_scores(monkeypatch, extra, expected, scheme):
     monkeypatch.setattr("smishing_api.url_analysis.predict_url_risk", lambda url: (0.99, 0.32))

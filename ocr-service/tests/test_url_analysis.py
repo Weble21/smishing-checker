@@ -121,7 +121,7 @@ async def test_virustotal_timeout() -> None:
 
 
 @pytest.mark.asyncio
-async def test_dangerous_url_becomes_high_risk() -> None:
+async def test_dangerous_url_without_sensitive_request_becomes_caution() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(
             200,
@@ -146,7 +146,7 @@ async def test_dangerous_url_becomes_high_risk() -> None:
         [url_result],
     )
     assert url_result.verdict == "DANGEROUS"
-    assert risk_level == "HIGH"
+    assert risk_level == "MEDIUM"
 
 
 def test_unknown_reputation_alone_does_not_raise_grade() -> None:

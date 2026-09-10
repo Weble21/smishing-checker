@@ -83,8 +83,6 @@ public class FastApiAnalysisClient implements AiAnalysisClient {
                     .body(IntegratedAnalysisResult.class);
             validate(result);
             return result;
-        } catch (ExternalApiException exception) {
-            throw exception;
         } catch (ResourceAccessException exception) {
             throw new ExternalApiException(
                     isTimeout(exception) ? "TIMEOUT" : "CONNECTION_ERROR",
@@ -116,6 +114,7 @@ public class FastApiAnalysisClient implements AiAnalysisClient {
 
     private void validate(IntegratedAnalysisResult result) {
         if (result == null
+                || result.riskLevel() == null
                 || !ALLOWED_RISK_LEVELS.contains(result.riskLevel())
                 || result.summary() == null
                 || result.summary().isBlank()

@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
@@ -85,8 +86,8 @@ public class MessageAnalysisService {
             );
         }
 
-        try {
-            if (ImageIO.read(image.getInputStream()) == null) {
+        try (InputStream input = image.getInputStream()) {
+            if (ImageIO.read(input) == null) {
                 throw new IllegalArgumentException(
                         "올바른 이미지 파일이 아니에요."
                 );
