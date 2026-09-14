@@ -1,0 +1,477 @@
+{
+  "incident_id": "inc-MOB-BEN-065",
+  "case_type": "benign",
+  "theme": "계정 보안 경고 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "TP-1",
+  "start_time": "2026-11-23T14:59:00+09:00",
+  "end_time": "2026-11-23T15:15:20+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "endpoint",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.65
+  },
+  "message_samples_used": [
+    {
+      "target_device": "iOS",
+      "text": "[TRAINING] [보안알림] 고객님의 계정에 새로운 기기(iPhone 15)에서 로그인이 시도되었습니다. 본인이 아닐 경우 즉시 확인하십시오. https://safety.account-verify.example",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "identity_verification",
+      "access_confirmation"
+    ],
+    "visual_style_notes": [
+      "Standard corporate identity design",
+      "Clean UI with official security certificates displayed"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "user_id",
+      "last_4_digits_of_phone"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-exec-99",
+    "job_title": "임원/관리직",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-ios-exec-001",
+        "platform": "iOS",
+        "os_version": "17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A high-level executive receives a legitimate security alert from the corporate account system. They click the link, verify the domain is safe, and complete a routine security check.",
+    "why_this_behavior": "Executives are targets but also highly compliant with internal security protocols. The domain is a long-standing corporate asset.",
+    "time_gap_rationale": "Reaction to security alerts is usually prompt (within 1-2 minutes) for high-stakes accounts."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "b3f1a01c-4d3e-4b71-8844-321a55660001",
+      "time": "2026-11-23T14:59:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-99",
+        "device_id": "dev-ios-exec-001",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Global-Link",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-065"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "communication",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise",
+      "event_id": "c11a0d8e-7e9f-4b0c-9a11-55bb66cc7701",
+      "time": "2026-11-23T14:59:15+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-99",
+        "device_id": "dev-ios-exec-001",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.10",
+        "http": {
+          "method": "POST",
+          "path": "/checkin",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-065"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "system_maintenance",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "MDM_AGENT"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Resolution",
+      "event_id": "d5e6f7a8-b9c0-4d1e-8f2a-334455667788",
+      "time": "2026-11-23T15:00:10+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-99",
+        "device_id": "dev-ios-exec-001",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "safety.account-verify.example",
+        "dst_ip": "198.51.100.50",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-065"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "DNS_RESOLVER_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "e6f7g8h9-i0j1-4k2l-8m3n-445566778899",
+      "time": "2026-11-23T15:00:11+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-99",
+        "device_id": "dev-ios-exec-001",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "safety.account-verify.example",
+        "dst_ip": "198.51.100.50",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-065"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "d5e6f7a8-b9c0-4d1e-8f2a-334455667788",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "DNS_RESOLVER_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: Initial Access (Benign)",
+      "event_id": "f7g8h9i0-j1k2-4l3m-8n4o-556677889900",
+      "time": "2026-11-23T15:00:12+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-99",
+        "device_id": "dev-ios-exec-001",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Mobile Safari"
+      },
+      "network": {
+        "dst_domain": "safety.account-verify.example",
+        "dst_ip": "198.51.100.50",
+        "sni": "safety.account-verify.example",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1240,
+        "http": {
+          "method": "GET",
+          "path": "/",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-065",
+        "session_id": "sess-ios-safe-999"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "WAF_LOG"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise",
+      "event_id": "a1b2c3d4-e5f6-4a7b-8c9d-112233445566",
+      "time": "2026-11-23T15:05:00+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-99",
+        "device_id": "dev-ios-exec-001",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "GET",
+          "path": "/v1/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-065"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "app_usage",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "NETFLOW"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: User Interaction",
+      "event_id": "00a11b22-33c4-4d5e-8f6g-77889900aabb",
+      "time": "2026-11-23T15:07:30+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-99",
+        "device_id": "dev-ios-exec-001",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "safety.account-verify.example",
+        "domain_age_days": 1240
+      },
+      "object": {
+        "behavior": {
+          "signal": "navigation_completed",
+          "user_interaction": "observed",
+          "dwell_time_ms": 150000,
+          "form_focus_detected": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-065",
+        "session_id": "sess-ios-safe-999"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "IOS_WEBKIT_TELEMETRY"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise",
+      "event_id": "b2c3d4e5-f6a7-4b8c-9d0e-223344556677",
+      "time": "2026-11-23T15:15:20+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-99",
+        "device_id": "dev-ios-exec-001",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "GET",
+          "path": "/current",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-065"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "idle",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "NETFLOW"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 8,
+    "malicious_events": 0,
+    "benign_context_events": 4,
+    "noise_events_included": 4,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "14:59:00",
+        "events": 1,
+        "desc": "Verified security alert SMS received"
+      },
+      {
+        "phase": "2-3",
+        "time_range": "15:00:10 - 15:00:12",
+        "events": 3,
+        "desc": "User navigates to a trusted corporate domain"
+      },
+      {
+        "phase": "4",
+        "time_range": "15:07:30",
+        "events": 1,
+        "desc": "User spends time on the portal and finishes browsing"
+      }
+    ],
+    "total_elapsed_minutes": 16.33,
+    "key_time_gaps_explained": {
+      "sms_to_click": "70 seconds - Prompt response by executive user",
+      "browsing_dwell": "150 seconds - Time taken to read security report and logout"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Domain age (1240 days) and TTL (3600s) do not meet suspicious criteria.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning was generated for a legitimate domain.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN did not fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial or auth burst activity detected.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 192,
+      "background_composition": {
+        "messaging_sync": 20,
+        "email_sync": 30,
+        "push_notification": 25,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 15,
+        "mdm_checkin": 40,
+        "cloud_backup": 12
+      }
+    }
+  }
+}

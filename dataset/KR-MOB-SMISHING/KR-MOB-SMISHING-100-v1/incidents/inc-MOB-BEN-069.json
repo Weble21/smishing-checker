@@ -1,0 +1,440 @@
+{
+  "incident_id": "inc-MOB-BEN-069",
+  "case_type": "benign_lookalike",
+  "theme": "통신사 요금/데이터 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "TP-2: delayed_response (수시간 후 클릭)",
+  "start_time": "2026-11-23T14:23:00+09:00",
+  "end_time": "2026-11-23T17:45:12+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint_protection"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "endpoint_protection",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [알림] 고객님, 11월 요금 미납으로 익일 회선 정지 예정입니다. 상세 명세 확인 및 납부: mobile-bill.pay-check.example",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Landing",
+      "Identity Verification"
+    ],
+    "visual_style_notes": [
+      "Minimalist design",
+      "Asks for login credentials early"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "phone_number",
+      "telecom_provider",
+      "password"
+    ],
+    "detection_cues_for_human_analyst": [
+      "Domain age is 1 day",
+      "Non-standard TLD used",
+      "Urgency language in SMS"
+    ]
+  },
+  "persona": {
+    "user_id": "user-6692",
+    "job_title": "고령 사용자 (PV-6)",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "13.0"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "User receives a smishing text regarding unpaid bills. Due to being a senior user, they notice the message late and click the link. However, a local security app (endpoint protection) blocks the submission before credentials are sent.",
+    "why_this_behavior": "Benign lookalike: The user engages with malicious infrastructure but the attack is thwarted by security software, preventing the 'malicious' outcome.",
+    "time_gap_rationale": "3-hour delay between SMS and click reflects a user who doesn't check phone frequently. Rapid sequences after clicking reflect browser/app automated actions."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [
+      "SMISH_REDIRECT_CHAIN"
+    ],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "Android",
+        "trigger_events": [
+          "56b10705-59c2-480f-963e-316496291a10",
+          "f998319e-e816-432d-959c-6953f40f37c3"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Delivery",
+      "event_id": "56b10705-59c2-480f-963e-316496291a10",
+      "time": "2026-11-23T14:23:45+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6692",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Carrier-A",
+        "carrier_network_type": "LTE",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1192",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-069",
+        "message_id": "msg-9921-001"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "1994e63e-827d-4171-be98-9366e855c918",
+      "time": "2026-11-23T15:10:22+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6692",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-069"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "activity_stage": "normal_browsing",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "PROXY_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Execution (Lure Clicked)",
+      "event_id": "f998319e-e816-432d-959c-6953f40f37c3",
+      "time": "2026-11-23T17:42:10+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6692",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mobile-bill.pay-check.example",
+        "dst_ip": "192.0.2.45",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-069"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "DNS_RECURSIVE_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise: Duplicate",
+      "event_id": "d76c766e-72be-48b3-ba69-34e825a07567",
+      "time": "2026-11-23T17:42:11+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6692",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mobile-bill.pay-check.example",
+        "dst_ip": "192.0.2.45",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-069"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "f998319e-e816-432d-959c-6953f40f37c3",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "DNS_RECURSIVE_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: Execution (HTTP Request)",
+      "event_id": "84822765-728b-497d-9477-802526e03102",
+      "time": "2026-11-23T17:42:12+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6692",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "mobile-bill.pay-check.example",
+        "dst_ip": "192.0.2.45",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/login",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-069",
+        "session_id": "sess-and-882291"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "WAF_LOG"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "b3c8842c-f648-43e4-8df5-a764d88e0c34",
+      "time": "2026-11-23T17:43:05+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6692",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-069"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "activity_stage": "communication",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "APP_LOG"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-3: Blocked (Protection Intervention)",
+      "event_id": "59918231-112c-4e81-a76d-3e7488910021",
+      "time": "2026-11-23T17:45:12+09:00",
+      "log_source": "endpoint_protection",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-6692",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mobile-bill.pay-check.example"
+      },
+      "object": {
+        "block_reason": "malicious_phishing_url_match",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-069",
+        "session_id": "sess-and-882291"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_collection",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "MOBILE_AV_LOG"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 7,
+    "malicious_events": 0,
+    "benign_context_events": 2,
+    "noise_events_included": 3,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "14:23:45",
+        "events": 1,
+        "desc": "SMS Lure Delivery"
+      },
+      {
+        "phase": "2",
+        "time_range": "17:42:10-17:42:12",
+        "events": 3,
+        "desc": "Accessing Malicious URL"
+      },
+      {
+        "phase": "3",
+        "time_range": "17:45:12",
+        "events": 1,
+        "desc": "Endpoint Security Blocked Submission"
+      }
+    ],
+    "total_elapsed_minutes": 201.45,
+    "key_time_gaps_explained": {
+      "sms_to_click": "Delayed response by 198 minutes as persona is an elderly user.",
+      "page_load_to_block": "3 minutes spent on the site before submission attempt was blocked by security app."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S1 to S3 time gap (11907s) exceeds 180s window.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "web.risk_warning event not present.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 193,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 15,
+        "push_notification": 35,
+        "software_update": 10,
+        "cdn_traffic": 60,
+        "utility_widgets": 20,
+        "mdm_checkin": 0,
+        "cloud_backup": 28
+      }
+    }
+  }
+}

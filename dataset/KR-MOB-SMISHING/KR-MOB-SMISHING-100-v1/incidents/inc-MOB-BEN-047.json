@@ -1,0 +1,531 @@
+{
+  "incident_id": "inc-MOB-BEN-047",
+  "case_type": "benign",
+  "theme": "계정 보안 경고 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "TP-1",
+  "start_time": "2025-04-27T09:32:15+09:00",
+  "end_time": "2025-04-27T09:41:40+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "sms.received",
+    "dns.query",
+    "http.request"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [계정센터] 고객님의 계정이 새로운 환경에서 로그인되었습니다. 본인이 아닐 경우 즉시 확인해 주세요. https://auth-secure.portal.example/login-check",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "ID 입력",
+      "비밀번호 입력",
+      "정상 로그인 완료"
+    ],
+    "visual_style_notes": [
+      "정식 포털 사이트의 표준 로그인 디자인",
+      "HTTPS 암호화 적용",
+      "공식 도메인 주소"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "user_id",
+      "password"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-8821",
+    "job_title": "신입 인턴",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 공식 계정 센터로부터 로그인 알림 SMS를 받고, 포함된 링크를 통해 정상적인 포털 사이트에 접속하여 로그인을 마치는 시나리오.",
+    "why_this_behavior": "정상적인 보안 알림 서비스의 일환이며, 사용자는 자신의 계정 안전을 확인하기 위해 정상 절차를 수행함.",
+    "time_gap_rationale": "SMS 수신 후 인지 및 클릭까지 약 2분 소요, 이후 페이지 로딩 및 로그인 시도까지의 일반적인 인간 반응 속도 반영."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
+      "time": "2025-04-27T09:32:15+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Global-Net",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "sender_verification": true,
+          "urgency_language": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-047"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "sms_gateway_logs"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "f5e4d3c2-b1a0-4f9e-8d7c-6b5a49382716",
+      "time": "2025-04-27T09:33:05+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "POST",
+          "path": "/checkin",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-047"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "mdm_agent_log"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Resolution",
+      "event_id": "7d6c5b4a-3e2f-1d0c-9b8a-7f6e5d4c3b2a",
+      "time": "2025-04-27T09:34:22+09:00",
+      "log_source": "dns.query",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "auth-secure.portal.example",
+        "dst_ip": "198.51.100.12",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-047"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "system_dns_cache"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-3: Initial Request",
+      "event_id": "b3c4d5e6-f7a8-4b9c-0d1e-2f3a4b5c6d7e",
+      "time": "2025-04-27T09:34:25+09:00",
+      "log_source": "http.request",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "auth-secure.portal.example",
+        "dst_ip": "198.51.100.12",
+        "sni": "auth-secure.portal.example",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1240,
+        "http": {
+          "method": "GET",
+          "path": "/login-check",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-047",
+        "session_id": "sess-portal-992811"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "browser_network_telemetry"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-Noise: Duplicate",
+      "event_id": "f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c",
+      "time": "2025-04-27T09:34:26+09:00",
+      "log_source": "http.request",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "auth-secure.portal.example",
+        "dst_ip": "198.51.100.12",
+        "sni": "auth-secure.portal.example",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1240,
+        "http": {
+          "method": "GET",
+          "path": "/login-check",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-047",
+        "session_id": "sess-portal-992811"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "계정 보안 경고 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "b3c4d5e6-f7a8-4b9c-0d1e-2f3a4b5c6d7e",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "browser_network_telemetry"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d",
+      "time": "2025-04-27T09:36:12+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.102",
+        "http": {
+          "method": "GET",
+          "path": "/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-047"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "app_network_logs"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "1e2f3a4b-5c6d-7e8f-9a0b-1c2d3e4f5a6b",
+      "time": "2025-04-27T09:37:45+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.210",
+        "http": {
+          "method": "GET",
+          "path": "/current",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-047"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "system_service_logs"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "4b5c6d7e-8f9a-0b1c-2d3e-4f5a6b7c8d9e",
+      "time": "2025-04-27T09:39:10+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "GET",
+          "path": "/assets/v2/banner.png",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-047"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "content_delivery_logs"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-4: Interaction",
+      "event_id": "8f9a0b1c-2d3e-4f5a-6b7c-8d9e0f1a2b3c",
+      "time": "2025-04-27T09:41:40+09:00",
+      "log_source": "http.request",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "auth-secure.portal.example",
+        "dst_ip": "198.51.100.12",
+        "http": {
+          "method": "POST",
+          "path": "/api/v1/auth",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-047",
+        "session_id": "sess-portal-992811"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "계정 보안 경고 사칭"
+      },
+      "original_source_hint": "portal_auth_backend"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 5,
+    "noise_events_included": 4,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "09:32:15",
+        "events": 1,
+        "desc": "정상 보안 알림 SMS 수신"
+      },
+      {
+        "phase": "2",
+        "time_range": "09:34:22 - 09:34:25",
+        "events": 2,
+        "desc": "공식 도메인 접속 및 DNS 질의"
+      },
+      {
+        "phase": "3",
+        "time_range": "09:41:40",
+        "events": 1,
+        "desc": "사용자 로그인 시도 성공"
+      }
+    ],
+    "total_elapsed_minutes": 9.42,
+    "key_time_gaps_explained": {
+      "sms_to_click": "사용자가 업무 중 알림을 확인하고 브라우저를 열기까지 127초 소요.",
+      "page_to_login": "로그인 페이지 확인 후 ID/PW를 입력하고 제출하기까지 약 7분 소요 (중간에 배경 앱 활동 발생)."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "SMS sender is verified; Domain reputation is high; No redirects occurred.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning was triggered for legitimate domain.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN did not fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk activity detected.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 30,
+        "email_sync": 25,
+        "push_notification": 35,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 15,
+        "mdm_checkin": 26,
+        "cloud_backup": 10
+      }
+    }
+  }
+}

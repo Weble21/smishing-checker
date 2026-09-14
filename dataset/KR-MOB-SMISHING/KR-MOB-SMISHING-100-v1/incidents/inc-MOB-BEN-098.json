@@ -1,0 +1,544 @@
+{
+  "incident_id": "inc-MOB-BEN-098",
+  "case_type": "benign_lookalike",
+  "theme": "모바일 금융앱 업데이트 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "multi_session (이탈 후 재접근)",
+  "start_time": "2025-08-15T15:47:00+09:00",
+  "end_time": "2025-08-15T16:15:30+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint_protection"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "endpoint",
+    "browser_security",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [보안통지] 고객님의 금융거래 안전을 위해 필수 보안 업데이트가 필요합니다. 미업데이트 시 당일 24시부터 뱅킹 서비스 이용이 제한됩니다. 확인: https://update-mobile.safe-check.example/auth",
+      "sender_type": "short_code",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "SMS URL 접속",
+      "업데이트 필요성 안내 페이지",
+      "보안 패치 다운로드 버튼 클릭"
+    ],
+    "visual_style_notes": [
+      "시스템 기본 폰트 사용",
+      "회색 및 파란색 위주의 기업용 UI 모방",
+      "로고 없이 텍스트 중심의 경고 문구"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "phone_number",
+      "update_consent"
+    ],
+    "detection_cues_for_human_analyst": [
+      "비정상적으로 짧은 도메인 생성 일자 (2일)",
+      "다중 리디렉션 체인 (302 Redirect)",
+      "공식 앱스토어가 아닌 외부 링크를 통한 패키지 배포 시도"
+    ]
+  },
+  "persona": {
+    "user_id": "user-exec-8821",
+    "job_title": "임원/관리직",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 업무 중 보안 업데이트 안내 SMS를 수신하고 링크를 클릭하여 접속함. 1차 접속 시 시스템 리졸버에 의해 경고가 발생하지 않았으나, 다운로드 단계에서 모바일 백신/EDR에 의해 차단됨. 이후 사용자가 한 번 더 시도하지만 최종적으로 차단됨.",
+    "why_this_behavior": "임원진으로서 보안 공지에 민감하게 반응하여 즉시 조치하려 했으나, 기기 내 보호 솔루션이 악성 행위를 탐지하여 사고를 방지함.",
+    "time_gap_rationale": "최초 수신 후 확인까지 120초, 페이지 탐색에 45초, 차단 후 재시도까지 약 15분의 간격(multi-session)을 두어 현실성을 반영함."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [
+      "SMISH_REDIRECT_CHAIN"
+    ],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "Android",
+        "trigger_events": [
+          "5f34a1b0-7d31-4e2a-8c5e-883a991f8601",
+          "7e21b2c0-8e42-5f3b-9d6f-994b002g9712",
+          "a1b2c3d4-e5f6-4a5b-b6c7-d8e9f0a1b2c3"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-Noise (Background)",
+      "event_id": "901c3456-1234-4567-8901-234567890123",
+      "time": "2025-08-15T15:47:00+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.44",
+        "http": {
+          "method": "POST",
+          "path": "/api/v2/checkin",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-098"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "Endpoint MDM Agent"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-1: Initial Access (Lure)",
+      "event_id": "5f34a1b0-7d31-4e2a-8c5e-883a991f8601",
+      "time": "2025-08-15T15:48:12+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-exec-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "T-Mobile-Fake",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "short_code",
+        "sender_id": "1588-0000",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-098",
+        "message_id": "msg-8877-9911"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "SMS Gateway Log"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise (Background)",
+      "event_id": "304d5678-2345-5678-9012-345678901234",
+      "time": "2025-08-15T15:50:05+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "GET",
+          "path": "/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-098"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "App Traffic Monitor"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: Delivery (Redirection)",
+      "event_id": "7e21b2c0-8e42-5f3b-9d6f-994b002g9712",
+      "time": "2025-08-15T15:50:15+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-exec-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "update-mobile.safe-check.example",
+        "dst_ip": "192.0.2.77",
+        "ttl_sec": 30,
+        "domain_age_days": 2,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-098"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "Recursive DNS"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: Delivery (Redirection)",
+      "event_id": "a1b2c3d4-e5f6-4a5b-b6c7-d8e9f0a1b2c3",
+      "time": "2025-08-15T15:50:18+09:00",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-exec-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn-patch.update-server.example",
+        "dst_ip": "192.0.2.88",
+        "domain_age_days": 2,
+        "http": {
+          "method": "GET",
+          "path": "/auth/v1/redirect",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 2,
+        "referrer_chain_domains_masked": [
+          "update-mobile.safe-check.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-098",
+        "session_id": "sess-9988-7766",
+        "redirect_chain_id": "red-1122-3344"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "Web Proxy Log"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "d0e1f2a3-b4c5-6d7e-8f90-a1b2c3d4e5f6",
+      "time": "2025-08-15T15:50:19+09:00",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-exec-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn-patch.update-server.example",
+        "dst_ip": "192.0.2.88",
+        "domain_age_days": 2,
+        "http": {
+          "method": "GET",
+          "path": "/auth/v1/redirect",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 2,
+        "referrer_chain_domains_masked": [
+          "update-mobile.safe-check.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-098",
+        "session_id": "sess-9988-7766",
+        "redirect_chain_id": "red-1122-3344"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "a1b2c3d4-e5f6-4a5b-b6c7-d8e9f0a1b2c3",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "Web Proxy Log"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-3: Defense Evasion (Blocked)",
+      "event_id": "f2e3d4c5-b6a7-8901-2345-678901234567",
+      "time": "2025-08-15T15:51:30+09:00",
+      "log_source": "endpoint",
+      "event_type": "android.web_submission.blocked",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-exec-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn-patch.update-server.example",
+        "dst_ip": "192.0.2.88"
+      },
+      "object": {
+        "block_reason": "malicious_apk_signature_mismatch",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-098",
+        "session_id": "sess-9988-7766"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_collection",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "Android Endpoint Protection"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise (Background)",
+      "event_id": "607g8901-3456-7890-1234-567890123456",
+      "time": "2025-08-15T16:05:20+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.12",
+        "http": {
+          "method": "GET",
+          "path": "/current",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-098"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "OS Network Stack"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-4: Persistence (Re-attempt)",
+      "event_id": "c1a2b3d4-e5f6-7a8b-9c0d-e1f2a3b4c5d6",
+      "time": "2025-08-15T16:15:30+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-exec-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "update-mobile.safe-check.example",
+        "dst_ip": "192.0.2.77",
+        "domain_age_days": 2,
+        "http": {
+          "method": "GET",
+          "path": "/auth",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-098",
+        "session_id": "sess-2233-4455"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "App Browser Engine"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 6,
+    "noise_events_included": 3,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "15:48:12",
+        "events": 1,
+        "desc": "SMS Lure Received"
+      },
+      {
+        "phase": "2",
+        "time_range": "15:50:15 - 15:50:19",
+        "events": 3,
+        "desc": "Redirection and Traffic Spikes"
+      },
+      {
+        "phase": "3",
+        "time_range": "15:51:30",
+        "events": 1,
+        "desc": "EDR Blockage"
+      },
+      {
+        "phase": "4",
+        "time_range": "16:15:30",
+        "events": 1,
+        "desc": "User Re-attempt (Post-Block)"
+      }
+    ],
+    "total_elapsed_minutes": 28.5,
+    "key_time_gaps_explained": {
+      "S1_to_S3": "126 seconds (Within 180s window for chain)",
+      "block_to_retry": "14 minutes (User re-access behavior)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "S1 (sms.received) -> S2 (dns.query) -> S3 (http.redirect)",
+      "trigger": "S1 exists. S2 domain_age_days=2 (<=3) exists. S3 redirect_hops=2 exists. However, for benign_lookalike, the weighting or logic is tuned to not fire if the sequence ends in a block without submission.",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "web.risk_warning event not present in stream.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No successful form submission or UI interaction recorded after redirect.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No auth.step_up_challenge or bank.transfer events.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 20,
+        "push_notification": 30,
+        "software_update": 15,
+        "cdn_traffic": 40,
+        "utility_widgets": 21,
+        "mdm_checkin": 30,
+        "cloud_backup": 10
+      }
+    }
+  }
+}

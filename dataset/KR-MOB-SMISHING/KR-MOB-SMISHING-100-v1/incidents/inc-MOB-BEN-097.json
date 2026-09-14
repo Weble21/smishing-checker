@@ -1,0 +1,460 @@
+{
+  "incident_id": "inc-MOB-BEN-097",
+  "case_type": "benign",
+  "theme": "통신사 요금/데이터 확인",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "delayed_response (수시간 후 클릭)",
+  "start_time": "2025-08-15T18:42:00+09:00",
+  "end_time": "2025-08-15T18:58:30+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "noise"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] 고객님, 8월분 실시간 이용요금 명세서가 발행되었습니다. 상세내역 확인: https://my.telecom-portal.example",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Landing",
+      "Bill View"
+    ],
+    "visual_style_notes": [
+      "Standard responsive web design",
+      "Official security certificate present"
+    ],
+    "form_risk_class": "none",
+    "fields_requested": [
+      "bill_month"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-senior-9821",
+    "job_title": "고령 사용자",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-7722",
+        "platform": "Android",
+        "os_version": "Android 13"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "정상적인 통신사 요금 확인 절차",
+    "why_this_behavior": "사용자가 본인의 통신 요금을 확인하기 위해 공식 도메인에 접속함",
+    "time_gap_rationale": "메시지 수신 후 일상 생활을 하다 저녁 시간에 확인하는 패턴 반영"
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "58f4a1b0-1842-4e5a-8b83-8a30d8f8e001",
+      "time": "2025-08-15T18:42:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-senior-9821",
+        "device_id": "dev-and-7722",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "GlobalTelecom",
+        "carrier_network_type": "LTE",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": false,
+          "sender_verification": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-097",
+        "message_id": "msg-99283100"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "통신사 요금/데이터 확인"
+      },
+      "original_source_hint": "SMS Gateway Log"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "19e83102-1845-4b2a-9c12-3321d8f8e002",
+      "time": "2025-08-15T18:45:12+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-senior-9821",
+        "device_id": "dev-and-7722",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "GET",
+          "path": "/v1/current",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-097"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "통신사 요금/데이터 확인"
+      },
+      "original_source_hint": "Device Telemetry"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "a3341c22-1848-4f9a-8d12-4412d8f8e003",
+      "time": "2025-08-15T18:48:45+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-senior-9821",
+        "device_id": "dev-and-7722",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "POST",
+          "path": "/sync",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-097"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "통신사 요금/데이터 확인"
+      },
+      "original_source_hint": "Application Log"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "duplicate-003",
+      "time": "2025-08-15T18:48:47+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-senior-9821",
+        "device_id": "dev-and-7722",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "POST",
+          "path": "/sync",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-097"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "통신사 요금/데이터 확인"
+      },
+      "noise_metadata": {
+        "duplicate_of": "a3341c22-1848-4f9a-8d12-4412d8f8e003",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "Application Log"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: Interaction",
+      "event_id": "8c412e11-1855-4d1a-9f22-5512d8f8e005",
+      "time": "2025-08-15T18:55:00+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-senior-9821",
+        "device_id": "dev-and-7722",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "my.telecom-portal.example",
+        "dst_ip": "198.51.100.10",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-097"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "통신사 요금/데이터 확인"
+      },
+      "original_source_hint": "Recursive DNS Log"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-2: Interaction",
+      "event_id": "f2a11b00-1855-4e2a-9a11-6612d8f8e006",
+      "time": "2025-08-15T18:55:10+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-senior-9821",
+        "device_id": "dev-and-7722",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "my.telecom-portal.example",
+        "dst_ip": "198.51.100.10",
+        "sni": "my.telecom-portal.example",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1240,
+        "http": {
+          "method": "GET",
+          "path": "/",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-097",
+        "session_id": "sess-portal-99221"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "통신사 요금/데이터 확인"
+      },
+      "original_source_hint": "Web Server Access Log"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "d4a11c11-1857-4b1a-8c11-7712d8f8e007",
+      "time": "2025-08-15T18:57:30+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-senior-9821",
+        "device_id": "dev-and-7722",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "maps-api.masked-geo.example",
+        "dst_ip": "203.0.113.12",
+        "http": {
+          "method": "GET",
+          "path": "/tile/12/234",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-097"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "통신사 요금/데이터 확인"
+      },
+      "original_source_hint": "Application Traffic"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "b11c1d99-1858-4a11-9d11-8812d8f8e008",
+      "time": "2025-08-15T18:58:30+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-senior-9821",
+        "device_id": "dev-and-7722",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.200",
+        "http": {
+          "method": "GET",
+          "path": "/assets/common.js",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-097"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "통신사 요금/데이터 확인"
+      },
+      "original_source_hint": "CDN Delivery Log"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 8,
+    "malicious_events": 0,
+    "benign_context_events": 3,
+    "noise_events_included": 5,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "18:42:00",
+        "events": 1,
+        "desc": "정상적인 요금 안내 메시지 수신"
+      },
+      {
+        "phase": "Interaction",
+        "time_range": "18:55:00 - 18:55:10",
+        "events": 2,
+        "desc": "정상 도메인에 대한 DNS 질의 및 웹 접속"
+      }
+    ],
+    "total_elapsed_minutes": 16.5,
+    "key_time_gaps_explained": {
+      "sms_to_click": "사용자가 메시지를 받고 약 13분 뒤에 링크를 클릭함 (일상적인 지연)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Domain reputation is high (0.98) and domain age is old (1240 days). Redirect chain does not exist.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No security warning shown as the site is legitimate.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN not met and no sensitive form interaction detected.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk signal or MFA burst detected.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 192,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 20,
+        "push_notification": 40,
+        "software_update": 10,
+        "cdn_traffic": 45,
+        "utility_widgets": 30,
+        "mdm_checkin": 0,
+        "cloud_backup": 22
+      }
+    }
+  }
+}

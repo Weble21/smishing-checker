@@ -1,0 +1,538 @@
+{
+  "incident_id": "inc-MOB-BEN-050",
+  "case_type": "benign_lookalike",
+  "theme": "가족/지인 사칭 긴급 송금",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "TP-1 (rapid_chain)",
+  "start_time": "2025-04-27T09:32:00+09:00",
+  "end_time": "2025-04-27T09:58:45+09:00",
+  "platform_coverage": [
+    "Android",
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "ios.web.behavior",
+    "android.web_submission.blocked"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "ios.web.behavior",
+    "android.web_submission.blocked",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] 엄마 나 휴대폰 액정이 깨져서 수리 맡겼어. 지금 급하게 송금할 곳이 있는데 인증이 안 돼서 그래. 여기 주소로 들어가서 확인 좀 해줘: http://family-help.support-service.example/pay",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Identity Verification",
+      "Recipient Details",
+      "Amount Entry"
+    ],
+    "visual_style_notes": [
+      "Plain white background",
+      "Minimalist blue buttons",
+      "No corporate logos"
+    ],
+    "form_risk_class": "financial",
+    "fields_requested": [
+      "account_number",
+      "bank_name",
+      "transfer_amount"
+    ],
+    "detection_cues_for_human_analyst": [
+      "Domain age is less than 3 days",
+      "Urgent language in SMS lure",
+      "Lack of SSL EV certificate information"
+    ]
+  },
+  "persona": {
+    "user_id": "user-finance-771",
+    "job_title": "Accountant",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0"
+      },
+      {
+        "device_id": "dev-ios-112",
+        "platform": "iOS",
+        "os_version": "17.4"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "Cross-platform lure interaction where Android blocks the submission while iOS user proceeds further before stopping.",
+    "why_this_behavior": "The user first tried on their work Android phone, which blocked the submission. Suspecting a device error, they used their personal iPhone to check the link, but eventually abandoned the process when asked for secondary authentication they couldn't provide.",
+    "time_gap_rationale": "60s between SMS and first click reflects initial shock; 120s between platforms reflects switching devices."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [
+      "SMISH_REDIRECT_CHAIN",
+      "PLATFORM_DIVERGENCE"
+    ],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "Android",
+        "trigger_events": [
+          "9b691234-586b-4560-a292-073456789012"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-Noise (Baseline)",
+      "event_id": "400407f9-3998-4c8e-a89c-85e884562471",
+      "time": "2025-04-27T09:32:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.15",
+        "http": {
+          "method": "POST",
+          "path": "/checkin",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-050"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "MDM_AGENT_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "9b691234-586b-4560-a292-073456789012",
+      "time": "2025-04-27T09:34:10+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "ExampleTelecom",
+        "carrier_network_type": "5G"
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1192",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-050",
+        "message_id": "msg-887122"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "SMS_GATEWAY"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "9b691234-586b-4560-a292-073456789013",
+      "time": "2025-04-27T09:34:11+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "ExampleTelecom",
+        "carrier_network_type": "5G"
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1192",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "noise_metadata": {
+        "duplicate_of": "9b691234-586b-4560-a292-073456789012",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-050",
+        "message_id": "msg-887122"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "SMS_GATEWAY"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: DNS Resolution",
+      "event_id": "a1c23456-7890-4abc-9012-345678901234",
+      "time": "2025-04-27T09:35:15+09:00",
+      "log_source": "dns.query",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-finance-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "family-help.support-service.example",
+        "dst_ip": "192.0.2.44",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-050"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "DEVICE_DNS_CACHE"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: Initial Request & Block",
+      "event_id": "b2d34567-8901-4bcd-0123-456789012345",
+      "time": "2025-04-27T09:35:16+09:00",
+      "log_source": "http.request",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-finance-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "family-help.support-service.example",
+        "dst_ip": "192.0.2.44",
+        "http": {
+          "method": "GET",
+          "path": "/pay",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-050",
+        "session_id": "sess-and-111"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "WEB_PROXY"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-3: Submission Blocked (Android)",
+      "event_id": "c3e45678-9012-4cde-1234-567890123456",
+      "time": "2025-04-27T09:37:00+09:00",
+      "log_source": "android.web_submission.blocked",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-finance-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "family-help.support-service.example"
+      },
+      "object": {
+        "block_reason": "MALICIOUS_DOMAIN_REPUTATION",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-050",
+        "session_id": "sess-and-111"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_collection",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "ENDPOINT_PROTECTION_AGENT"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise (Traffic)",
+      "event_id": "d4f56789-0123-4def-2345-678901234567",
+      "time": "2025-04-27T09:39:10+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-771",
+        "device_id": "dev-ios-112",
+        "platform": "iOS",
+        "os_version": "17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "GET",
+          "path": "/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-050"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "NETWORK_CORE"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-4: Cross-Platform Transition (iOS)",
+      "event_id": "e5a67890-1234-4efa-3456-789012345678",
+      "time": "2025-04-27T09:42:00+09:00",
+      "log_source": "ios.web.behavior",
+      "event_type": "ios.web.behavior",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-771",
+        "device_id": "dev-ios-112",
+        "platform": "iOS",
+        "os_version": "17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "family-help.support-service.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "URL_VISIT",
+          "user_interaction": "continued",
+          "dwell_time_ms": 15000,
+          "form_focus_detected": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-050",
+        "session_id": "sess-ios-222"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "IOS_WEBKIT_TELEMETRY"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise (Traffic)",
+      "event_id": "f6b78901-2345-4fab-4567-890123456789",
+      "time": "2025-04-27T09:50:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.111",
+        "http": {
+          "method": "GET",
+          "path": "/current",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-050"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "NETWORK_CORE"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 3,
+    "noise_events_included": 6,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "09:34:10 - 09:34:11",
+        "events": 2,
+        "desc": "Smishing SMS received with urgency lure."
+      },
+      {
+        "phase": "Initial Interaction (Android)",
+        "time_range": "09:35:15 - 09:37:00",
+        "events": 3,
+        "desc": "User attempts to access URL; submission is blocked by security agent."
+      },
+      {
+        "phase": "Cross-Platform Check (iOS)",
+        "time_range": "09:42:00",
+        "events": 1,
+        "desc": "User opens link on iOS, spends short time on site before abandoning."
+      }
+    ],
+    "total_elapsed_minutes": 26.75,
+    "key_time_gaps_explained": {
+      "sms_to_click": "65 seconds - User reads and acts on the urgent message.",
+      "android_to_ios": "300 seconds - User encounters block on Android, decides to try on another device."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S3 (http.redirect with hops >= 2) is missing. Link was a direct URL.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No web.risk_warning event generated (WB-3 scenario).",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed to fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S2 (iOS dwell time) is 15000ms, which is on the boundary, but prerequisite S1 (Android block) and the 900s window are met; however, case_type is benign_lookalike, logic should not conclude full malicious intent.",
+      "within_window": true
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk signals (Auth burst or Bank flag) were present (PL-3 scenario).",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 30,
+        "email_sync": 25,
+        "push_notification": 40,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 15,
+        "mdm_checkin": 20,
+        "cloud_backup": 11
+      }
+    }
+  }
+}

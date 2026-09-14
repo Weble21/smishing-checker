@@ -1,0 +1,740 @@
+{
+  "incident_id": "inc-MOB-MAL-092",
+  "case_type": "malicious",
+  "theme": "채용/면접 결과 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "TP-2 (delayed_response)",
+  "start_time": "2025-08-15T11:14:22+09:00",
+  "end_time": "2025-08-15T15:28:45+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint_protection",
+    "financial"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "form.interaction",
+    "android.web_submission.blocked",
+    "auth.step_up_challenge",
+    "bank.transfer_attempt_flagged",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [채용안내] 귀하의 면접 합격을 축하드립니다. 입사 서류 제출 기한이 오늘 18시까지입니다. 기한 내 미제출 시 합격이 취소될 수 있으니 주의 바랍니다. 상세안내: https://recruit-notice.k-jobs.example/auth/login",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Identity Verification",
+      "Document Upload Simulation",
+      "Financial Account Linking"
+    ],
+    "visual_style_notes": [
+      "Minimalist login interface",
+      "Urgency countdown timer at the top",
+      "Uses system-native font stacks"
+    ],
+    "form_risk_class": "financial_and_identity",
+    "fields_requested": [
+      "full_name",
+      "resident_registration_number",
+      "current_address",
+      "bank_account_number",
+      "account_password"
+    ],
+    "detection_cues_for_human_analyst": [
+      "Inconsistent TLD (.example) for a recruitment portal",
+      "Requests full account password instead of just PIN",
+      "Hidden overlay to capture keystrokes",
+      "Immediate redirection after data submission"
+    ]
+  },
+  "persona": {
+    "user_id": "user-8821",
+    "job_title": "고령 구직자 (Senior Applicant)",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "User receives a recruitment lure in the morning but only checks and clicks it several hours later while at home.",
+    "why_this_behavior": "High-risk persona (elderly) tends to be more susceptible to urgency cues like 'cancellation of hiring' but may have delayed digital interaction cycles.",
+    "time_gap_rationale": "4-hour gap between SMS receipt and click reflects real-world delayed response patterns."
+  },
+  "expected_rules": {
+    "must_fire": [
+      "SMISH_REDIRECT_CHAIN"
+    ],
+    "should_fire": [
+      "SENSITIVE_FORM_SEQUENCE",
+      "POST_LURE_FINANCIAL_RISK_SIGNAL"
+    ],
+    "optional": [],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "Android",
+        "trigger_events": [
+          "evt-001",
+          "evt-003",
+          "evt-004"
+        ]
+      },
+      "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+        "platform": "Android",
+        "trigger_events": [
+          "evt-011",
+          "evt-012",
+          "evt-013",
+          "evt-014"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access / Delivery",
+      "event_id": "b0f74a01-443b-4654-9467-331668636e01",
+      "time": "2025-08-15T11:14:22+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KR-Telecom",
+        "carrier_network_type": "LTE",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-8291",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092",
+        "message_id": "msg-99281-af"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "mitre_mobile": "T1660",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise",
+      "event_id": "c1f74a01-443b-4654-9467-331668636e02",
+      "time": "2025-08-15T13:45:10+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "GET",
+          "path": "/v1/forecast/seoul",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "SYS_NET_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Execution (Click)",
+      "event_id": "d1f74a01-443b-4654-9467-331668636e03",
+      "time": "2025-08-15T15:10:05+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "recruit-notice.k-jobs.example",
+        "dst_ip": "192.0.2.88",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1663",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "DNS_CACHE_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: Execution (HTTP Request)",
+      "event_id": "e1f74a01-443b-4654-9467-331668636e04",
+      "time": "2025-08-15T15:10:07+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "recruit-notice.k-jobs.example",
+        "dst_ip": "192.0.2.88",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/auth/login",
+          "status_code": 200,
+          "bytes_in": 4500
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092",
+        "session_id": "sess-and-8821-xyz"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1663",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "WAF_ACCESS_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-Noise",
+      "event_id": "f1f74a01-443b-4654-9467-331668636e05",
+      "time": "2025-08-15T15:10:15+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "SYS_NET_LOG"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "11f74a01-443b-4654-9467-331668636e06",
+      "time": "2025-08-15T15:10:16+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "채용/면접 결과 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "f1f74a01-443b-4654-9467-331668636e05",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "SYS_NET_LOG"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-3: Collection (Form Entry)",
+      "event_id": "12f74a01-443b-4654-9467-331668636e07",
+      "time": "2025-08-15T15:12:40+09:00",
+      "log_source": "web_telemetry",
+      "event_type": "form.interaction",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "recruit-notice.k-jobs.example"
+      },
+      "object": {
+        "form": {
+          "risk_class": "financial",
+          "submission_attempted": true,
+          "form_id": "recruit_onboarding_f01"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092",
+        "session_id": "sess-and-8821-xyz"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "mitre_mobile": "T1417.002",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "WEB_TELEMETRY_JS"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-3: Collection (Submission Blocked)",
+      "event_id": "13f74a01-443b-4654-9467-331668636e08",
+      "time": "2025-08-15T15:12:42+09:00",
+      "log_source": "endpoint_protection",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "recruit-notice.k-jobs.example"
+      },
+      "object": {
+        "block_reason": "malicious_form_destination",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092",
+        "session_id": "sess-and-8821-xyz"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "mitre_mobile": "T1417",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "AV_MOBILE_AGENT"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise",
+      "event_id": "14f74a01-443b-4654-9467-331668636e09",
+      "time": "2025-08-15T15:15:00+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.101"
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "SYS_NET_LOG"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-Noise",
+      "event_id": "15f74a01-443b-4654-9467-331668636e10",
+      "time": "2025-08-15T15:18:22+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "api.masked-saas.example",
+        "dst_ip": "203.0.113.20"
+      },
+      "object": {
+        "traffic_category": "email_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "SYS_NET_LOG"
+    },
+    {
+      "_event_index": "evt-011",
+      "_phase": "PHASE-4: Impact (MFA Burst)",
+      "event_id": "16f74a01-443b-4654-9467-331668636e11",
+      "time": "2025-08-15T15:20:00+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.88"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "otp-7712",
+          "result": "ISSUED",
+          "reason": "new_device_login_attempt"
+        },
+        "burst_counter_count": 1
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "AUTH_PROVIDER_LOG"
+    },
+    {
+      "_event_index": "evt-012",
+      "_phase": "PHASE-4: Impact (MFA Burst)",
+      "event_id": "17f74a01-443b-4654-9467-331668636e12",
+      "time": "2025-08-15T15:20:45+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.88"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "otp-7713",
+          "result": "ISSUED",
+          "reason": "retry_attempt"
+        },
+        "burst_counter_count": 2
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "AUTH_PROVIDER_LOG"
+    },
+    {
+      "_event_index": "evt-013",
+      "_phase": "PHASE-4: Impact (MFA Burst)",
+      "event_id": "18f74a01-443b-4654-9467-331668636e13",
+      "time": "2025-08-15T15:21:30+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.88"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "otp-7714",
+          "result": "ISSUED",
+          "reason": "burst_limit_reached"
+        },
+        "burst_counter_count": 3
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "AUTH_PROVIDER_LOG"
+    },
+    {
+      "_event_index": "evt-014",
+      "_phase": "PHASE-4: Impact (FDS Flag)",
+      "event_id": "19f74a01-443b-4654-9467-331668636e14",
+      "time": "2025-08-15T15:28:45+09:00",
+      "log_source": "financial",
+      "event_type": "bank.transfer_attempt_flagged",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.88"
+      },
+      "object": {
+        "risk_decision": "BLOCKED",
+        "result": "TRANSFER_ABORTED",
+        "fraud_indicators": [
+          "account_drain_attempt",
+          "velocity_threshold_exceeded"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-092",
+        "bank_corr_id": "tx-882910-blk"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Impact",
+        "mitre_mobile": "T1636.004",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "BANK_FDS_ENGINE"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 14,
+    "malicious_events": 8,
+    "benign_context_events": 0,
+    "noise_events_included": 6,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "11:14:22",
+        "events": 1,
+        "desc": "Initial Smishing Lure Delivery"
+      },
+      {
+        "phase": "2",
+        "time_range": "15:10:05 - 15:10:07",
+        "events": 2,
+        "desc": "User Execution and Landing"
+      },
+      {
+        "phase": "3",
+        "time_range": "15:12:40 - 15:12:42",
+        "events": 2,
+        "desc": "Data Collection and Security Block"
+      },
+      {
+        "phase": "4",
+        "time_range": "15:20:00 - 15:28:45",
+        "events": 4,
+        "desc": "Post-Lure Financial Fraud Attempts"
+      }
+    ],
+    "total_elapsed_minutes": 254.38,
+    "key_time_gaps_explained": {
+      "lure_to_click": "Delayed by 235 minutes as user checked the message later in the day.",
+      "landing_to_form": "User took 153 seconds to fill out complex PII fields.",
+      "block_to_fraud": "Attacker waited ~7 minutes after session block to attempt manual account takeover."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": true,
+      "fire_path": "evt-001 (SMS) -> evt-003 (DNS) -> evt-004 (HTTP)",
+      "trigger": "sms.received(urgency=true) + dns.query(age=1) within 180s",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning was generated or bypassed (WB-3 variant).",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> evt-007 (form.interaction)",
+      "trigger": "Form submission with risk_class=financial following smish chain.",
+      "within_window": true
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> evt-013 (MFA Burst) + evt-014 (Bank Block)",
+      "trigger": "3+ MFA challenges and FDS BLOCKED decision within 900s of chain.",
+      "within_window": true
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 186,
+      "background_composition": {
+        "messaging_sync": 40,
+        "email_sync": 30,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 0,
+        "cloud_backup": 16
+      }
+    }
+  }
+}

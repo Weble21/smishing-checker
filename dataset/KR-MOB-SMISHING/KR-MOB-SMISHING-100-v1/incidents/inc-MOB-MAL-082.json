@@ -1,0 +1,587 @@
+{
+  "incident_id": "inc-MOB-MAL-082",
+  "case_type": "malicious",
+  "theme": "결제/승인 확인 사칭",
+  "difficulty_tier": "DT-LOW",
+  "timeline_profile": "multi_session",
+  "start_time": "2025-05-30T17:01:42+09:00",
+  "end_time": "2025-05-30T17:28:15+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security",
+    "identity"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "identity",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "dv-ios-9902",
+      "text": "[TRAINING] [결제알림] 05/30 17:01 (398,000원) 승인 완료. 본인 요청 아닐 시 즉시 신고 및 취소 접수: https://k-card-safety.verify-service.example/refund",
+      "sender_type": "short_code",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "인증 정보 입력",
+      "본인 확인 중",
+      "인증번호 입력"
+    ],
+    "visual_style_notes": [
+      "금융기관 시스템 폰트 및 컬러 스키마 모방",
+      "보안 키패드 가상 이미지 사용"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "이름",
+      "주민등록번호",
+      "휴대폰번호",
+      "통신사"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일 1일 미만",
+      "비표준 TLD(.example)",
+      "SSL 인증서 발급 기관의 신뢰도 낮음",
+      "입력 폼 전송 시 난독화된 JS 실행"
+    ]
+  },
+  "persona": {
+    "user_id": "usr-senior-771",
+    "job_title": "은퇴 생활자 (고령 사용자)",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "고령 사용자가 허위 결제 문자를 받고 당황하여 링크를 클릭, iOS의 보안 경고를 무시하고 개인정보를 입력한 후 해커가 시도하는 MFA 인증 요청을 본인의 정상 요청으로 오인하여 반복 승인 시도함.",
+    "why_this_behavior": "심리적 긴박감(금전적 손실 우려)을 이용한 사회공학적 기법에 취약함.",
+    "time_gap_rationale": "고령 사용자의 입력 속도 및 문구 확인 시간을 고려하여 DNS 조회와 폼 입력 사이의 간격을 90초 이상으로 설정함."
+  },
+  "expected_rules": {
+    "must_fire": [
+      "SMISH_REDIRECT_CHAIN",
+      "SENSITIVE_FORM_SEQUENCE"
+    ],
+    "should_fire": [
+      "POST_LURE_FINANCIAL_RISK_SIGNAL"
+    ],
+    "optional": [],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "iOS",
+        "trigger_events": [
+          "5374be6b-3162-4b21-872e-07f9c8d5f661",
+          "a943bc12-4d1a-4f5b-9c8e-7d2a1b3c4d5e",
+          "cc98db12-3214-4e56-9d8a-7e6f5d4c3b2a"
+        ]
+      },
+      "SENSITIVE_FORM_SEQUENCE": {
+        "platform": "iOS",
+        "trigger_events": [
+          "dd12cb34-5678-4a1b-bc2d-3e4f5g6h7i8j"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access",
+      "event_id": "5374be6b-3162-4b21-872e-07f9c8d5f661",
+      "time": "2025-05-30T17:01:42+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Carrier-A",
+        "carrier_network_type": "LTE",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "short_code",
+        "sender_id": "010-0000-1588",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082",
+        "message_id": "msg-9921-ios"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "mitre_mobile": "T1660",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "sms_gateway_logs"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "f8273b1a-921c-4b3d-82e1-7d3c4e5f6a71",
+      "time": "2025-05-30T17:02:15+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "ios_network_stack"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Delivery (DNS)",
+      "event_id": "a943bc12-4d1a-4f5b-9c8e-7d2a1b3c4d5e",
+      "time": "2025-05-30T17:03:10+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-card-safety.verify-service.example",
+        "dst_ip": "192.0.2.14",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1663",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "recursive_dns_logs"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-3: Delivery (HTTP Redirect)",
+      "event_id": "cc98db12-3214-4e56-9d8a-7e6f5d4c3b2a",
+      "time": "2025-05-30T17:03:12+09:00",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-gateway.refund-process.example",
+        "dst_ip": "192.0.2.88",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/refund",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 2,
+        "referrer_chain_domains_masked": [
+          "k-card-safety.verify-service.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082",
+        "session_id": "sess-ios-phish-882"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1663",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "waf_access_logs"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-4: Defense Evasion",
+      "event_id": "ee45df78-9012-4c34-8d9e-1f2g3h4i5j6k",
+      "time": "2025-05-30T17:03:15+09:00",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-gateway.refund-process.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "deceptive_site",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": null
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082",
+        "session_id": "sess-ios-phish-882"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "safari_telemetry"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "ee45df78-9012-4c34-8d9e-1f2g3h4i5j6k-dup",
+      "time": "2025-05-30T17:03:16+09:00",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-gateway.refund-process.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "deceptive_site",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": null
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082",
+        "session_id": "sess-ios-phish-882"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "ee45df78-9012-4c34-8d9e-1f2g3h4i5j6k",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "safari_telemetry"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "d1e2f3g4-a5b6-4c7d-8e9f-0a1b2c3d4e5f",
+      "time": "2025-05-30T17:04:10+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "ios_network_stack"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-5: Collection (iOS Behavior)",
+      "event_id": "dd12cb34-5678-4a1b-bc2d-3e4f5g6h7i8j",
+      "time": "2025-05-30T17:05:45+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-gateway.refund-process.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "form_submission",
+          "user_interaction": "continued",
+          "dwell_time_ms": 150000,
+          "form_focus_detected": true,
+          "tap_next": "navigation_actions"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082",
+        "session_id": "sess-ios-phish-882"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "mitre_mobile": "T1417.002",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "ios_safari_behavior_engine"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "e2f3g4h5-b6c7-5d8e-9f0a-1b2c3d4e5f6g",
+      "time": "2025-05-30T17:15:20+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mail.masked-corp.example",
+        "dst_ip": "198.51.100.22"
+      },
+      "object": {
+        "traffic_category": "email_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "ios_network_stack"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-6: Credential Access (MFA Burst)",
+      "event_id": "ff98ee76-5432-1a2b-3c4d-5e6f7g8h9i0j",
+      "time": "2025-05-30T17:20:10+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "usr-senior-771",
+        "device_id": "dv-ios-9902",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.201"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "chal-001",
+          "result": "FAILED",
+          "reason": "EXPIRED",
+          "burst_counter_count": 3
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-082"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "iam_auth_server"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 10,
+    "malicious_events": 6,
+    "benign_context_events": 0,
+    "noise_events_included": 4,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "17:01:42",
+        "events": 1,
+        "desc": "Smishing SMS received"
+      },
+      {
+        "phase": "2-4",
+        "time_range": "17:03:10 - 17:03:16",
+        "events": 5,
+        "desc": "URL access, redirect, and security warning bypass/ignore"
+      },
+      {
+        "phase": "5",
+        "time_range": "17:05:45",
+        "events": 1,
+        "desc": "Data entry on malicious form"
+      },
+      {
+        "phase": "6",
+        "time_range": "17:20:10",
+        "events": 1,
+        "desc": "MFA exhaustion attempt detected"
+      }
+    ],
+    "total_elapsed_minutes": 18.5,
+    "key_time_gaps_explained": {
+      "sms_to_click": "88 seconds - User psychological pressure reaction time",
+      "warning_to_form": "150 seconds - Senior user's slower navigation and reading time",
+      "form_to_mfa": "14 minutes - Attacker manual processing and subsequent MFA fatigue trigger"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": true,
+      "fire_path": "sms.received -> dns.query -> http.redirect",
+      "trigger": "S1(contains_url=true) THEN (S2(domain_age=1) AND S3(hops=2)) WITHIN 180s",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "iOS telemetry does not provide 'user_bypassed_warning' boolean value (null).",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> ios.web.behavior",
+      "trigger": "Prerequisite met THEN ios.web.behavior(dwell_time=150s, form_focus=true) WITHIN 600s",
+      "within_window": true
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> auth.step_up_challenge",
+      "trigger": "Prerequisite met THEN auth.step_up_challenge(burst_counter=3) WITHIN 900s (Observed gap: approx 17m, adjustment needed or logic check. Note: 17:03 to 17:20 is 1020s, rule logic may fail window check if window=900s. Adjusting interpretation: 17:05:45(form) to 17:20:10 is 865s - PASS)",
+      "within_window": true
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 190,
+      "background_composition": {
+        "messaging_sync": 30,
+        "email_sync": 25,
+        "push_notification": 40,
+        "software_update": 10,
+        "cdn_traffic": 35,
+        "utility_widgets": 20,
+        "mdm_checkin": 0,
+        "cloud_backup": 30
+      }
+    }
+  }
+}

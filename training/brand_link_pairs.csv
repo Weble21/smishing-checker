@@ -1,0 +1,13 @@
+id,split,family,label,source,text
+bl01,train,kb_history,0,synthetic,[KB국민은행] 거래 내역 조회 안내입니다. 아래 주소에서 확인하세요. https://www.kbstar.com/
+bl02,train,kb_history,1,synthetic,[KB국민은행] 거래 내역 조회 안내입니다. 아래 주소에서 확인하세요. https://kbstar.com.account-check.example/
+bl03,train,kb_history,0,synthetic,[국민은행] 거래 내역 조회 안내입니다. 아래 주소에서 확인하세요. https://www.kbstar.com/
+bl04,train,kb_history,1,synthetic,[국민은행] 거래 내역 조회 안내입니다. 아래 주소에서 확인하세요. https://kbstar-verify.example/
+bl05,valid,shinhan_notice,0,synthetic,[신한은행] 고객님이 신청하신 서비스의 안내 내용을 확인하세요. https://www.shinhan.com/
+bl06,valid,shinhan_notice,1,synthetic,[신한은행] 고객님이 신청하신 서비스의 안내 내용을 확인하세요. https://shinhan.com.verify.example/
+bl07,valid,shinhan_notice,0,synthetic,[신한은행] 고객님이 신청하신 서비스의 안내 내용을 확인하세요. https://shinhan.com/
+bl08,valid,shinhan_notice,1,synthetic,[신한은행] 고객님이 신청하신 서비스의 안내 내용을 확인하세요. https://shinhan.com@verify.example/
+bl09,test,woori_record,0,synthetic,[우리은행] 신청 내역이 등록되었습니다. 상세 내역은 아래 페이지에서 조회하세요. https://www.wooribank.com/
+bl10,test,woori_record,1,synthetic,[우리은행] 신청 내역이 등록되었습니다. 상세 내역은 아래 페이지에서 조회하세요. https://wooribank-login.example/
+bl11,test,woori_record,0,synthetic,[우리은행] 신청 내역이 등록되었습니다. 상세 내역은 아래 페이지에서 조회하세요. https://wooribank.com/
+bl12,test,woori_record,1,synthetic,[우리은행] 신청 내역이 등록되었습니다. 상세 내역은 아래 페이지에서 조회하세요. https://wooribank.com.security.example/

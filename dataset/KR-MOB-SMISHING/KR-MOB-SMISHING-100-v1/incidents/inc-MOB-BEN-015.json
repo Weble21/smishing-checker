@@ -1,0 +1,526 @@
+{
+  "incident_id": "inc-MOB-BEN-015",
+  "case_type": "benign",
+  "theme": "정부지원금/환급금 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "TP-1",
+  "start_time": "2025-05-21T12:42:00+09:00",
+  "end_time": "2025-05-21T12:58:30+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "sms.received",
+    "dns.query",
+    "http.request"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.65
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [정부24] 고객님, 미수령 정부지원환급금 482,000원이 확인되었습니다. 금일 18시 소멸 예정이오니 기한 내 신청하시기 바랍니다. 조회: https://portal-gov.info-service.example",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "본인인증",
+      "환급금 조회",
+      "계좌입력"
+    ],
+    "visual_style_notes": [
+      "Official government color palette",
+      "Standard portal navigation"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "name",
+      "phone_number"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-9932",
+    "job_title": "영업/현장직",
+    "risk_profile": "MEDIUM",
+    "devices": [
+      {
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A user receives a legitimate notification about a government refund and visits the official portal.",
+    "why_this_behavior": "The user is an field sales worker who often deals with various government subsidies and taxes. They check the notification immediately during lunch.",
+    "time_gap_rationale": "Quick response (within 2 minutes) after receiving the SMS, typical for urgent financial notifications."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Background",
+      "event_id": "73c7349b-735a-464a-857c-2b651030e461",
+      "time": "2025-05-21T12:42:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.44"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "Android Messenger Background"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-2: Delivery",
+      "event_id": "a988d8b6-96b4-4b95-927b-23114032f55a",
+      "time": "2025-05-21T12:45:10+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015",
+        "message_id": "msg-882193"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "SMS Ingest"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "f29db483-34e2-4545-9762-113083049102",
+      "time": "2025-05-21T12:45:12+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": true
+        }
+      },
+      "noise_metadata": {
+        "duplicate_of": "a988d8b6-96b4-4b95-927b-23114032f55a",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015",
+        "message_id": "msg-882193"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "SMS Ingest"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-3: Navigation",
+      "event_id": "c16196a3-2339-4977-8f5c-9418a034638a",
+      "time": "2025-05-21T12:47:05+09:00",
+      "log_source": "dns.query",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "portal-gov.info-service.example",
+        "dst_ip": "198.51.100.55",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "OS DNS Resolver"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: Navigation",
+      "event_id": "b1828374-1234-4567-8901-abcdef123456",
+      "time": "2025-05-21T12:47:06+09:00",
+      "log_source": "http.request",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "portal-gov.info-service.example",
+        "dst_ip": "198.51.100.55",
+        "tls_version": "TLSv1.3",
+        "http": {
+          "method": "GET",
+          "path": "/",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015",
+        "session_id": "sess-legit-0092"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "Browser Telemetry"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-4: Noise",
+      "event_id": "d1928374-5678-9012-3456-abcdef789012",
+      "time": "2025-05-21T12:50:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "api.masked-saas.example",
+        "dst_ip": "203.0.113.88"
+      },
+      "object": {
+        "traffic_category": "push_notification"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "FCM Token Update"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: Noise",
+      "event_id": "e1928374-9012-3456-7890-abcdef345678",
+      "time": "2025-05-21T12:52:30+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.101"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "Weather Widget Sync"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-4: Noise",
+      "event_id": "f1928374-3456-7890-1234-abcdef901234",
+      "time": "2025-05-21T12:55:10+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "Image Static Content"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-4: Noise",
+      "event_id": "a2928374-7890-1234-5678-abcdef123456",
+      "time": "2025-05-21T12:57:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "update.masked-corp.example",
+        "dst_ip": "203.0.113.15"
+      },
+      "object": {
+        "traffic_category": "software_update"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "Software Update Check"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-4: Noise",
+      "event_id": "b2928374-1234-5678-9012-abcdef789012",
+      "time": "2025-05-21T12:58:30+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9932",
+        "device_id": "dev-and-7721",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mail.masked-corp.example",
+        "dst_ip": "203.0.113.20"
+      },
+      "object": {
+        "traffic_category": "email_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-015"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "IMAP Idle"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 10,
+    "malicious_events": 0,
+    "benign_context_events": 4,
+    "noise_events_included": 6,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "12:45:10 - 12:45:12",
+        "events": 2,
+        "desc": "Verified sender SMS received"
+      },
+      {
+        "phase": "Navigation",
+        "time_range": "12:47:05 - 12:47:06",
+        "events": 2,
+        "desc": "User visits official portal domain"
+      }
+    ],
+    "total_elapsed_minutes": 16.5,
+    "key_time_gaps_explained": {
+      "sms_to_click": "115 seconds, reasonable time for user to read and click a legitimate notification."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S2 condition failed: domain_age_days is 1240 (>3), S3 condition failed: no redirect detected.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning event generated as the domain is benign.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN did not fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN did not fire.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 190,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 0,
+        "cloud_backup": 40
+      }
+    }
+  }
+}

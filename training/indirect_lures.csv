@@ -1,0 +1,25 @@
+id,split,family,label,source,text
+il01,train,identity_loss,1,synthetic,[서비스센터] 신원확인 미완료 계정은 이용이 중단됩니다. 확인 페이지 https://account.example/verify
+il02,train,identity_loss,0,synthetic,[서비스센터] 신원확인 미완료 계정은 이용이 제한됩니다. 평소 사용하던 앱을 직접 열어 인증 상태를 확인해주세요.
+il03,train,identity_loss,1,synthetic,[회원관리] 본인 인증이 누락되어 서비스 정지 대상입니다. 처리 화면 https://member.example/status
+il04,train,identity_loss,0,synthetic,[회원관리] 본인 인증이 누락되어 서비스 정지 대상입니다. 기존에 설치한 앱을 직접 열어 본인 인증을 진행해주세요.
+il05,train,delivery_fee,1,synthetic,[배송안내] 보관 기간이 지나면 물품이 반송됩니다. 추가 배송비 정산 후 수령 가능합니다. https://parcel.example/fee
+il06,train,delivery_fee,0,synthetic,[배송안내] 보관 기간이 지나면 물품이 반송됩니다. 주문한 쇼핑몰 앱에서 배송 상황을 확인해주세요.
+il07,train,delivery_fee,1,synthetic,[택배] 배송비 미정산으로 보관 중입니다. 오늘 처리 건에 한해 재배송됩니다. https://delivery.example/pay
+il08,train,delivery_fee,0,synthetic,[택배] 배송비 미정산으로 보관 중입니다. 주문한 쇼핑몰의 기존 앱을 직접 열어 결제 내역을 확인해주세요.
+il09,train,benefit_loss,1,synthetic,[지원안내] 환급금 수령 정보가 누락되어 지급 취소 예정입니다. 계좌 등록 https://benefit.example/refund
+il10,train,benefit_loss,0,synthetic,[지원안내] 환급금 수령 정보가 누락되어 지급이 보류되었습니다. 신청할 때 사용한 기존 앱을 직접 열어 등록 정보를 확인해주세요.
+il11,train,benefit_loss,1,synthetic,[복지알림] 지원금 지급이 보류되었습니다. 본인 정보 보완 건만 이번 지급에 포함됩니다. https://support.example/form
+il12,train,benefit_loss,0,synthetic,[복지알림] 제출 서류 보완이 필요합니다. 접수하셨던 주민센터에 방문해 상담받으세요.
+il13,train,security_app,1,synthetic,[보안알림] 보호 모듈 미설치 단말은 거래가 제한됩니다. 보안 업데이트 https://protect.example/mobile.apk
+il14,train,security_app,0,synthetic,[보안알림] 앱 업데이트가 필요합니다. 공식 앱스토어에서 설치한 앱을 업데이트해주세요.
+il15,train,security_app,1,synthetic,[고객보호] 현재 휴대전화는 보호 대상에서 제외되었습니다. 전용 보안 프로그램 적용 https://security.example/install
+il16,train,security_app,0,synthetic,[고객보호] 오늘 새 기기에서 로그인했습니다. 본인이 아니라면 기존 앱의 보안 설정에서 접속 기기를 확인하세요.
+il17,valid,wallet_recovery,1,synthetic,[지갑센터] 자산 이전을 위한 복구문구 확인이 누락되었습니다. 확인되지 않은 지갑은 이전에서 제외됩니다. https://wallet.example/recovery
+il18,valid,wallet_recovery,0,synthetic,[지갑센터] 복구문구는 타인에게 알려주지 마세요. 문자나 웹 양식으로 복구문구를 수집하지 않습니다.
+il19,valid,wallet_recovery,1,synthetic,[자산안내] 지갑 동기화가 끝나지 않아 출금이 제한됩니다. 복구 단어 확인 페이지 https://asset.example/sync
+il20,valid,wallet_recovery,0,synthetic,[자산안내] 시스템 점검 중에는 출금이 제한됩니다. 점검 종료 후 자동으로 정상화됩니다. https://asset.example/notice
+il21,test,subscription_loss,1,synthetic,[구독안내] 결제 정보 재확인이 누락되어 이용권이 소멸될 예정입니다. 카드정보 갱신 https://subscription.example/update
+il22,test,subscription_loss,0,synthetic,[구독안내] 이용권 종료일이 다가옵니다. 연장하지 않으면 자동으로 종료되며 추가 결제는 없습니다. https://subscription.example/notice
+il23,test,subscription_loss,1,synthetic,[멤버십] 등록 카드 인증이 완료되지 않았습니다. 회원 혜택 유지에 필요한 정보 보완 https://membership.example/card
+il24,test,subscription_loss,0,synthetic,[멤버십] 등록 카드 인증이 완료되지 않았습니다. 기존 앱을 직접 열어 구독 관리에서 결제 정보를 확인해주세요.

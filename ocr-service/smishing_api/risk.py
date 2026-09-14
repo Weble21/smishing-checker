@@ -39,6 +39,10 @@ LINK_ACCESS_PATTERN = re.compile(
     r"|(?:누르|클릭|접속|방문|열어|들어가).{0,15}(?:주세요|하세요|바랍니다|필요)"
     r"|(?:확인|조회|신청|인증).{0,15}(?:https?://|hxxps?://|www\.)"
 )
+IDENTITY_PATTERN = re.compile(r"신원\s*확인|본인\s*인증|본인\s*확인|KYC", re.I)
+SERVICE_THREAT_PATTERN = re.compile(
+    r"(?:서비스|이용|사용|계정|거래).{0,25}(?:중단|정지|제한|차단|삭제)"
+)
 
 
 def detect_text_signals(message: str) -> list[str]:
@@ -88,11 +92,17 @@ def combine_analysis(
     all_official = bool(url_analysis) and (
         len(official_relevant) + len(official_mismatch) == len(url_analysis)
     )
+    normalized_message = re.sub(r"\s+", " ", message)
+    identity_threat = bool(IDENTITY_PATTERN.search(normalized_message)
+                           and SERVICE_THREAT_PATTERN.search(normalized_message))
+    contextual_lure = identity_threat and bool(external_links or messenger_links or official_mismatch)
 
     # A risky link alone is cautionary. It becomes high risk only when paired
     # with a concrete request for money or sensitive information. A verified
     # official-domain set is treated as normal regardless of URL model noise.
-    if all_official:
+    if contextual_lure:
+        risk_level = "HIGH" if risky_verdicts else "MEDIUM"
+    elif all_official:
         risk_level = "LOW"
     elif risky_verdicts and sensitive_requests:
         risk_level = "HIGH"
@@ -107,11 +117,13 @@ def combine_analysis(
 
     reasons: list[str] = []
     reasons.extend(text_signals)
+    if contextual_lure:
+        reasons.append("신원·본인 확인과 서비스 중단 위협을 결합해 공식 연관성이 확인되지 않은 링크로 유도합니다.")
     if score >= TEXT_HIGH_THRESHOLD:
         reasons.append("문자 모델 점수는 참고 정보이며, 이 점수만으로 위험 등급을 올리지 않습니다.")
     if not sensitive_requests:
         reasons.append("개인정보·신용정보 요구나 송금 유도가 감지되지 않았습니다.")
-    if url_analysis and has_link_access_request:
+    if url_analysis and (has_link_access_request or contextual_lure):
         reasons.append("문자에서 링크 접속을 유도하는 표현이 감지되었습니다.")
     elif url_analysis:
         reasons.append("문자에서 링크 접속을 직접 유도하는 표현이 감지되지 않았습니다.")
@@ -137,14 +149,17 @@ def combine_analysis(
         reasons.append("문자에서 URL이 추출되지 않았습니다.")
 
     if risk_level == "HIGH":
-        summary = "위험한 URL과 개인정보·송금 요구가 함께 있어 스미싱 가능성이 높습니다."
+        summary = ("인증 유도와 서비스 중단 위협, 의심 링크가 결합되어 스미싱 가능성이 높습니다."
+                   if contextual_lure else "위험한 URL과 개인정보·송금 요구가 함께 있어 스미싱 가능성이 높습니다.")
         actions = [
             "문자 속 링크를 누르거나 파일을 내려받지 마세요.",
             "송금하거나 개인정보와 인증번호를 입력하지 마세요.",
             "국번 없이 118에 상담하고, 이미 피해가 발생했거나 긴급하면 112에 신고하세요.",
         ]
     elif risk_level == "MEDIUM":
-        if risky_verdicts:
+        if contextual_lure:
+            summary = "서비스 중단을 내세워 확인되지 않은 링크로 인증을 유도하므로 주의가 필요합니다."
+        elif risky_verdicts:
             summary = "위험해 보이는 URL이 포함되어 있어 주의가 필요합니다."
         else:
             summary = "개인정보·신용정보 요구 또는 송금 유도가 있어 주의가 필요합니다."
@@ -157,7 +172,7 @@ def combine_analysis(
         if all_official:
             summary = "문자에 포함된 링크가 등록된 공식 도메인으로 확인되었습니다."
         elif url_analysis and not has_link_access_request:
-            summary = "링크 접속을 유도하지 않고 추가 위험 신호가 없어 정상일 가능성이 높습니다."
+            summary = "현재 분석으로 위험 여부를 확정하지 못했습니다. 링크의 안전이 확인된 것은 아닙니다."
         else:
             summary = "설정된 위험·주의 판정 조건에 해당하지 않습니다. 안전이 확인됐다는 뜻은 아닙니다."
         actions = [

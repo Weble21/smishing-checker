@@ -137,3 +137,33 @@ def test_integrated_endpoint_passes_ocr_text_to_risk_policy(monkeypatch) -> None
     )
     assert response.status_code == 200
     assert response.json()["riskLevel"] == "MEDIUM"
+
+
+def test_integrated_endpoint_uses_prompt_review(monkeypatch):
+    from smishing_api import context_review
+    monkeypatch.setenv("CONTEXT_LLM_MODEL", "test-model")
+    monkeypatch.setattr(app_module, "extract_text", lambda image: OcrResponse(
+        text="신원확인을 완료하지 않은 이용자는 서비스사용이 중단됩니다. https://kycy.piwallts.one",
+        confidence=0.99, lineCount=2,
+    ))
+    monkeypatch.setattr(app_module, "predict_text", lambda text: TextAnalysisResult(
+        label="NORMAL", riskScore=0.01,
+    ))
+    async def url_result(url, *, client):
+        return UrlAnalysisResult(url=url, verdict="UNKNOWN", riskScore=0,
+                                 reputation=ReputationResult(status="NOT_FOUND"))
+    async def review(message, text, urls, *, client):
+        assert "신원확인" in message
+        assert urls[0].verdict == "UNKNOWN"
+        return context_review.ContextReview(
+            riskLevel="HIGH", summary="인증 유도와 중단 위협이 결합되어 스미싱이 의심됩니다.",
+            reasons=["서비스 중단 위협과 미확인 링크"],
+        )
+    monkeypatch.setattr(app_module, "analyze_url", url_result)
+    monkeypatch.setattr(context_review, "review_context", review)
+    response = client.post("/analyze", files={"image": ("message.png", ONE_PIXEL_PNG, "image/png")})
+    assert response.status_code == 200
+    result = response.json()
+    assert result["riskLevel"] == "HIGH"
+    assert result["textAnalysis"]["label"] == "NORMAL"
+    assert "인증 유도" in result["summary"]

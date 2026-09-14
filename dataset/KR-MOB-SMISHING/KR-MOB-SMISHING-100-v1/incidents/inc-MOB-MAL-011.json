@@ -1,0 +1,585 @@
+{
+  "incident_id": "inc-MOB-MAL-011",
+  "case_type": "malicious",
+  "theme": "택배/배송 실패 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "rapid_chain (30분 이내)",
+  "start_time": "2025-05-21T13:58:00+09:00",
+  "end_time": "2025-05-21T14:15:30+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "endpoint",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.35
+  },
+  "message_samples_used": [
+    {
+      "target_device": "dev-ios-9821",
+      "text": "[TRAINING] 고객님, 주소지 불명으로 택배 반송 예정입니다. 오늘 중 확인 바랍니다. 확인: http://parcel-check.verify-logistics.example/status",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "운송장 번호 조회",
+      "본인 인증",
+      "주소 수정 및 재배송 신청"
+    ],
+    "visual_style_notes": [
+      "물류 시스템 대시보드 모방",
+      "경고 팝업 위젯 사용"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "name",
+      "phone_number",
+      "address",
+      "zip_code"
+    ],
+    "detection_cues_for_human_analyst": [
+      "생성 3일 미만의 신규 도메인",
+      "다단계 리디렉션(2홉)",
+      "비정상적인 TLD (.example)",
+      "브라우저 보안 경고 무시 로그"
+    ]
+  },
+  "persona": {
+    "user_id": "usr-sales-042",
+    "job_title": "영업직",
+    "risk_profile": "MEDIUM",
+    "devices": [
+      {
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 업무 중 택배 반송 문자를 확인하고, 급하게 주소 수정을 위해 피싱 사이트에 접속하여 정보를 입력함.",
+    "why_this_behavior": "영업직 특성상 외부 물품 수령이 잦아 택배 관련 알림에 대한 경계심이 낮음.",
+    "time_gap_rationale": "SMS 수신 후 1분 내 링크 클릭(긴급성), 브라우저 경고 발생 시 5초간 고민 후 수동 우회, 폼 입력에 약 2분 소요."
+  },
+  "expected_rules": {
+    "must_fire": [
+      "SMISH_REDIRECT_CHAIN"
+    ],
+    "should_fire": [
+      "PHISH_WARNING_BYPASS",
+      "SENSITIVE_FORM_SEQUENCE"
+    ],
+    "optional": [],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "iOS",
+        "trigger_events": [
+          "evt-001",
+          "evt-002",
+          "evt-004"
+        ]
+      },
+      "PHISH_WARNING_BYPASS": {
+        "platform": "iOS",
+        "trigger_events": [
+          "evt-005"
+        ]
+      },
+      "SENSITIVE_FORM_SEQUENCE": {
+        "platform": "iOS",
+        "trigger_events": [
+          "evt-006"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access (Delivery)",
+      "event_id": "3673c683-118c-4a11-807e-9762df27f7f9",
+      "time": "2025-05-21T13:58:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "GlobalTelecom",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1123",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011",
+        "message_id": "msg-9921-2231"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "mitre_mobile": "T1660",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-2: Execution (DNS Resolution)",
+      "event_id": "06950781-700f-488b-a320-136f6d0f509e",
+      "time": "2025-05-21T13:58:45+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "parcel-check.verify-logistics.example",
+        "dst_ip": "192.0.2.15",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Execution",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "DNS_RESOLVER_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "a931c367-27e1-4c17-9103-6302568600d8",
+      "time": "2025-05-21T13:58:47+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "parcel-check.verify-logistics.example",
+        "dst_ip": "192.0.2.15",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Execution",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "06950781-700f-488b-a320-136f6d0f509e",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "DNS_RESOLVER_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-3: Defense Evasion (Redirection)",
+      "event_id": "4b68427f-946f-4093-9097-9e904771be5a",
+      "time": "2025-05-21T13:58:55+09:00",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "track.redirect-svc.example",
+        "dst_ip": "192.0.2.88",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/l/39201",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 2,
+        "referrer_chain_domains_masked": [
+          "parcel-check.verify-logistics.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011",
+        "session_id": "sess-ios-4421-abc"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "WEB_PROXY_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-4: Defense Evasion (Warning Bypass)",
+      "event_id": "71337e7a-115f-4222-923f-d48e8e631d8e",
+      "time": "2025-05-21T13:59:05+09:00",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-parcel-verify.site-update.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "PHISHING_DETECTION",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011",
+        "session_id": "sess-ios-4421-abc"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "IOS_WEBKIT_SECURITY_LOG"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-5: Collection (Data Theft)",
+      "event_id": "e229497d-6523-455a-a3a7-e1966a014917",
+      "time": "2025-05-21T14:02:10+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-parcel-verify.site-update.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "SENSITIVE_FORM_INPUT",
+          "user_interaction": "continued",
+          "dwell_time_ms": 185000,
+          "form_focus_detected": true,
+          "tap_next": "navigation_actions"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011",
+        "session_id": "sess-ios-4421-abc"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "mitre_mobile": "T1417.002",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "IOS_TELEMETRY_WEBVIEW"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise",
+      "event_id": "893c5286-9a2c-473d-82d2-8f6735e23920",
+      "time": "2025-05-21T14:05:30+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "http": {
+          "method": "POST",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "APNS_TRAFFIC_LOG"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise",
+      "event_id": "f5168037-47b1-4171-8727-465492212903",
+      "time": "2025-05-21T14:08:15+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "MDM_AGENT_LOG"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise",
+      "event_id": "d7482613-207a-4277-a877-c9189b910408",
+      "time": "2025-05-21T14:12:00+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "SYSTEM_WIDGET_LOG"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-6: Impact (Session Termination)",
+      "event_id": "993c827a-3341-477d-bb22-127e99330101",
+      "time": "2025-05-21T14:15:30+09:00",
+      "log_source": "endpoint",
+      "event_type": "device.compliance",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-sales-042",
+        "device_id": "dev-ios-9821",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {},
+      "object": {
+        "posture": "compliant",
+        "secure_dns_or_vpn": false,
+        "os_patch_level": "2025-05-01"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-011"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "IOS_SECURITY_AGENT"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 10,
+    "malicious_events": 5,
+    "benign_context_events": 2,
+    "noise_events_included": 3,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "13:58:00",
+        "events": 1,
+        "desc": "스미싱 SMS 수신"
+      },
+      {
+        "phase": "Evasion",
+        "time_range": "13:58:45-13:59:05",
+        "events": 4,
+        "desc": "DNS 쿼리, 리디렉션 및 보안 경고 우회"
+      },
+      {
+        "phase": "Collection",
+        "time_range": "14:02:10",
+        "events": 1,
+        "desc": "피싱 사이트에서 개인정보 입력"
+      }
+    ],
+    "total_elapsed_minutes": 17.5,
+    "key_time_gaps_explained": {
+      "sms_to_click": "45초 - 문자를 보고 즉각 반응",
+      "warning_to_bypass": "10초 - 브라우저 경고창 확인 후 무시 클릭",
+      "form_filling": "185초 - 주소 및 개인정보 상세 입력 시간"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": true,
+      "fire_path": "evt-001 -> evt-002 -> evt-004",
+      "trigger": "SMS(contains_url) followed by DNS(domain_age=1) and Redirect(hops=2) within 55s",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": true,
+      "fire_path": "evt-005",
+      "trigger": "web.risk_warning event with user_bypassed_warning=true",
+      "within_window": true
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> evt-006",
+      "trigger": "iOS alt behavior detected: dwell_time > 20s and form_focus=true on 1-day old domain within 200s of chain",
+      "within_window": true
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial transfer or MFA burst events following the lure.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 190,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 20,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 30,
+        "cloud_backup": 15
+      }
+    }
+  }
+}

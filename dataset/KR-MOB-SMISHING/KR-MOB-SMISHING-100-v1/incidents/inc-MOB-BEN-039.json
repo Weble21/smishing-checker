@@ -1,0 +1,491 @@
+{
+  "incident_id": "inc-MOB-BEN-039",
+  "case_type": "benign_lookalike",
+  "theme": "택배/배송 실패 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "multi_session (이탈 후 재접근)",
+  "start_time": "2025-07-24T08:42:10+09:00",
+  "end_time": "2025-07-24T08:58:15+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android-A772",
+      "text": "[TRAINING] [배송알림] 주소지 불명으로 배송이 중단되었습니다. 아래 링크에서 주소를 확인해 주세요. 오늘 내 미확인 시 반송 처리됩니다. http://delivery-check.address.example/info",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Verification Screen",
+      "Address Input"
+    ],
+    "visual_style_notes": [
+      "사용자 신뢰를 얻기 위해 정부 기관의 컬러 톤을 모방함",
+      "긴급성을 강조하는 붉은색 배너 사용"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "이름",
+      "전화번호",
+      "상세주소",
+      "우편번호"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일이 1일 미만임",
+      "SSL 인증서가 무료 Let's Encrypt로 발급됨",
+      "URL 파라미터에 Base64 인코딩된 전화번호가 포함됨"
+    ]
+  },
+  "persona": {
+    "user_id": "user-6691",
+    "job_title": "고령 사용자",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 택배 미배송 문자를 받고 링크를 클릭했으나, 브라우저의 위험 경고를 보고 겁이 나서 페이지를 닫음. 이후 다시 시도했으나 결국 입력을 포기함.",
+    "why_this_behavior": "고령 사용자로 보안 경고 메시지에 민감하게 반응하여 중도 포기함 (benign_lookalike).",
+    "time_gap_rationale": "문자 수신 후 확인까지 5분, 경고창 확인 후 고민 15초, 재접속 시도 간격 10분 반영."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access (Delivery)",
+      "event_id": "c6a2c28e-871d-400a-b32b-31952e850604",
+      "time": "2025-07-24T08:42:10+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6691",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KT",
+        "carrier_network_type": "LTE",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1122",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-039",
+        "message_id": "msg-99281"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise",
+      "event_id": "f2913e2d-3382-4f3b-8912-320958129322",
+      "time": "2025-07-24T08:43:15+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6691",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "http": {
+          "method": "POST",
+          "path": "/v1/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-039"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "APP_NETWORK_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Redirect Chain (User Click)",
+      "event_id": "d77291a2-9213-4122-b211-120938410293",
+      "time": "2025-07-24T08:47:20+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6691",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "delivery-check.address.example",
+        "dst_ip": "192.0.2.44",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-039"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_initial_access",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "DNS_SERVER_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: Redirect Chain",
+      "event_id": "e2213092-1203-4f91-9128-120391203912",
+      "time": "2025-07-24T08:47:22+09:00",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6691",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "redirect-safe-check.example",
+        "dst_ip": "192.0.2.88",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/gate?id=99281",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 3,
+        "referrer_chain_domains_masked": [
+          "delivery-check.address.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-039",
+        "session_id": "sess-9921102"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_initial_access",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "WAF_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: Defense Evasion (Security Warning)",
+      "event_id": "b1129304-9213-4122-8112-920192019201",
+      "time": "2025-07-24T08:47:25+09:00",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-6691",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "final-phish-target.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "malicious_site",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-039",
+        "session_id": "sess-9921102"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_initial_access",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "CHROME_SAFE_BROWSING"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "d77291a2-9213-4122-b211-120938410294",
+      "time": "2025-07-24T08:47:35+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6691",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "delivery-check.address.example",
+        "dst_ip": "192.0.2.44",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-039"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_initial_access",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "d77291a2-9213-4122-b211-120938410293",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "DNS_SERVER_LOG"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise",
+      "event_id": "a1293021-1203-4f91-9122-990239102932",
+      "time": "2025-07-24T08:50:00+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6691",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "http": {
+          "method": "GET",
+          "path": "/current",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-039"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "SYSTEM_WIDGET_LOG"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-4: Multi-Session (Retry Access)",
+      "event_id": "c1192831-9213-4122-9112-102938102938",
+      "time": "2025-07-24T08:58:15+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6691",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "delivery-check.address.example",
+        "dst_ip": "192.0.2.44",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/info",
+          "status_code": 403
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-039",
+        "session_id": "sess-9921103"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_initial_access",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "HTTP_PROXY_LOG"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 8,
+    "malicious_events": 0,
+    "benign_context_events": 6,
+    "noise_events_included": 2,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "08:42:10",
+        "events": 1,
+        "desc": "SMS Lure delivery"
+      },
+      {
+        "phase": "2",
+        "time_range": "08:47:20-08:47:22",
+        "events": 2,
+        "desc": "Initial link click and redirection chain"
+      },
+      {
+        "phase": "3",
+        "time_range": "08:47:25",
+        "events": 1,
+        "desc": "Security warning shown and user interaction (stopping)"
+      },
+      {
+        "phase": "4",
+        "time_range": "08:58:15",
+        "events": 1,
+        "desc": "Retry access and termination"
+      }
+    ],
+    "total_elapsed_minutes": 16.08,
+    "key_time_gaps_explained": {
+      "S1_to_S2": "310 seconds (User takes time to read SMS while busy)",
+      "Warning_Action": "15 seconds (User hesitates after seeing warning, then closes browser)",
+      "Multi_Session_Gap": "650 seconds (User re-tries after a while, then gives up)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S3(redirect_hops>=2) occurred but S1 to S3 interval was 312s, exceeding 180s window.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "user_bypassed_warning is false; the user correctly stopped at the warning.",
+      "within_window": true
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite rules did not fire and no form interaction occurred.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial or MFA events occurred.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 192,
+      "background_composition": {
+        "messaging_sync": 40,
+        "email_sync": 25,
+        "push_notification": 35,
+        "software_update": 10,
+        "cdn_traffic": 30,
+        "utility_widgets": 22,
+        "mdm_checkin": 0,
+        "cloud_backup": 30
+      }
+    }
+  }
+}

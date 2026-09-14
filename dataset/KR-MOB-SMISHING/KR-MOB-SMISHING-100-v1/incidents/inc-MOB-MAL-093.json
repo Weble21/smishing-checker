@@ -1,0 +1,594 @@
+{
+  "incident_id": "inc-MOB-MAL-093",
+  "case_type": "malicious",
+  "theme": "공공기관 과태료/세금 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "delayed_response (수시간 후 클릭)",
+  "start_time": "2025-08-15T10:05:00+09:00",
+  "end_time": "2025-08-15T16:20:00+09:00",
+  "platform_coverage": [
+    "Android",
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "ios.web.behavior",
+    "android.web_submission.blocked",
+    "auth.step_up_challenge"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "http.redirect",
+    "ios.web.behavior",
+    "android.web_submission.blocked",
+    "auth.step_up_challenge",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.35
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [법행심의처] 귀하의 자동차 과태료 미납으로 인해 체납 처분 절차가 진행 중입니다. 감경 기간 내 납부 확인 및 이의 신청: http://gov-check.fine-appeal.example/v",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    },
+    {
+      "target_device": "iOS",
+      "text": "[TRAINING] [행정안전부] 2025년 상반기 주민세(재산분) 체납 안내. 미납 시 가산금 부과 대상입니다. 고지서 확인: http://k-gov.tax-bill.example/v",
+      "sender_type": "short_code",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "SMS 클릭",
+      "본인인증(성명/생년월일)",
+      "체납 내역 조회 결과",
+      "납부 계좌 연결(MFA 유도)"
+    ],
+    "visual_style_notes": [
+      "공공기관 특유의 고딕 폰트 사용",
+      "상단에 태극기나 특정 로고 대신 일반적인 관공서 블루 톤 헤더 적용",
+      "법적 고지사항 문구를 하단에 배치하여 신뢰도 확보"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "user_name",
+      "resident_registration_number_prefix",
+      "phone_number",
+      "account_number"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일이 3일 이내인 신규 도메인",
+      "다단계 리디렉션을 통한 최종 도착지 은폐",
+      "정상적인 공공기관 사이트가 아닌 .example TLD 사용",
+      "MFA 인증 번호 발송 후 즉각적인 재요청 발생(버스트)"
+    ]
+  },
+  "persona": {
+    "user_id": "u-field-sales-7821",
+    "job_title": "영업/현장직",
+    "risk_profile": "MEDIUM",
+    "devices": [
+      {
+        "device_id": "d-sm-g991-kr",
+        "platform": "Android",
+        "os_version": "Android 13"
+      },
+      {
+        "device_id": "d-iphone-14-kr",
+        "platform": "iOS",
+        "os_version": "iOS 17.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 업무 중 SMS를 수신했으나 바쁜 업무로 인해 수시간 뒤 퇴근 시간에 확인 및 접속. Android 폰에서 접속 시 보안 차단이 발생하자, 동일한 링크를 개인 iOS 기기에서 다시 시도하여 성공.",
+    "why_this_behavior": "정부 고지라는 압박감으로 인해 보안 경고를 기술적 오류로 오해하고 다른 기기로 우회 시도.",
+    "time_gap_rationale": "SMS 수신(10:10)과 실제 행동(16:00) 사이의 6시간 간격은 현장 영업직의 근무 특성 반영."
+  },
+  "expected_rules": {
+    "must_fire": [
+      "SMISH_REDIRECT_CHAIN"
+    ],
+    "should_fire": [
+      "SENSITIVE_FORM_SEQUENCE",
+      "POST_LURE_FINANCIAL_RISK_SIGNAL",
+      "PLATFORM_DIVERGENCE"
+    ],
+    "optional": [],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "iOS",
+        "trigger_events": [
+          "evt-101",
+          "evt-102",
+          "evt-104"
+        ]
+      },
+      "PLATFORM_DIVERGENCE": {
+        "platform": "Cross-Platform",
+        "trigger_events": [
+          "evt-103",
+          "evt-105"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-Noise",
+      "event_id": "e001c296-6e3a-4e3a-9e1a-289c56789abc",
+      "time": "2025-08-15T10:05:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-sm-g991-kr",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "MDM_Agent_Log"
+    },
+    {
+      "_event_index": "evt-101",
+      "_phase": "PHASE-1: Initial Access (Delivery)",
+      "event_id": "a101b2c3-d4e5-4f6g-7h8i-9j0k1l2m3n4o",
+      "time": "2025-08-15T10:10:22+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-sm-g991-kr",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KR-SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1182",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093",
+        "message_id": "msg-882192"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "mitre_mobile": "T1660",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Telephony_Service"
+    },
+    {
+      "_event_index": "evt-102",
+      "_phase": "PHASE-2: Reconnaissance/Access",
+      "event_id": "b202c3d4-e5f6-4g7h-8i9j-0k1l2m3n4o5p",
+      "time": "2025-08-15T16:02:45+09:00",
+      "log_source": "dns.query",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-sm-g991-kr",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-check.fine-appeal.example",
+        "dst_ip": "192.0.2.45",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Android_System_DNS"
+    },
+    {
+      "_event_index": "evt-103",
+      "_phase": "PHASE-3: Defense Evasion (Blocked)",
+      "event_id": "c303d4e5-f6g7-4h8i-9j0k-1l2m3n4o5p6q",
+      "time": "2025-08-15T16:03:05+09:00",
+      "log_source": "endpoint_protection",
+      "event_type": "android.web_submission.blocked",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-sm-g991-kr",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-check.fine-appeal.example",
+        "dst_ip": "192.0.2.45"
+      },
+      "object": {
+        "block_reason": "malicious_url_reputation",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093",
+        "session_id": "sess-and-9901"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "OnDevice_Security_App"
+    },
+    {
+      "_event_index": "evt-104",
+      "_phase": "PHASE-4: Delivery (iOS Redirection)",
+      "event_id": "d404e5f6-g7h8-4i9j-0k1l-2m3n4o5p6q7r",
+      "time": "2025-08-15T16:08:12+09:00",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-iphone-14-kr",
+        "platform": "iOS",
+        "os_version": "iOS 17.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-portal.tax-secure.example",
+        "dst_ip": "192.0.2.99",
+        "domain_age_days": 1,
+        "domain_reputation": 0.05,
+        "http": {
+          "method": "GET",
+          "path": "/redirect/v2",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 3,
+        "referrer_chain_domains_masked": [
+          "gov-check.fine-appeal.example",
+          "cdn-relay-01.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093",
+        "session_id": "sess-ios-1102",
+        "redirect_chain_id": "red-chain-9921"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Cloud_Web_Proxy"
+    },
+    {
+      "_event_index": "evt-105",
+      "_phase": "PHASE-5: Collection (Dwell Time)",
+      "event_id": "e505f6g7-h8i9-4j0k-1l2m-3n4o5p6q7r8s",
+      "time": "2025-08-15T16:10:45+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-iphone-14-kr",
+        "platform": "iOS",
+        "os_version": "iOS 17.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-portal.tax-secure.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "sensitive_field_interaction",
+          "user_interaction": "continued",
+          "dwell_time_ms": 145000,
+          "form_focus_detected": true,
+          "tap_next": "navigation_actions"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093",
+        "session_id": "sess-ios-1102"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "mitre_mobile": "T1417.002",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "iOS_Safari_Telemetry"
+    },
+    {
+      "_event_index": "evt-106",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "e505f6g7-h8i9-4j0k-1l2m-duplicate-999",
+      "time": "2025-08-15T16:10:50+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-iphone-14-kr",
+        "platform": "iOS",
+        "os_version": "iOS 17.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-portal.tax-secure.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "sensitive_field_interaction",
+          "user_interaction": "continued",
+          "dwell_time_ms": 145000,
+          "form_focus_detected": true,
+          "tap_next": "navigation_actions"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093",
+        "session_id": "sess-ios-1102"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "e505f6g7-h8i9-4j0k-1l2m-3n4o5p6q7r8s",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "iOS_Safari_Telemetry"
+    },
+    {
+      "_event_index": "evt-107",
+      "_phase": "PHASE-Noise",
+      "event_id": "f606g7h8-i9j0-4k1l-2m3n-4o5p6q7r8s9t",
+      "time": "2025-08-15T16:12:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-iphone-14-kr",
+        "platform": "iOS",
+        "os_version": "iOS 17.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "App_Background_Log"
+    },
+    {
+      "_event_index": "evt-108",
+      "_phase": "PHASE-6: Credential Access (MFA Burst)",
+      "event_id": "g707h8i9-j0k1-4l2m-3n4o-5p6q7r8s9t0u",
+      "time": "2025-08-15T16:15:30+09:00",
+      "log_source": "identity_provider",
+      "event_type": "auth.step_up_challenge",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-iphone-14-kr",
+        "platform": "iOS",
+        "os_version": "iOS 17.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.99"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "otp-2289-abc",
+          "result": "REQUESTED",
+          "reason": "high_risk_transaction_auth",
+          "burst_counter_count": 4
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Auth_Server_Log"
+    },
+    {
+      "_event_index": "evt-109",
+      "_phase": "PHASE-Noise",
+      "event_id": "h808i9j0-k1l2-4m3n-4o5p-6q7r8s9t0u1v",
+      "time": "2025-08-15T16:20:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "u-field-sales-7821",
+        "device_id": "d-iphone-14-kr",
+        "platform": "iOS",
+        "os_version": "iOS 17.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-093"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "System_Widget_Service"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 10,
+    "malicious_events": 6,
+    "benign_context_events": 1,
+    "noise_events_included": 3,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "10:10:22",
+        "events": 1,
+        "desc": "공공기관 사칭 스미싱 메시지 수신"
+      },
+      {
+        "phase": "Evasion & Shift",
+        "time_range": "16:02:45 - 16:08:12",
+        "events": 3,
+        "desc": "Android 차단 후 iOS 기기로 플랫폼 우회 접속"
+      },
+      {
+        "phase": "Collection & MFA",
+        "time_range": "16:10:45 - 16:15:30",
+        "events": 3,
+        "desc": "본인인증 폼 작성 및 MFA 인증번호 탈취 시도(버스트)"
+      }
+    ],
+    "total_elapsed_minutes": 370.0,
+    "key_time_gaps_explained": {
+      "initial_to_click": "352분 (업무 시간 중 수신 후 일과 종료 시점에 확인)",
+      "android_to_ios": "5분 (첫 번째 기기 차단 후 즉시 두 번째 기기 시도)",
+      "form_to_mfa": "5분 (정보 입력 후 공격자가 금융사 MFA 트리거)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": true,
+      "fire_path": "evt-101 (SMS) -> evt-102 (DNS) -> evt-104 (Redirect)",
+      "trigger": "sms.received(contains_url) followed by dns.query(age=1) and http.redirect(hops=3)",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning UI shown in this scenario (shown=false)",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> evt-105 (ios.web.behavior)",
+      "trigger": "iOS specific behavior: dwell_time > 20s and form_focus=true on age=1 domain",
+      "within_window": true
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": true,
+      "fire_path": "evt-103 (Android Block) AND evt-105 (iOS Continue)",
+      "trigger": "Submission blocked on Android user_id, followed by continued interaction on iOS within 900s",
+      "within_window": true
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> evt-108 (auth burst)",
+      "trigger": "auth.step_up_challenge with burst_counter_count >= 3 following smish chain",
+      "within_window": true
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 190,
+      "background_composition": {
+        "messaging_sync": 30,
+        "email_sync": 25,
+        "push_notification": 40,
+        "software_update": 10,
+        "cdn_traffic": 35,
+        "utility_widgets": 20,
+        "mdm_checkin": 15,
+        "cloud_backup": 15
+      }
+    }
+  }
+}

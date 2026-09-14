@@ -1,0 +1,517 @@
+{
+  "incident_id": "inc-MOB-BEN-026",
+  "case_type": "benign",
+  "theme": "통신사 요금/데이터 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "multi_session (이탈 후 재접근)",
+  "start_time": "2025-03-19T17:13:00+09:00",
+  "end_time": "2025-03-19T17:41:45+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "endpoint",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "iOS-DEV-9922",
+      "text": "[TRAINING] [알림] 고객님, 이번 달 데이터 기본 제공량이 모두 소진되었습니다. 현재 기준 초과 요금 25,400원이 발생 중이오니, 요금제 변경 또는 데이터 충전은 고객센터 앱에서 확인하세요. 상세내역: https://mobile-carrier.customer-support.example/usage",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "landing",
+      "auth_selection",
+      "usage_details"
+    ],
+    "visual_style_notes": [
+      "Standard corporate design system",
+      "High-resolution official icons",
+      "Secure padlock icons in UI"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "phone_number",
+      "date_of_birth"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-8841-it-dev",
+    "job_title": "Senior Frontend Developer",
+    "risk_profile": "LOW",
+    "devices": [
+      {
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A developer receives a legitimate automated data usage alert from their carrier. They check the link, verify their usage on the official site, and close the session.",
+    "why_this_behavior": "The user is tech-savvy and only interacts with verified domains and official carrier portals.",
+    "time_gap_rationale": "Initial check of SMS takes 2 minutes, followed by a quick verification of data consumption."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "b3e1c2d4-0a1b-4c2d-8e4f-5a6b7c8d9e0f",
+      "time": "2025-03-19T17:13:00+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.45"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "MDM Agent Heartbeat"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-1: Initial Access",
+      "event_id": "a1b2c3d4-e5f6-4a5b-8c7d-9e0f1a2b3c4d",
+      "time": "2025-03-19T17:15:22+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Global-Telecom",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": false,
+          "sender_verification": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026",
+        "message_id": "msg-8877665544"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "communication",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "SMS Gateway Log"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "c4d5e6f7-1a2b-3c4d-5e6f-7a8b9c0d1e2f",
+      "time": "2025-03-19T17:16:10+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.88"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "App Background Traffic"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: DNS Query",
+      "event_id": "d5e6f7a8-b9c0-4d1e-2f3a-4b5c6d7e8f9a",
+      "time": "2025-03-19T17:18:45+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mobile-carrier.customer-support.example",
+        "dst_ip": "198.51.100.11",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "On-device Resolver Log"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: HTTP Request",
+      "event_id": "e6f7a8b9-c0d1-4e2f-3a4b-5c6d7e8f9a0b",
+      "time": "2025-03-19T17:18:46+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Mobile Safari"
+      },
+      "network": {
+        "dst_domain": "mobile-carrier.customer-support.example",
+        "dst_ip": "198.51.100.11",
+        "sni": "mobile-carrier.customer-support.example",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1240,
+        "http": {
+          "method": "GET",
+          "path": "/usage",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026",
+        "session_id": "sess-ios-44332211"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "WAF Log"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "f7a8b9c0-d1e2-4f3a-4b5c-6d7e8f9a0b1c",
+      "time": "2025-03-19T17:20:00+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "Widget Service"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "0a1b2c3d-4e5f-4a6b-7c8d-9e0f1a2b3c4d",
+      "time": "2025-03-19T17:20:05+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "f7a8b9c0-d1e2-4f3a-4b5c-6d7e8f9a0b1c",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "Widget Service (Retry)"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-4: Web Behavior",
+      "event_id": "1b2c3d4e-5f6a-4b7c-8d9e-0f1a2b3c4d5e",
+      "time": "2025-03-19T17:21:30+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mobile-carrier.customer-support.example",
+        "domain_age_days": 1240
+      },
+      "object": {
+        "behavior": {
+          "signal": "safe_browsing",
+          "user_interaction": "observed",
+          "dwell_time_ms": 164000
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026",
+        "session_id": "sess-ios-44332211"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "WebKit Telemetry"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "2c3d4e5f-6a7b-4c8d-9e0f-1a2b3c4d5e6f",
+      "time": "2025-03-19T17:35:12+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mail.masked-corp.example",
+        "dst_ip": "203.0.113.99"
+      },
+      "object": {
+        "traffic_category": "email_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "Mail Client Background"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "3d4e5f6a-7b8c-4d9e-0f1a-2b3c4d5e6f7a",
+      "time": "2025-03-19T17:41:45+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8841-it-dev",
+        "device_id": "iOS-DEV-9922",
+        "platform": "iOS",
+        "os_version": "iOS 17.4",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.10"
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-026"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "Web Content Delivery"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 10,
+    "malicious_events": 0,
+    "benign_context_events": 4,
+    "noise_events_included": 6,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "17:15:22",
+        "events": 1,
+        "desc": "Verified SMS delivery"
+      },
+      {
+        "phase": "2-4",
+        "time_range": "17:18:45-17:21:30",
+        "events": 3,
+        "desc": "Official site browsing"
+      }
+    ],
+    "total_elapsed_minutes": 28.75,
+    "key_time_gaps_explained": {
+      "sms_to_click": "User waited 3 minutes 23 seconds to open the link, common for non-urgent tasks.",
+      "dwell_time": "The user spent ~2.7 minutes reviewing data usage charts on the official page."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S1 (sms.received) has urgency_language=false and verified_sender. S2/S3 conditions for malicious infra not met.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning was shown as the site is legitimate (domain_reputation=0.98).",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed to fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk events (bank.transfer) or auth bursts present.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 190,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 30,
+        "cloud_backup": 10
+      }
+    }
+  }
+}

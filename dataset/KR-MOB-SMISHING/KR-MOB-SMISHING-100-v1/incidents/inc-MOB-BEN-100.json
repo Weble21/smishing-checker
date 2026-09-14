@@ -1,0 +1,477 @@
+{
+  "incident_id": "inc-MOB-BEN-100",
+  "case_type": "benign_lookalike",
+  "theme": "공공기관 과태료/세금 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "TP-3 (multi_session)",
+  "start_time": "2025-08-15T10:18:00+09:00",
+  "end_time": "2025-08-15T10:42:15+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "web.risk_warning",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [법규위반통지] 귀하의 차량이 신호위반으로 과태료가 부과되었습니다. 미납 시 가산금이 발생하오니 즉시 확인 바랍니다. 납부안내: http://v-gov.tax-notice.example/v/39201",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "본인인증 수단 선택",
+      "성명/주민번호 입력",
+      "과태료 내역 조회"
+    ],
+    "visual_style_notes": [
+      "공공기관 특유의 파란색 톤 사용",
+      "보안 키패드 이미테이션 포함"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "name",
+      "resident_registration_number_prefix",
+      "phone_number"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일이 2일 미만임",
+      "정부 공식 도메인 구조와 상이함 (.gov.kr vs .example)",
+      "SSL 인증서 발급 기관이 신뢰할 수 없는 무료 기관임"
+    ]
+  },
+  "persona": {
+    "user_id": "user-8821",
+    "job_title": "신입 인턴",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 과태료 통지 메시지를 받고 피싱 사이트에 접속했으나, 브라우저의 보안 경고(Safe Browsing) 창을 보고 겁을 먹어 창을 닫음.",
+    "why_this_behavior": "신입 사원으로서 법규 위반에 예민하게 반응했으나, IT 보안 교육 내용이 떠올라 경고 화면에서 중단함.",
+    "time_gap_rationale": "SMS 수신 후 업무 중 확인까지 4분 소요, 경고 창 발생 후 고민하다 12초 만에 이탈."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access (Lure Delivery)",
+      "event_id": "8472f102-1234-4a21-99bc-112233445566",
+      "time": "2025-08-15T10:18:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Mobile-ISP-A",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1122",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-100",
+        "message_id": "msg-9920112"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1660",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "SMS_Gateway_Log"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "99331122-aabb-ccdd-eeff-001122334455",
+      "time": "2025-08-15T10:20:15+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "POST",
+          "path": "/v1/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-100"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "App_Traffic_Log"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Redirect / DNS Query",
+      "event_id": "bc12de34-5678-4321-89ab-cdef12345678",
+      "time": "2025-08-15T10:22:10+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "v-gov.tax-notice.example",
+        "dst_ip": "192.0.2.88",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-100"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Core_DNS_Logs"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise: Background (Duplicate)",
+      "event_id": "d123e456-7890-abcd-efgh-1234567890ab",
+      "time": "2025-08-15T10:22:11+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "v-gov.tax-notice.example",
+        "dst_ip": "192.0.2.88"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-100"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "bc12de34-5678-4321-89ab-cdef12345678",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "Core_DNS_Logs"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: Malicious Request",
+      "event_id": "f0a1b2c3-d4e5-4f6a-8b9c-0d1e2f3a4b5c",
+      "time": "2025-08-15T10:22:12+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "v-gov.tax-notice.example",
+        "dst_ip": "192.0.2.88",
+        "sni": "v-gov.tax-notice.example",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/v/39201",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-100",
+        "session_id": "sess-and-882291"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Web_Proxy_Log"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-4: Defense Evasion (Warning Shown)",
+      "event_id": "a9b8c7d6-e5f4-4321-b0a1-c2d3e4f5a6b7",
+      "time": "2025-08-15T10:22:13+09:00",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "v-gov.tax-notice.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "malware_phishing",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-100",
+        "session_id": "sess-and-882291"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Browser_Security_Provider"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "11223344-5566-7788-9900-aabbccddeeff",
+      "time": "2025-08-15T10:25:30+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.102",
+        "http": {
+          "method": "GET",
+          "path": "/assets/v2/banner.png",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-100"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Web_Traffic_Log"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "ffeeddcc-bbaa-9988-7766-554433221100",
+      "time": "2025-08-15T10:42:15+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.210",
+        "http": {
+          "method": "GET",
+          "path": "/current/seoul",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-100"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "idle",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "OS_System_Service_Log"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 8,
+    "malicious_events": 0,
+    "benign_context_events": 3,
+    "noise_events_included": 5,
+    "phases": [
+      {
+        "phase": "Initial Access",
+        "time_range": "10:18:00",
+        "events": 1,
+        "desc": "SMS Lure 수신"
+      },
+      {
+        "phase": "Redirect/Defense Evasion",
+        "time_range": "10:22:10-10:22:13",
+        "events": 4,
+        "desc": "악성 링크 클릭 후 DNS 쿼리 및 보안 경고 표시"
+      }
+    ],
+    "total_elapsed_minutes": 24.25,
+    "key_time_gaps_explained": {
+      "SMS_to_Click": "사용자가 업무 중 문자를 확인하고 클릭하기까지 약 4분의 간격 발생",
+      "Warning_to_Exit": "보안 경고가 뜨고 사용자가 내용을 인지한 후 즉시 브라우저를 종료(12초)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S3 (http.redirect with hops >= 2) condition not met. Single hop request only.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "user_bypassed_warning is false. User stopped at the warning screen.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No form.interaction event present. User exited before data entry.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk signals (transfer/auth burst) detected.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 192,
+      "background_composition": {
+        "messaging_sync": 20,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 30,
+        "mdm_checkin": 15,
+        "cloud_backup": 22
+      }
+    }
+  }
+}

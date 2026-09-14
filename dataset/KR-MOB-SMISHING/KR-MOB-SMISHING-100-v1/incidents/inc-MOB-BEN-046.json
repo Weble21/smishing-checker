@@ -1,0 +1,504 @@
+{
+  "incident_id": "inc-MOB-BEN-046",
+  "case_type": "benign",
+  "theme": "인증서 갱신/만료 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "delayed_response (수시간 후 클릭)",
+  "start_time": "2025-04-27T16:49:12+09:00",
+  "end_time": "2025-04-27T17:02:45+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "sms.received",
+    "dns.query",
+    "http.request"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.85
+  },
+  "message_samples_used": [
+    {
+      "target_device": "iOS-DEV-9921",
+      "text": "[TRAINING] [정부24] 고객님의 공동인증서 만료가 3일 남았습니다. 만료 시 금융거래가 제한되오니 갱신 바랍니다. https://gov-portal.example/cert",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Identity Verification",
+      "Certificate Selection",
+      "Renewal Success"
+    ],
+    "visual_style_notes": [
+      "Standard government portal CSS",
+      "No suspicious obfuscation",
+      "Official font family and layout"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "user_name",
+      "phone_number"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-8812",
+    "job_title": "영업/현장직",
+    "risk_profile": "MEDIUM",
+    "devices": [
+      {
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A user receives a legitimate certificate expiration notice from a verified government sender. After several hours, the user accesses the official portal to check their status.",
+    "why_this_behavior": "The user is in a field-work role and only checks non-urgent SMS alerts after finishing work. The domain and sender are legitimate, representing normal behavior.",
+    "time_gap_rationale": "Large gap between SMS receipt and action (delayed response) is typical for busy professionals. The navigation speed on the site is steady and deliberate."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "4a71b876-8086-4f40-8b01-5712e2f38891",
+      "time": "2025-04-27T16:49:12+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8812",
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "sender_verification": true,
+          "urgency_language": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-046",
+        "message_id": "msg-8891231"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise",
+      "event_id": "9021e7d2-11bc-4011-807e-97612f019a12",
+      "time": "2025-04-27T16:51:05+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8812",
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "http": {
+          "method": "GET",
+          "path": "/v1/current",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-046"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "DEVICE_TRAFFIC_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "9021e7d2-11bc-4011-807e-97612f019a13",
+      "time": "2025-04-27T16:51:06+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8812",
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "http": {
+          "method": "GET",
+          "path": "/v1/current",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "noise_metadata": {
+        "duplicate_of": "9021e7d2-11bc-4011-807e-97612f019a12",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-046"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "DEVICE_TRAFFIC_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise",
+      "event_id": "1923ab82-2931-4122-9011-667231a00221",
+      "time": "2025-04-27T16:53:45+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8812",
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "http": {
+          "method": "POST",
+          "path": "/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-046"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "DEVICE_TRAFFIC_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-Noise",
+      "event_id": "22910fa2-8812-4412-90cc-11234abcde01",
+      "time": "2025-04-27T16:55:12+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8812",
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "http": {
+          "method": "GET",
+          "path": "/assets/v2/img.png",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-046"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "DEVICE_TRAFFIC_LOG"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-2: User Action",
+      "event_id": "5f9e2182-9001-4421-8882-1234567890ab",
+      "time": "2025-04-27T16:59:15+09:00",
+      "log_source": "dns.query",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8812",
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-portal.example",
+        "dst_ip": "198.51.100.42",
+        "ttl_sec": 3600,
+        "domain_age_days": 1420,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-046"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "DNS_RESOLVER_LOG"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-2: User Action",
+      "event_id": "88e12fa2-8812-4c21-9922-12345abcdef2",
+      "time": "2025-04-27T16:59:16+09:00",
+      "log_source": "http.request",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8812",
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-portal.example",
+        "dst_ip": "198.51.100.42",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1420,
+        "http": {
+          "method": "GET",
+          "path": "/cert",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-046",
+        "session_id": "sess-ios-441299"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "WEB_PROXY_LOG"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise",
+      "event_id": "a2210882-9901-4421-bcde-1234567890ff",
+      "time": "2025-04-27T17:01:20+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8812",
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "api.masked-saas.example",
+        "http": {
+          "method": "GET",
+          "path": "/v1/health",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "corporate_app_heartbeat"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-046"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "DEVICE_TRAFFIC_LOG"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise",
+      "event_id": "c9210882-9901-4421-bcde-111122223333",
+      "time": "2025-04-27T17:02:45+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8812",
+        "device_id": "iOS-DEV-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "maps-api.masked-geo.example",
+        "http": {
+          "method": "POST",
+          "path": "/v2/loc",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "location_service"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-046"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "DEVICE_TRAFFIC_LOG"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 3,
+    "noise_events_included": 6,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "16:49:12",
+        "events": 1,
+        "desc": "SMS notification received from verified source"
+      },
+      {
+        "phase": "Noise",
+        "time_range": "16:51:05-16:55:12",
+        "events": 4,
+        "desc": "Normal background app traffic and telemetry"
+      },
+      {
+        "phase": "2",
+        "time_range": "16:59:15-16:59:16",
+        "events": 2,
+        "desc": "User manually navigates to the government portal"
+      }
+    ],
+    "total_elapsed_minutes": 13.55,
+    "key_time_gaps_explained": {
+      "sms_to_click": "603 seconds (approx 10 minutes) - User finished immediate task before checking personal notification.",
+      "noise_interleaving": "Background traffic occurs regularly regardless of user interaction."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S2 (dns.query) domain_age_days (1420) > 3, not a malicious indicator. S3 (redirect) not found.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning triggered for legitimate domain gov-portal.example.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed to fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed. No financial risk events present.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 25,
+        "mdm_checkin": 0,
+        "cloud_backup": 20,
+        "location_service": 16
+      }
+    }
+  }
+}

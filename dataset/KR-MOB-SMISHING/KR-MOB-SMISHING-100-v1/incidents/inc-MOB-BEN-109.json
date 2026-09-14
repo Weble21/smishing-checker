@@ -1,0 +1,529 @@
+{
+  "incident_id": "inc-MOB-BEN-109",
+  "case_type": "benign_lookalike",
+  "theme": "결제/승인 확인 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "delayed_response",
+  "start_time": "2026-07-07T18:13:00+09:00",
+  "end_time": "2026-07-07T21:45:15+09:00",
+  "platform_coverage": [
+    "Android",
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "ios.web.behavior",
+    "android.web_submission.blocked"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "ios.web.behavior",
+    "android.web_submission.blocked",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [WEB발신] 고객님, 07/07 18:13 결제 승인 498,000원(해외결제). 본인 요청 아닐 시 즉시 확인 및 신고: https://k-pay.check-safety.example",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "결제내역 확인",
+      "본인인증",
+      "처리완료"
+    ],
+    "visual_style_notes": [
+      "공공기관 폰트와 유사한 스타일 사용",
+      "보안 문구 강조"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "name",
+      "phone_number",
+      "birth_date"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일이 극히 최근임",
+      "비정상적인 TLD (.example) 사용",
+      "HTTPS 인증서 발급 주체가 불분명함"
+    ]
+  },
+  "persona": {
+    "user_id": "user-6602",
+    "job_title": "고령 사용자 (은퇴)",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-9921",
+        "platform": "Android",
+        "os_version": "13.0"
+      },
+      {
+        "device_id": "dev-ios-1144",
+        "platform": "iOS",
+        "os_version": "17.2"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 오후에 스미싱 문자를 받았으나 즉시 확인하지 않고 수 시간 후(저녁) 링크를 클릭함. Android 기기에서는 보안 솔루션에 의해 전송이 차단되었으나, 이후 동일 사용자가 소유한 iOS 기기에서 다시 접속을 시도하여 페이지에 머무름.",
+    "why_this_behavior": "고령 사용자는 문자의 진위 여부를 판단하기 어려워하며, 한 기기에서 문제가 생기면 다른 기기로 시도하는 경향이 있음.",
+    "time_gap_rationale": "delayed_response 프로파일에 따라 SMS 수신 후 약 3시간 뒤에 첫 클릭 발생. Android 차단 후 iOS 접속까지 약 5분의 간격 발생."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [
+      "PLATFORM_DIVERGENCE"
+    ],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "4a1c028e-57b2-4d5e-8e6b-67e37e90c671",
+      "time": "2026-07-07T18:13:00+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6602",
+        "device_id": "dev-and-9921",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KR-SKT",
+        "carrier_network_type": "LTE",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1192",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-109"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "99db27ca-4541-4cf1-8bc6-9281a8b30171",
+      "time": "2026-07-07T18:13:02+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6602",
+        "device_id": "dev-and-9921",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KR-SKT",
+        "carrier_network_type": "LTE",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1192",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-109"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "4a1c028e-57b2-4d5e-8e6b-67e37e90c671",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "b0a1f9e2-8821-4b11-a9f1-99827361c9e1",
+      "time": "2026-07-07T19:45:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6602",
+        "device_id": "dev-and-9921",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "GET",
+          "path": "/v1/forecast",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-109"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "SYS_NET_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: Initial Access (Android)",
+      "event_id": "c1f2e3d4-b5a6-4c7d-8e9f-0a1b2c3d4e5f",
+      "time": "2026-07-07T21:38:00+09:00",
+      "log_source": "dns.query",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6602",
+        "device_id": "dev-and-9921",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-pay.check-safety.example",
+        "dst_ip": "192.0.2.14",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-109"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "DNS_CACHE_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: Defense Evasion (Android)",
+      "event_id": "d2e3f4a5-b6c7-d8e9-f0a1-b2c3d4e5f6a7",
+      "time": "2026-07-07T21:38:15+09:00",
+      "log_source": "android.web_submission.blocked",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-6602",
+        "device_id": "dev-and-9921",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-pay.check-safety.example"
+      },
+      "object": {
+        "block_reason": "MALICIOUS_DOMAIN_REPUTATION",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-109",
+        "session_id": "sess-and-88271"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "ENDPOINT_WEB_SHIELD"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "e3f4a5b6-c7d8-e9f0-a1b2-c3d4e5f6a7b8",
+      "time": "2026-07-07T21:40:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6602",
+        "device_id": "dev-ios-1144",
+        "platform": "iOS",
+        "os_version": "17.2",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "POST",
+          "path": "/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-109"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "SYS_NET_LOG"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: Initial Access (iOS)",
+      "event_id": "f5a6b7c8-d9e0-f1a2-b3c4-d5e6f7a8b9c0",
+      "time": "2026-07-07T21:43:00+09:00",
+      "log_source": "dns.query",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6602",
+        "device_id": "dev-ios-1144",
+        "platform": "iOS",
+        "os_version": "17.2",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-pay.check-safety.example",
+        "dst_ip": "192.0.2.14",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "1.1.1.1"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-109"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "DNS_CACHE_LOG"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-5: Collection (iOS)",
+      "event_id": "0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d",
+      "time": "2026-07-07T21:43:05+09:00",
+      "log_source": "http.request",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6602",
+        "device_id": "dev-ios-1144",
+        "platform": "iOS",
+        "os_version": "17.2",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-pay.check-safety.example",
+        "dst_ip": "192.0.2.14",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/verify/step1",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-109",
+        "session_id": "sess-ios-99122"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "WEB_PROXY_LOG"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-5: Collection (iOS Behavior)",
+      "event_id": "1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e",
+      "time": "2026-07-07T21:45:15+09:00",
+      "log_source": "ios.web.behavior",
+      "event_type": "ios.web.behavior",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6602",
+        "device_id": "dev-ios-1144",
+        "platform": "iOS",
+        "os_version": "17.2",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-pay.check-safety.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "SUSPICIOUS_FORM_DWELL",
+          "user_interaction": "continued",
+          "dwell_time_ms": 25000
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-109",
+        "session_id": "sess-ios-99122"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "IOS_SAFARI_TELEMETRY"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 2,
+    "noise_events_included": 1,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "18:13:00 - 18:13:02",
+        "events": 2,
+        "desc": "스미싱 SMS 수신 및 중복 로그 기록"
+      },
+      {
+        "phase": "Initial Access & Block",
+        "time_range": "21:38:00 - 21:38:15",
+        "events": 2,
+        "desc": "Android 기기에서 링크 클릭 시도 및 차단"
+      },
+      {
+        "phase": "iOS Continuation",
+        "time_range": "21:43:00 - 21:45:15",
+        "events": 3,
+        "desc": "사용자가 iOS 기기로 재접속하여 페이지 체류"
+      }
+    ],
+    "total_elapsed_minutes": 212.25,
+    "key_time_gaps_explained": {
+      "sms_to_click": "고령 사용자로 퇴근 시간 이후인 약 3시간 25분 뒤에 최초 확인",
+      "cross_platform_gap": "Android에서 페이지가 정상 동작하지 않자(차단) iOS 태블릿 등으로 재시도한 간격 5분"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S3 (Redirect hops >= 2) condition not met; direct landing used (RC-4).",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Browser warning not shown (WB-3).",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite (SMISH_REDIRECT_CHAIN) failed to fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S1 (Android block) and S2 (iOS behavior) exist but no evidence of sensitive submission completion on iOS.",
+      "within_window": true
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk signals (PL-3).",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 15,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 16,
+        "cloud_backup": 20
+      }
+    }
+  }
+}

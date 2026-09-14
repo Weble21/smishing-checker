@@ -1,0 +1,464 @@
+{
+  "incident_id": "inc-MOB-BEN-036",
+  "case_type": "benign",
+  "theme": "채용/면접 결과 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "delayed_response (수시간 후 클릭)",
+  "start_time": "2025-07-24T17:33:00+09:00",
+  "end_time": "2025-07-24T17:58:20+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.65
+  },
+  "message_samples_used": [
+    {
+      "target_device": "iOS",
+      "text": "[TRAINING] [OOO 채용안내] 최종 면접 결과 및 서류 등록 안내입니다. 당일 18시까지 미제출 시 합격이 취소될 수 있으니 확인 바랍니다. https://recruit-portal.corporate.example/result",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Login",
+      "Status Check",
+      "Document Upload"
+    ],
+    "visual_style_notes": [
+      "Official corporate branding",
+      "SSL secured",
+      "Responsive design"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "application_id",
+      "email"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-9921",
+    "job_title": "신입/인턴 지원자",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-iOS-7721",
+        "platform": "iOS",
+        "os_version": "17.5.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A job seeker receives a legitimate recruitment notification from a known corporate domain and accesses it after a delay.",
+    "why_this_behavior": "The user is in a job search phase and expects this communication. The domain is a long-standing corporate domain.",
+    "time_gap_rationale": "The user saw the message late in the afternoon and clicked it shortly after to meet the 18:00 deadline."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Communication",
+      "event_id": "b38d7211-1a22-4e92-8071-c91726a2774a",
+      "time": "2025-07-24T17:33:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-iOS-7721",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "sender_verification": true,
+          "urgency_language": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-036"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "a1728394-b223-4c31-9a1d-228394857211",
+      "time": "2025-07-24T17:35:12+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-iOS-7721",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "POST",
+          "path": "/v1/sync",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-036"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "APP_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "d991283a-4412-4f11-8212-992182736451",
+      "time": "2025-07-24T17:35:13+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-iOS-7721",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "POST",
+          "path": "/v1/sync",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-036"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "a1728394-b223-4c31-9a1d-228394857211",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "APP_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "c8827311-9218-4a11-b283-912837411234",
+      "time": "2025-07-24T17:40:00+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-iOS-7721",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.10",
+        "http": {
+          "method": "GET",
+          "path": "/checkin",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-036"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "MDM_AGENT"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: Access Attempt",
+      "event_id": "e2283941-b211-4c22-9112-293847561122",
+      "time": "2025-07-24T17:55:00+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-iOS-7721",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "recruit-portal.corporate.example",
+        "dst_ip": "198.51.100.55",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-036"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "DNS_RESOLVER"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-2: Access Attempt",
+      "event_id": "f2938472-c311-4e22-8112-394857611233",
+      "time": "2025-07-24T17:55:05+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-iOS-7721",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "recruit-portal.corporate.example",
+        "dst_ip": "198.51.100.55",
+        "sni": "recruit-portal.corporate.example",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1240,
+        "http": {
+          "method": "GET",
+          "path": "/result",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-036",
+        "session_id": "sess-iOS-99182731"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "WAF_LOG"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "d7728311-a212-4b33-9112-228394857111",
+      "time": "2025-07-24T17:56:40+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-iOS-7721",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "GET",
+          "path": "/assets/logo.png",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-036"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "APP_LOG"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-3: Interaction",
+      "event_id": "g3948571-d411-4f33-9122-495867123456",
+      "time": "2025-07-24T17:58:20+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-iOS-7721",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "recruit-portal.corporate.example",
+        "domain_age_days": 1240
+      },
+      "object": {
+        "behavior": {
+          "signal": "normal_navigation",
+          "user_interaction": "completed",
+          "dwell_time_ms": 140000
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-036",
+        "session_id": "sess-iOS-99182731"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "theme": "채용/면접 결과 사칭",
+        "activity_stage": "normal_browsing"
+      },
+      "original_source_hint": "WEB_KIT_TELEMETRY"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 8,
+    "malicious_events": 0,
+    "benign_context_events": 4,
+    "noise_events_included": 4,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "17:33:00",
+        "events": 1,
+        "desc": "SMS notification received"
+      },
+      {
+        "phase": "2",
+        "time_range": "17:55:00 - 17:55:05",
+        "events": 2,
+        "desc": "User clicks link and accesses portal"
+      },
+      {
+        "phase": "3",
+        "time_range": "17:58:20",
+        "events": 1,
+        "desc": "Normal browsing activity on portal"
+      }
+    ],
+    "total_elapsed_minutes": 25.3,
+    "key_time_gaps_explained": {
+      "sms_to_click": "User responded after approximately 22 minutes (delayed response profile).",
+      "browsing_duration": "User spent over 2 minutes checking the status on the portal."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S2 (dns.query) domain_age_days (1240) is not <= 3, and S3 (redirect) is missing.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning displayed (benign domain).",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN did not fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk events or MFA bursts present.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 192,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 32,
+        "cloud_backup": 10
+      }
+    }
+  }
+}

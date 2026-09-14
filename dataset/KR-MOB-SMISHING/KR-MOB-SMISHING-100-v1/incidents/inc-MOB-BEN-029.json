@@ -1,0 +1,531 @@
+{
+  "incident_id": "inc-MOB-BEN-029",
+  "case_type": "benign_lookalike",
+  "theme": "인증서 갱신/만료 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "multi_session",
+  "start_time": "2025-03-19T15:31:12Z",
+  "end_time": "2025-03-19T15:58:45Z",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "sms",
+    "dns",
+    "http",
+    "ios_web_behavior"
+  ],
+  "full_log_sources_used": [
+    "sms",
+    "dns",
+    "http",
+    "browser_security",
+    "ios_web_behavior",
+    "noise_generator"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "dev-ios-9921",
+      "text": "[TRAINING] [공동인증센터] 고객님의 공동인증서 만료가 3일 남았습니다. 만료 시 금융거래가 제한되오니 아래에서 갱신해 주시기 바랍니다. https://cert-update.refund-check.example/renew",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "인증서 선택",
+      "본인 확인(이름/주민번호)",
+      "비밀번호 확인"
+    ],
+    "visual_style_notes": [
+      "모바일 전용 레이아웃",
+      "공공기관 유사 색상 배합 사용",
+      "보안 키패드 시뮬레이션"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "name",
+      "resident_registration_number",
+      "phone_number",
+      "cert_password"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일이 3일 미만임",
+      "브라우저 보안 경고(Phish Warning) 발생",
+      "HTTPS 인증서가 무료 발급(Let's Encrypt) 계열"
+    ]
+  },
+  "persona": {
+    "user_id": "user-sales-8802",
+    "job_title": "영업직",
+    "risk_profile": "MEDIUM",
+    "devices": [
+      {
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 공동인증서 만료 문자를 받고 링크를 클릭하여 접속했으나, 브라우저의 피싱 경고를 보고 진행을 중단함. 이후 일정 시간이 지나 다시 접속했으나 최종 정보 입력 단계에서 이탈함.",
+    "why_this_behavior": "일반적인 피싱 수법에 속을 뻔했으나, 보안 경고와 요구하는 정보(비밀번호)에 대한 의구심으로 최종 제출은 하지 않음.",
+    "time_gap_rationale": "최초 접근 시 경고를 보고 5분간 고민 후 재접속(multi_session)하는 행동 패턴 반영."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [
+      "SMISH_REDIRECT_CHAIN"
+    ],
+    "optional": [],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "iOS",
+        "trigger_events": [
+          "a1b2c3d4-e5f6-4a5b-8c9d-0123456789ab",
+          "b2c3d4e5-f6a7-4b8c-9d0e-123456789abc",
+          "c3d4e5f6-a7b8-4c9d-0e1f-23456789abcd"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access / Delivery",
+      "event_id": "a1b2c3d4-e5f6-4a5b-8c9d-0123456789ab",
+      "time": "2025-03-19T15:31:12Z",
+      "log_source": "sms",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-9122-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-029"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "SMS Gateway Log"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "n1n2n3n4-n5n6-n7n8-n9n0-111111111111",
+      "time": "2025-03-19T15:32:05Z",
+      "log_source": "noise_generator",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.44"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-029"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "activity_stage": "communication",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "App Network Log"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Redirect Chain / DNS",
+      "event_id": "b2c3d4e5-f6a7-4b8c-9d0e-123456789abc",
+      "time": "2025-03-19T15:33:45Z",
+      "log_source": "dns",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cert-update.refund-check.example",
+        "dst_ip": "192.0.2.88",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-029"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "Local DNS Resolver"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "d1d2d3d4-d5d6-d7d8-d9d0-222222222222",
+      "time": "2025-03-19T15:33:46Z",
+      "log_source": "dns",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cert-update.refund-check.example",
+        "dst_ip": "192.0.2.88",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-029"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "b2c3d4e5-f6a7-4b8c-9d0e-123456789abc",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "Local DNS Resolver"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: Redirect Chain / HTTP",
+      "event_id": "c3d4e5f6-a7b8-4c9d-0e1f-23456789abcd",
+      "time": "2025-03-19T15:33:50Z",
+      "log_source": "http",
+      "event_type": "http.redirect",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn-cache.auth-verify.example",
+        "dst_ip": "192.0.2.89",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/renew/auth-check",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 2,
+        "referrer_chain_domains_masked": [
+          "cert-update.refund-check.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-029",
+        "session_id": "sess-ios-ff8802",
+        "redirect_chain_id": "red-9921-a"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "iOS Webkit Engine"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-3: Defense Evasion / Browser Warning",
+      "event_id": "d4e5f6a7-b8c9-4d0e-1f2a-3456789abcde",
+      "time": "2025-03-19T15:33:53Z",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn-cache.auth-verify.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "PHISHING",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-029",
+        "session_id": "sess-ios-ff8802"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "Safari Safe Browsing"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "n2n3n4n5-n6n7-n8n9-n0n1-222222222222",
+      "time": "2025-03-19T15:40:15Z",
+      "log_source": "noise_generator",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.102"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-029"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "activity_stage": "normal_browsing",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "System Daemon"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-4: Re-entry / iOS Web Behavior",
+      "event_id": "e5f6a7b8-c9d0-4e1f-2a3b-456789abcdef",
+      "time": "2025-03-19T15:58:10Z",
+      "log_source": "ios_web_behavior",
+      "event_type": "ios.web.behavior",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn-cache.auth-verify.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "FORM_INTERACTION_DETECTED",
+          "user_interaction": "continued",
+          "dwell_time_ms": 35000,
+          "form_focus_detected": true,
+          "tap_next": "navigation_actions"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-029",
+        "session_id": "sess-ios-ff8803"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_collection",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "iOS Browser Telemetry"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "n3n4n5n6-n7n8-n9n0-n1n2-333333333333",
+      "time": "2025-03-19T15:58:45Z",
+      "log_source": "noise_generator",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "update.masked-corp.example",
+        "dst_ip": "203.0.113.15"
+      },
+      "object": {
+        "traffic_category": "software_update"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-029"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "activity_stage": "system_maintenance",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "Software Update Agent"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 6,
+    "noise_events_included": 3,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "15:31:12",
+        "events": 1,
+        "desc": "공격자의 스미싱 메시지 수신"
+      },
+      {
+        "phase": "2",
+        "time_range": "15:33:45 - 15:33:50",
+        "events": 3,
+        "desc": "악성 도메인 리졸브 및 리디렉션 시작"
+      },
+      {
+        "phase": "3",
+        "time_range": "15:33:53",
+        "events": 1,
+        "desc": "iOS Safari의 피싱 경고 및 사용자 이탈"
+      },
+      {
+        "phase": "4",
+        "time_range": "15:58:10",
+        "events": 1,
+        "desc": "사용자 재접속 시도 후 최종 미제출"
+      }
+    ],
+    "total_elapsed_minutes": 27.55,
+    "key_time_gaps_explained": {
+      "sms_to_click": "153초 (사용자가 업무 중 확인)",
+      "warning_to_exit": "0초 (경고 발생 직후 차단 또는 세션 중단)",
+      "re_entry_gap": "약 24분 (사용자가 일과 후 다시 확인하기 위해 접속)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "S1(sms.received) -> S2(dns.query: age 1) -> S3(http.redirect: hops 2)",
+      "trigger": "All conditions met but SMISH_REDIRECT_CHAIN requires fire=false for benign_lookalike if full kill-chain is not reached or partially failing criteria.",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Warning was shown but user_bypassed_warning is false.",
+      "within_window": true
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite (Redirect Chain) failed to fire decisively and no submission followed.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial activity or auth burst detected.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 20,
+        "push_notification": 35,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 0,
+        "cloud_backup": 41
+      }
+    }
+  }
+}

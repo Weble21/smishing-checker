@@ -63,7 +63,7 @@ def test_suspicious_link_without_access_request_stays_low():
         "회의 자료를 공유합니다.",
     )
     assert level == "LOW"
-    assert "정상일 가능성이 높습니다" in summary
+    assert "안전이 확인된 것은 아닙니다" in summary
     assert any("직접 유도" in reason for reason in reasons)
 
 
@@ -78,3 +78,33 @@ def test_detects_link_access_request(message):
 
 def test_link_mention_without_action_is_not_access_request():
     assert not requests_link_access("회의 자료 링크가 포함되어 있습니다.")
+
+
+@pytest.mark.parametrize("verdict,expected", [
+    ("UNKNOWN", "MEDIUM"), ("NO_KNOWN_THREAT", "MEDIUM"),
+    ("SUSPICIOUS", "HIGH"), ("DANGEROUS", "HIGH"),
+])
+@pytest.mark.parametrize("message", [
+    "[국제발신] [PI MINE]신원확인을 완료하지 않은 이용자는 서비스사용이 중단됩니다.",
+    "[PI MINE] 신원 확인을 완료하지 않은 이용자는 서비스 사용이 중단됩니다.",
+    "본인인증 미완료 시 계정 이용이 제한됩니다.",
+])
+def test_indirect_identity_threat_with_external_link(message, verdict, expected):
+    link = url(verdict).model_copy(update={"url": "https://kycy.piwallts.one"})
+    level, summary, reasons, _ = combine_analysis(
+        TextAnalysisResult(label="NORMAL", riskScore=0.01), [link],
+        message + "\nhttps://kycy.piwallts.one",
+    )
+    assert level == expected
+    assert "정상" not in summary
+    assert any("서비스 중단 위협" in reason for reason in reasons)
+
+
+@pytest.mark.parametrize("message", [
+    "[국제발신] 내일 오후 3시 예약입니다.",
+    "서비스 점검으로 이용이 중단됩니다.",
+    "신원확인이 완료되었습니다.",
+])
+def test_single_signal_does_not_trigger_identity_threat(message):
+    assert combine_analysis(TextAnalysisResult(label="NORMAL", riskScore=0.01),
+                            [url("UNKNOWN")], message)[0] == "LOW"

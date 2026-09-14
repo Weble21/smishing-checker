@@ -1,0 +1,608 @@
+{
+  "incident_id": "inc-MOB-MAL-071",
+  "case_type": "malicious",
+  "theme": "정부지원금/환급금 사칭",
+  "difficulty_tier": "DT-LOW",
+  "timeline_profile": "multi_session (이탈 후 재접근)",
+  "start_time": "2025-11-11T09:28:10Z",
+  "end_time": "2025-11-11T09:47:45Z",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security",
+    "identity"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "identity",
+    "endpoint",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "dev-apple-7721",
+      "text": "[TRAINING] [민원안내] 2025년 하반기 미수령 정부지원금(환급금)이 발생하였습니다. 기한 내 신청하지 않을 경우 국고로 환수됩니다. 즉시 확인 및 신청 바랍니다. https://gov-refund.portal.example/apply",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Identity Verification",
+      "Refund Calculation",
+      "Bank Account Binding",
+      "MFA Approval"
+    ],
+    "visual_style_notes": [
+      "Uses official government blue/gray color palette",
+      "Includes a fake security certificate badge",
+      "Urgency countdown timer at the top"
+    ],
+    "form_risk_class": "financial",
+    "fields_requested": [
+      "full_name",
+      "resident_registration_number",
+      "bank_name",
+      "account_number",
+      "phone_number"
+    ],
+    "detection_cues_for_human_analyst": [
+      "Non-standard TLD (.example instead of .go.kr)",
+      "Redirect chain masking the final destination",
+      "Aggressive session timeout warnings to force quick input"
+    ]
+  },
+  "persona": {
+    "user_id": "user-sales-8802",
+    "job_title": "영업직",
+    "risk_profile": "MEDIUM",
+    "devices": [
+      {
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "Field sales worker receives a tax refund lure while commuting. Initial click followed by a warning, user bypasses, starts form, gets distracted, then returns 10 minutes later to finish.",
+    "why_this_behavior": "Urgency language triggers fear of missing money. High distraction due to job nature (field work) leads to multi-session behavior.",
+    "time_gap_rationale": "Initial click within 2 mins of SMS. 10-minute gap between initial entry and final submission reflects a work interruption."
+  },
+  "expected_rules": {
+    "must_fire": [
+      "SMISH_REDIRECT_CHAIN"
+    ],
+    "should_fire": [
+      "PHISH_WARNING_BYPASS",
+      "SENSITIVE_FORM_SEQUENCE",
+      "POST_LURE_FINANCIAL_RISK_SIGNAL"
+    ],
+    "optional": [],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "iOS",
+        "trigger_events": [
+          "006734c8-386d-495d-9b51-7f8369345601",
+          "702734c8-386d-495d-9b51-7f8369345603",
+          "821734c8-386d-495d-9b51-7f8369345604"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "11111111-2222-3333-4444-555555555551",
+      "time": "2025-11-11T09:28:10Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.45"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "Endpoint MDM Agent"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-1: Initial Access / Delivery",
+      "event_id": "006734c8-386d-495d-9b51-7f8369345601",
+      "time": "2025-11-11T09:30:15Z",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "GlobalTelecom",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1123",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071",
+        "message_id": "msg-9921-2025"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "SMS Gateway"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "11111111-2222-3333-4444-555555555552",
+      "time": "2025-11-11T09:31:05Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.88"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "iOS Notification Center"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: Redirect Chain / DNS",
+      "event_id": "702734c8-386d-495d-9b51-7f8369345603",
+      "time": "2025-11-11T09:31:45Z",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-refund.portal.example",
+        "dst_ip": "192.0.2.11",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "OS Network Resolver"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: Redirect Chain / Multi-Hop",
+      "event_id": "821734c8-386d-495d-9b51-7f8369345604",
+      "time": "2025-11-11T09:31:47Z",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-redirect.gate.example",
+        "dst_ip": "192.0.2.12",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/r/9912",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 3,
+        "referrer_chain_domains_masked": [
+          "gov-refund.portal.example",
+          "auth-bridge.check.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071",
+        "session_id": "sess-ios-4431-abc",
+        "redirect_chain_id": "red-9981-chain"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "Mobile Safari"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-3: Defense Evasion / Bypass",
+      "event_id": "c01734c8-386d-495d-9b51-7f8369345605",
+      "time": "2025-11-11T09:31:52Z",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "claim-verify.site.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "phishing_risk",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071",
+        "session_id": "sess-ios-4431-abc"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "iOS Webkit Fraudulent Website Warning"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "11111111-2222-3333-4444-555555555553",
+      "time": "2025-11-11T09:34:20Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "Application Resource Loader"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "11111111-2222-3333-4444-555555555554",
+      "time": "2025-11-11T09:34:21Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "11111111-2222-3333-4444-555555555553",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "Application Resource Loader"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-4: Collection / iOS Behavior",
+      "event_id": "f29734c8-386d-495d-9b51-7f8369345607",
+      "time": "2025-11-11T09:44:30Z",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "claim-verify.site.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "SENSITIVE_FIELD_INPUT",
+          "user_interaction": "continued",
+          "dwell_time_ms": 35000,
+          "tap_next": "navigation_actions",
+          "form_focus_detected": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071",
+        "session_id": "sess-ios-4431-abc"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "iOS Webkit Runtime Monitor"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-5: Impact / MFA Burst",
+      "event_id": "e44734c8-386d-495d-9b51-7f8369345608",
+      "time": "2025-11-11T09:47:05Z",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.12"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "chl-v1-9980",
+          "result": "REQUESTED",
+          "reason": "suspicious_login_attempt",
+          "burst_counter_count": 3
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "Identity Provider"
+    },
+    {
+      "_event_index": "evt-011",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "11111111-2222-3333-4444-555555555555",
+      "time": "2025-11-11T09:47:45Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-8802",
+        "device_id": "dev-apple-7721",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.111"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-071"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "정부지원금/환급금 사칭"
+      },
+      "original_source_hint": "System Service"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 11,
+    "malicious_events": 6,
+    "benign_context_events": 0,
+    "noise_events_included": 5,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "09:30:15",
+        "events": 1,
+        "desc": "SMS Lure Received"
+      },
+      {
+        "phase": "Redirect/Defense Evasion",
+        "time_range": "09:31:45-09:31:52",
+        "events": 3,
+        "desc": "User clicks link, bypasses security warning"
+      },
+      {
+        "phase": "Collection",
+        "time_range": "09:44:30",
+        "events": 1,
+        "desc": "User returns after gap to input sensitive info"
+      },
+      {
+        "phase": "Impact",
+        "time_range": "09:47:05",
+        "events": 1,
+        "desc": "MFA Exhaustion attack triggered"
+      }
+    ],
+    "total_elapsed_minutes": 19.5,
+    "key_time_gaps_explained": {
+      "sms_to_click": "90 seconds - User opens message and clicks link while on public transit.",
+      "warning_bypass_speed": "5 seconds - Reckless bypass of browser warning due to lure urgency.",
+      "multi_session_gap": "12.5 minutes - User stopped input due to an incoming call or arriving at destination, then resumed later."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": true,
+      "fire_path": "sms.received(evt-002) -> dns.query(evt-004) -> http.redirect(evt-005)",
+      "trigger": "SMS with URL followed by low-age DNS and multi-hop redirect within 180s.",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": true,
+      "fire_path": "web.risk_warning(evt-006)",
+      "trigger": "User manually bypassed high-risk phishing warning on iOS.",
+      "within_window": true
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> ios.web.behavior(evt-009)",
+      "trigger": "Initial smishing lure followed by long dwell time and form focus on high-risk domain.",
+      "within_window": true
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> auth.step_up_challenge(evt-010)",
+      "trigger": "MFA burst detected within 900s of initial smishing redirection chain.",
+      "within_window": true
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 189,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 15,
+        "cloud_backup": 24
+      }
+    }
+  }
+}

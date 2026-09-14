@@ -1,0 +1,679 @@
+{
+  "incident_id": "inc-MOB-MAL-083",
+  "case_type": "malicious",
+  "theme": "가족/지인 사칭 긴급 송금",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "delayed_response (수시간 후 클릭)",
+  "start_time": "2025-05-30T08:42:15+09:00",
+  "end_time": "2025-05-30T14:15:30+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security",
+    "identity"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "web.risk_warning",
+    "ios.web.behavior",
+    "auth.step_up_challenge",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.35
+  },
+  "message_samples_used": [
+    {
+      "target_device": "iPhone 15 Pro",
+      "text": "[TRAINING] 아빠 나 폰 액정 깨져서 수리 맡겼어. 지금 임시폰이라 번호가 달라. 급하게 송금할게 있는데 대신 좀 해줄 수 있어? 확인하면 여기 링크 눌러서 톡 줘. http://family-emergency.pay-check.example",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "메시지 확인",
+      "인증 정보 입력",
+      "송금 실행"
+    ],
+    "visual_style_notes": [
+      "모바일 메신저 웹뷰 형태의 정교한 모방",
+      "긴급성을 강조하는 붉은색 알림 바"
+    ],
+    "form_risk_class": "financial",
+    "fields_requested": [
+      "account_number",
+      "bank_name",
+      "transfer_amount"
+    ],
+    "detection_cues_for_human_analyst": [
+      "URL 도메인이 공식 서비스가 아닌 .example 사용",
+      "메신저 앱 외부 브라우저에서 실행됨",
+      "비정상적인 MFA 요청 횟수"
+    ]
+  },
+  "persona": {
+    "user_id": "user-exec-77",
+    "job_title": "Executive Director",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 업무 중 문자를 확인했으나 수 시간 뒤 회의가 끝난 후 자녀를 걱정하며 링크를 클릭하여 송금을 시도함.",
+    "why_this_behavior": "임원급 사용자의 바쁜 일정으로 인해 즉각 반응하지 못하다가 심리적 압박감이 생기는 시간대에 행동 개시.",
+    "time_gap_rationale": "SMS 수신(08:42)과 클릭(13:50) 사이의 긴 간격은 실제 '지연된 반응' 프로파일을 반영."
+  },
+  "expected_rules": {
+    "must_fire": [
+      "SMISH_REDIRECT_CHAIN"
+    ],
+    "should_fire": [
+      "SENSITIVE_FORM_SEQUENCE",
+      "POST_LURE_FINANCIAL_RISK_SIGNAL"
+    ],
+    "optional": [
+      "PHISH_WARNING_BYPASS"
+    ],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "iOS",
+        "trigger_events": [
+          "5a8d9f10-7e3c-4a30-9b34-8c81881518f0",
+          "7e2c90a1-8d3f-4e50-9123-bc92192629f1",
+          "8f3d01b2-9e4a-5f60-a234-cd03203730f2"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access",
+      "event_id": "5a8d9f10-7e3c-4a30-9b34-8c81881518f0",
+      "time": "2025-05-30T08:42:15+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KR-SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1234",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083",
+        "message_id": "msg-99281-ios"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "mitre_mobile": "T1660",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "mobile_sms_log"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise",
+      "event_id": "a1b2c3d4-e5f6-4a5b-b6c7-d8e9f0a1b2c3",
+      "time": "2025-05-30T09:15:00+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "POST",
+          "path": "/checkin",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "mdm_agent_log"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Delivery (Delayed)",
+      "event_id": "7e2c90a1-8d3f-4e50-9123-bc92192629f1",
+      "time": "2025-05-30T13:50:02+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "family-emergency.pay-check.example",
+        "dst_ip": "192.0.2.10",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "os_dns_resolver"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: Delivery",
+      "event_id": "8f3d01b2-9e4a-5f60-a234-cd03203730f2",
+      "time": "2025-05-30T13:50:04+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Mobile Safari"
+      },
+      "network": {
+        "dst_domain": "family-emergency.pay-check.example",
+        "dst_ip": "192.0.2.10",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/transfer/request",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083",
+        "session_id": "sess-ios-445522"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "web_proxy_log"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "8f3d01b2-9e4a-5f60-a234-cd03203730f3",
+      "time": "2025-05-30T13:50:05+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Mobile Safari"
+      },
+      "network": {
+        "dst_domain": "family-emergency.pay-check.example",
+        "dst_ip": "192.0.2.10",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/transfer/request",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083",
+        "session_id": "sess-ios-445522"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "noise_metadata": {
+        "duplicate_of": "8f3d01b2-9e4a-5f60-a234-cd03203730f2",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "web_proxy_log"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-3: Defense Evasion",
+      "event_id": "9a4e12c3-0f5b-6a71-b345-de14314841g3",
+      "time": "2025-05-30T13:50:10+09:00",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "family-emergency.pay-check.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "phishing",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": null
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083",
+        "session_id": "sess-ios-445522"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "mitre_mobile": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "safebrowsing_ios_extension"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: Collection (Behavioral)",
+      "event_id": "0b5f23d4-1a6c-7b82-c456-ef25425952h4",
+      "time": "2025-05-30T13:52:45+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "family-emergency.pay-check.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "SENSITIVE_FIELD_INPUT",
+          "user_interaction": "continued",
+          "dwell_time_ms": 155000,
+          "tap_next": "navigation_actions",
+          "form_focus_detected": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083",
+        "session_id": "sess-ios-445522"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "mitre_mobile": "T1417.002",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "ios_webkit_telemetry"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise",
+      "event_id": "b2c3d4e5-f6a7-5b6c-c7d8-e9f0a1b2c3d4",
+      "time": "2025-05-30T13:55:00+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "GET",
+          "path": "/v1/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "app_traffic_log"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-5: Impact (MFA Burst)",
+      "event_id": "1c6g34e5-2b7d-8c93-d567-fg36536063i5",
+      "time": "2025-05-30T13:58:10+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.10"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "otp-2291",
+          "result": "requested",
+          "reason": "high_value_transaction"
+        },
+        "burst_counter_count": 1
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "iam_auth_server"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-5: Impact (MFA Burst)",
+      "event_id": "2d7h45f6-3c8e-9d04-e678-gh47647174j6",
+      "time": "2025-05-30T13:58:40+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.10"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "otp-2292",
+          "result": "requested",
+          "reason": "high_value_transaction"
+        },
+        "burst_counter_count": 2
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "iam_auth_server"
+    },
+    {
+      "_event_index": "evt-011",
+      "_phase": "PHASE-5: Impact (MFA Burst)",
+      "event_id": "3e8i56g7-4d9f-0e15-f789-hi58758285k7",
+      "time": "2025-05-30T13:59:15+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.10"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "otp-2293",
+          "result": "failed",
+          "reason": "too_many_requests"
+        },
+        "burst_counter_count": 3
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Impact",
+        "mitre_mobile": "T1634",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "iam_auth_server"
+    },
+    {
+      "_event_index": "evt-012",
+      "_phase": "PHASE-Noise",
+      "event_id": "c3d4e5f6-a7b8-6c7d-d8e9-f0a1b2c3d4e5",
+      "time": "2025-05-30T14:15:30+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-exec-77",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.10",
+        "http": {
+          "method": "GET",
+          "path": "/current",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-083"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "widget_service"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 12,
+    "malicious_events": 8,
+    "benign_context_events": 0,
+    "noise_events_included": 4,
+    "phases": [
+      {
+        "phase": "Initial Access",
+        "time_range": "08:42:15",
+        "events": 1,
+        "desc": "긴급 송금을 요청하는 스미싱 문자 수신"
+      },
+      {
+        "phase": "Delivery",
+        "time_range": "13:50:02 - 13:50:05",
+        "events": 3,
+        "desc": "수 시간 뒤 피싱 사이트 접속 및 로그 생성"
+      },
+      {
+        "phase": "Defense Evasion & Collection",
+        "time_range": "13:50:10 - 13:52:45",
+        "events": 2,
+        "desc": "보안 경고 발생 및 무시, 피싱 폼 내 긴 시간 체류 및 입력 행위"
+      },
+      {
+        "phase": "Impact",
+        "time_range": "13:58:10 - 13:59:15",
+        "events": 3,
+        "desc": "단시간 내 3회의 MFA 요청 (MFA Burst) 발생"
+      }
+    ],
+    "total_elapsed_minutes": 333.25,
+    "key_time_gaps_explained": {
+      "initial_to_click": "5시간 8분의 간격은 업무 시간 중 수신 후 일과 후 대응하는 전형적인 지연 반응 패턴",
+      "click_to_collection": "2분 40초의 체류 시간은 가짜 송금 폼에서 계좌 번호 등을 신중히 입력하는 과정 반영",
+      "collection_to_mfa": "5분 25초의 간격은 공격자가 탈취한 정보를 기반으로 실제 뱅킹 세션에서 인증을 시도하는 시간"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": true,
+      "fire_path": "sms.received(evt-001) -> dns.query(evt-003) -> http.request(evt-004)",
+      "trigger": "S1(contains_url=true) THEN S2(domain_age=1) AND S3(http.request) within 180s of S2/S3 (Initial SMS is start point, but S2-S3 interaction is the immediate chain)",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "iOS environment - bypassed_warning field is null, cannot confirm bypass signal via browser telemetry.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> ios.web.behavior(evt-007)",
+      "trigger": "Prerequisite met THEN iOS behavior(dwell_time=155s, form_focus=true, age=1) within 600s",
+      "within_window": true
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> auth.step_up_challenge(evt-009, 010, 011)",
+      "trigger": "Prerequisite met THEN 3 MFA challenges within 180s (burst_counter=3)",
+      "within_window": true
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 188,
+      "background_composition": {
+        "messaging_sync": 30,
+        "email_sync": 25,
+        "push_notification": 35,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 15,
+        "mdm_checkin": 15,
+        "cloud_backup": 18
+      }
+    }
+  }
+}

@@ -1,0 +1,524 @@
+{
+  "incident_id": "inc-MOB-BEN-079",
+  "case_type": "benign_lookalike",
+  "theme": "채용/면접 결과 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "TP-2",
+  "start_time": "2025-11-11T12:05:10Z",
+  "end_time": "2025-11-11T12:45:30Z",
+  "platform_coverage": [
+    "Android",
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "sms_gateway",
+    "dns_resolver",
+    "browser_telemetry",
+    "ios_safari_events"
+  ],
+  "full_log_sources_used": [
+    "sms_gateway",
+    "dns_resolver",
+    "http_proxy",
+    "browser_telemetry",
+    "ios_safari_events",
+    "endpoint_security_app"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [채용안내] 지원하신 포지션의 최종 합격 소식을 전해드립니다. 서류 제출 기한은 금일 18시까지이며, 미제출 시 합격이 취소될 수 있습니다. 확인: http://career-portal.verify-check.example/result",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "합격자 조회",
+      "본인 인증",
+      "추가 서류 정보 입력"
+    ],
+    "visual_style_notes": [
+      "Clean corporate style",
+      "Blue and White theme",
+      "Timer displayed for urgency"
+    ],
+    "form_risk_class": "financial",
+    "fields_requested": [
+      "name",
+      "registration_number",
+      "bank_account",
+      "home_address"
+    ],
+    "detection_cues_for_human_analyst": [
+      "Domain age is very low (under 3 days)",
+      "URL uses .example TLD which is not standard for government or corporate portals",
+      "Urgency language used to bypass rational thinking"
+    ]
+  },
+  "persona": {
+    "user_id": "user-dev-99",
+    "job_title": "Software Engineer",
+    "risk_profile": "LOW",
+    "devices": [
+      {
+        "device_id": "dev-and-772",
+        "platform": "Android",
+        "os_version": "Android 14"
+      },
+      {
+        "device_id": "dev-ios-331",
+        "platform": "iOS",
+        "os_version": "iOS 17.2"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A developer receives a fake recruitment success SMS. They check the link on Android first where it's blocked, then try on their iOS device. Upon seeing a browser risk warning on iOS, they decide to stop.",
+    "why_this_behavior": "Highly technical users are cautious. The initial block on Android raises suspicion, and the secondary warning on iOS confirms the threat.",
+    "time_gap_rationale": "Delayed response due to work hours (lunch time check). Small gaps between navigating pages."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [
+      "SMISH_REDIRECT_CHAIN"
+    ],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "Android",
+        "trigger_events": [
+          "91a26563-306b-4e67-876b-9c768997a001",
+          "f5d71a1c-5264-469b-90f7-67439308b002"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access (Delivery)",
+      "event_id": "91a26563-306b-4e67-876b-9c768997a001",
+      "time": "2025-11-11T12:05:10Z",
+      "log_source": "sms_gateway",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-99",
+        "device_id": "dev-and-772",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Mobile-ISP",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1192",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-079"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "SMS_LOGS"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise",
+      "event_id": "22a26563-306b-4e67-876b-9c768997a002",
+      "time": "2025-11-11T12:08:15Z",
+      "log_source": "http_proxy",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-99",
+        "device_id": "dev-and-772",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "api.masked-saas.example",
+        "dst_ip": "203.0.113.15",
+        "http": {
+          "method": "POST",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-079"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "activity_stage": "app_usage",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "PROXY_NETFLOW"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Reconnaissance (DNS)",
+      "event_id": "f5d71a1c-5264-469b-90f7-67439308b002",
+      "time": "2025-11-11T12:15:20Z",
+      "log_source": "dns_resolver",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-dev-99",
+        "device_id": "dev-and-772",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "career-portal.verify-check.example",
+        "dst_ip": "192.0.2.44",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-079"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "DNS_CACHE"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-3: Defense Evasion (Android Block)",
+      "event_id": "67a26563-306b-4e67-876b-9c768997a003",
+      "time": "2025-11-11T12:15:22Z",
+      "log_source": "endpoint_security_app",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-dev-99",
+        "device_id": "dev-and-772",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "career-portal.verify-check.example"
+      },
+      "object": {
+        "block_reason": "malicious_domain_reputation",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-079",
+        "session_id": "sess-and-112233"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "AV_LOGS"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "33a26563-306b-4e67-876b-9c768997a005",
+      "time": "2025-11-11T12:15:23Z",
+      "log_source": "endpoint_security_app",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-dev-99",
+        "device_id": "dev-and-772",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "career-portal.verify-check.example"
+      },
+      "object": {
+        "block_reason": "malicious_domain_reputation",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-079",
+        "session_id": "sess-and-112233"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "67a26563-306b-4e67-876b-9c768997a003",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "AV_LOGS"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise",
+      "event_id": "44a26563-306b-4e67-876b-9c768997a004",
+      "time": "2025-11-11T12:20:00Z",
+      "log_source": "dns_resolver",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-99",
+        "device_id": "dev-ios-331",
+        "platform": "iOS",
+        "os_version": "iOS 17.2",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "198.51.100.100"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-079"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "activity_stage": "system_maintenance",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "DNS_CACHE"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: Secondary Attempt (iOS Redirect)",
+      "event_id": "bb6371c1-4567-4a11-b1e1-c8769308c001",
+      "time": "2025-11-11T12:40:10Z",
+      "log_source": "http_proxy",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-99",
+        "device_id": "dev-ios-331",
+        "platform": "iOS",
+        "os_version": "iOS 17.2",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "career-portal.verify-check.example",
+        "dst_ip": "192.0.2.44",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/result",
+          "user_initiated": true
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-079",
+        "session_id": "sess-ios-445566"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "IOS_WEB_TRAFFIC"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-5: Defense Evasion (iOS Browser Warning)",
+      "event_id": "cc6371c1-4567-4a11-b1e1-c8769308c002",
+      "time": "2025-11-11T12:40:12Z",
+      "log_source": "ios_safari_events",
+      "event_type": "web.risk_warning",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-dev-99",
+        "device_id": "dev-ios-331",
+        "platform": "iOS",
+        "os_version": "iOS 17.2",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "career-portal.verify-check.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "phishing_threat",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-079",
+        "session_id": "sess-ios-445566"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "WEB_TELEMETRY"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise",
+      "event_id": "dd6371c1-4567-4a11-b1e1-c8769308c003",
+      "time": "2025-11-11T12:45:30Z",
+      "log_source": "http_proxy",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-99",
+        "device_id": "dev-ios-331",
+        "platform": "iOS",
+        "os_version": "iOS 17.2",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-079"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "activity_stage": "normal_browsing",
+        "theme": "채용/면접 결과 사칭"
+      },
+      "original_source_hint": "PROXY_NETFLOW"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 6,
+    "noise_events_included": 3,
+    "phases": [
+      {
+        "phase": "Initial Access",
+        "time_range": "12:05:10 - 12:05:10",
+        "events": 1,
+        "desc": "SMS Received"
+      },
+      {
+        "phase": "Android Interaction",
+        "time_range": "12:15:20 - 12:15:23",
+        "events": 3,
+        "desc": "Link clicked on Android, blocked by security app"
+      },
+      {
+        "phase": "iOS Interaction",
+        "time_range": "12:40:10 - 12:40:12",
+        "events": 2,
+        "desc": "Link clicked on iOS, browser warning shown, user stops"
+      }
+    ],
+    "total_elapsed_minutes": 40.3,
+    "key_time_gaps_explained": {
+      "sms_to_first_click": "610 seconds - User was busy working",
+      "android_to_ios_switch": "1488 seconds - User tried later on a personal device after work"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S3 (http.redirect/request with hops>=2) is missing. Only direct request occurred.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "user_bypassed_warning is false. User stopped at warning.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite (SMISH_REDIRECT_CHAIN) failed.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "iOS dwell time and interaction conditions not met (user exited immediately).",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk signals occurred.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 30,
+        "push_notification": 40,
+        "software_update": 10,
+        "cdn_traffic": 35,
+        "utility_widgets": 15,
+        "mdm_checkin": 26,
+        "cloud_backup": 10
+      }
+    }
+  }
+}

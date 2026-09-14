@@ -1,0 +1,518 @@
+{
+  "incident_id": "inc-MOB-BEN-030",
+  "case_type": "benign_lookalike",
+  "theme": "통신사 요금/데이터 사칭",
+  "difficulty_tier": "DT-LOW",
+  "timeline_profile": "delayed_response (수시간 후 클릭)",
+  "start_time": "2025-03-19T10:24:00+09:00",
+  "end_time": "2025-03-19T13:45:15+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "dev-ios-9921",
+      "text": "[TRAINING] [알림] 고객님, 이번 달 데이터 기본 제공량이 모두 소진되었습니다. 현재 기준 초과 요금 45,800원이 발생할 예정입니다. 상세 내역 및 요금제 변경은 아래 링크에서 확인하세요. http://bill-check.my-telecom.example",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "본인 확인 안내",
+      "통신사 선택",
+      "아이디/비밀번호 입력"
+    ],
+    "visual_style_notes": [
+      "공식 통신사 웹사이트와 유사한 CSS 레이아웃",
+      "안전 결제 알림 팝업 모방"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "user_name",
+      "phone_number",
+      "login_id",
+      "login_pw"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일이 매우 최근임",
+      "공식 도메인 형식이 아닌 서브도메인 위주 구성",
+      "브라우저의 피싱 경고 발생"
+    ]
+  },
+  "persona": {
+    "user_id": "user-sales-88",
+    "job_title": "영업/현장직",
+    "risk_profile": "MEDIUM",
+    "devices": [
+      {
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 외근 중 데이터 초과 요금 안내 문자를 받고, 업무 종료 후 오후에 링크를 클릭하여 접속했으나 브라우저의 위험 경고를 보고 바로 페이지를 닫음.",
+    "why_this_behavior": "delayed_response 프로파일에 따라 즉각 반응하지 않고 업무 후 확인. 보안 경고 발생 시 위험을 인지하고 중단(WB-2).",
+    "time_gap_rationale": "문자 수신 후 약 3시간 뒤 클릭(업무 종료 시점 반영)."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "d1c2b3a4-1111-4444-8888-000000000001",
+      "time": "2025-03-19T10:24:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-88",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "T-Mobile-Clone",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1122",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-030",
+        "message_id": "msg-99281-ios"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1660",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise (Background)",
+      "event_id": "n1n2n3n4-0000-1111-2222-333344445555",
+      "time": "2025-03-19T11:05:20+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-88",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.10",
+        "http": {
+          "method": "POST",
+          "path": "/api/v2/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-030"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "APP_NETWORK_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: DNS Resolution",
+      "event_id": "d1c2b3a4-2222-4444-8888-000000000002",
+      "time": "2025-03-19T13:42:15+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-88",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "bill-check.my-telecom.example",
+        "dst_ip": "192.0.2.15",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-030"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "DNS_RECURSIVE_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "d1c2b3a4-2222-4444-8888-ffffffffffff",
+      "time": "2025-03-19T13:42:16+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-88",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "bill-check.my-telecom.example",
+        "dst_ip": "192.0.2.15",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "noise_metadata": {
+        "duplicate_of": "d1c2b3a4-2222-4444-8888-000000000002",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-030"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "PHASE-Noise (Duplicate)",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "DNS_RECURSIVE_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: HTTP Request",
+      "event_id": "d1c2b3a4-3333-4444-8888-000000000003",
+      "time": "2025-03-19T13:42:17+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-sales-88",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "bill-check.my-telecom.example",
+        "dst_ip": "192.0.2.15",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-030",
+        "session_id": "sess-ios-v882"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "HTTP_PROXY_LOG"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise (Background)",
+      "event_id": "n1n2n3n4-0000-1111-2222-333344445556",
+      "time": "2025-03-19T13:42:20+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-88",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "198.51.100.50",
+        "http": {
+          "method": "GET",
+          "path": "/checkin",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-030"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "system_maintenance",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "MDM_AGENT_LOG"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: Browser Security Warning",
+      "event_id": "d1c2b3a4-4444-4444-8888-000000000004",
+      "time": "2025-03-19T13:42:22+09:00",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-sales-88",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "bill-check.my-telecom.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "phishing",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-030",
+        "session_id": "sess-ios-v882"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "WEB_BROWSER_SECURITY_LOG"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-5: User Behavior (Interruption)",
+      "event_id": "d1c2b3a4-5555-4444-8888-000000000005",
+      "time": "2025-03-19T13:42:35+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-88",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "bill-check.my-telecom.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "session_terminated",
+          "user_interaction": "interrupted",
+          "dwell_time_ms": 13000
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-030",
+        "session_id": "sess-ios-v882"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "IOS_WEB_KIT_TELEMETRY"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise (Background)",
+      "event_id": "n1n2n3n4-0000-1111-2222-333344445557",
+      "time": "2025-03-19T13:45:15+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-sales-88",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "iOS 17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "GET",
+          "path": "/forecast",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-030"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "통신사 요금/데이터 사칭"
+      },
+      "original_source_hint": "APP_NETWORK_LOG"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 3,
+    "noise_events_included": 6,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "10:24:00 - 13:42:15",
+        "events": 2,
+        "desc": "SMS 수신 및 수시간 대기"
+      },
+      {
+        "phase": "Interaction",
+        "time_range": "13:42:15 - 13:42:35",
+        "events": 6,
+        "desc": "링크 클릭 및 보안 경고 확인 후 세션 종료"
+      }
+    ],
+    "total_elapsed_minutes": 201.25,
+    "key_time_gaps_explained": {
+      "sms_to_click": "3시간 18분 (업무 종료 후 확인)",
+      "click_to_interruption": "20초 (경고 창 인지 및 종료 시간)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S3(redirect or hops>=2) condition not met; only simple request observed.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "user_bypassed_warning is false; the user obeyed the warning.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN not fired; no form interaction occurred.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN not fired; no financial activity.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 20,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 26,
+        "mdm_checkin": 30,
+        "cloud_backup": 10
+      }
+    }
+  }
+}

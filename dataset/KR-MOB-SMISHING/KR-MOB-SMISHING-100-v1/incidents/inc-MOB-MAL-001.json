@@ -1,0 +1,587 @@
+{
+  "incident_id": "inc-MOB-MAL-001",
+  "case_type": "malicious",
+  "theme": "가족/지인 사칭 긴급 송금",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "TP-3: multi_session (이탈 후 재접근)",
+  "start_time": "2025-07-30T14:56:12Z",
+  "end_time": "2025-07-30T15:18:45Z",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security",
+    "endpoint_protection",
+    "identity",
+    "financial"
+  ],
+  "full_log_sources_used": [
+    "sms_gateway",
+    "secure_dns",
+    "web_proxy",
+    "chrome_safe_browsing",
+    "android_endpoint_agent",
+    "iam_identity_provider",
+    "core_banking_fds"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.35
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android-102938",
+      "text": "[TRAINING] 아빠 나 폰 액정 깨져서 수리 맡겼어. 지금 급하게 송금할 데가 있는데 대신 좀 해줘. 확인하면 여기로 답장 줘. http://k-gov.refund-check.example/urgent",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "identity_verification",
+      "account_selection",
+      "transfer_amount_input",
+      "mfa_challenge"
+    ],
+    "visual_style_notes": [
+      "Uses generic system fonts and layout to mimic a standard mobile web portal.",
+      "Urgency banners with red background and countdown timers."
+    ],
+    "form_risk_class": "financial",
+    "fields_requested": [
+      "name",
+      "ssn_prefix",
+      "account_number",
+      "bank_password"
+    ],
+    "detection_cues_for_human_analyst": [
+      "Hidden script tags tracking keystrokes in real-time.",
+      "Non-standard TLD (.example) used for a high-risk transaction page.",
+      "Absence of official institution logo despite requesting bank password."
+    ]
+  },
+  "persona": {
+    "user_id": "user-dev-771",
+    "job_title": "Software Developer",
+    "risk_profile": "LOW",
+    "devices": [
+      {
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A developer receives a smishing text impersonating a family member. Initially skeptical, they click out of curiosity but withdraw when the first security warning appears. Later, under renewed psychological pressure from a second message, they bypass warnings and attempt a transfer.",
+    "why_this_behavior": "Low risk profile users (developers) often recognize warnings but may choose to bypass them if the social engineering lure (family emergency) creates sufficient cognitive load.",
+    "time_gap_rationale": "Initial 120s gap for message reading. 5s for the first warning bypass. 400s gap representing the 'abandonment and return' phase."
+  },
+  "expected_rules": {
+    "must_fire": [
+      "SMISH_REDIRECT_CHAIN",
+      "PHISH_WARNING_BYPASS",
+      "SENSITIVE_FORM_SEQUENCE",
+      "POST_LURE_FINANCIAL_RISK_SIGNAL"
+    ],
+    "should_fire": [],
+    "optional": [
+      "PLATFORM_DIVERGENCE"
+    ],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "Android",
+        "trigger_events": [
+          "510e1494-080b-468a-93a0-534127015462",
+          "6209b552-6c34-4b47-975a-73c332997282",
+          "82928543-c603-455b-8664-926394857201"
+        ]
+      },
+      "PHISH_WARNING_BYPASS": {
+        "platform": "Android",
+        "trigger_events": [
+          "a3b83c12-320d-4951-b852-948123019284"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access (Delivery)",
+      "event_id": "510e1494-080b-468a-93a0-534127015462",
+      "time": "2025-07-30T14:56:12Z",
+      "log_source": "sms_gateway",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1122",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "mitre_mobile": "T1660",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "carrier_sms_log"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "b0293121-a201-4921-9921-029384721921",
+      "time": "2025-07-30T14:57:15Z",
+      "log_source": "web_proxy",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.44",
+        "http": {
+          "method": "POST",
+          "path": "/v1/sync",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "egress_proxy"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Execution (DNS Resolution)",
+      "event_id": "6209b552-6c34-4b47-975a-73c332997282",
+      "time": "2025-07-30T14:58:20Z",
+      "log_source": "secure_dns",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-gov.refund-check.example",
+        "dst_ip": "192.0.2.15",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Execution",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "dns_server_log"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-3: Execution (HTTP Request)",
+      "event_id": "82928543-c603-455b-8664-926394857201",
+      "time": "2025-07-30T14:58:22Z",
+      "log_source": "web_proxy",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "k-gov.refund-check.example",
+        "dst_ip": "192.0.2.15",
+        "sni": "k-gov.refund-check.example",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/urgent",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001",
+        "session_id": "sess-991203"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Execution",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "http_proxy_log"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-4: Defense Evasion (Warning & Bypass)",
+      "event_id": "a3b83c12-320d-4951-b852-948123019284",
+      "time": "2025-07-30T14:58:25Z",
+      "log_source": "chrome_safe_browsing",
+      "event_type": "web.risk_warning",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-gov.refund-check.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "phishing",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001",
+        "session_id": "sess-991203"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "browser_telemetry"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "d0012391-a921-4b11-9213-912830192831",
+      "time": "2025-07-30T14:58:26Z",
+      "log_source": "chrome_safe_browsing",
+      "event_type": "web.risk_warning",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-gov.refund-check.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "phishing",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001",
+        "session_id": "sess-991203"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "noise_metadata": {
+        "duplicate_of": "a3b83c12-320d-4951-b852-948123019284",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "browser_telemetry"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-5: Collection (Form Submission Attempt)",
+      "event_id": "f8219384-d102-4122-a931-102938475612",
+      "time": "2025-07-30T15:01:45Z",
+      "log_source": "android_endpoint_agent",
+      "event_type": "form.interaction",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-gov.refund-check.example"
+      },
+      "object": {
+        "form": {
+          "risk_class": "financial",
+          "submission_attempted": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001",
+        "session_id": "sess-991203"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "mitre_mobile": "T1417.002",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "endpoint_protection_log"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "c1192831-2911-4421-9921-921830192837",
+      "time": "2025-07-30T15:05:12Z",
+      "log_source": "android_endpoint_agent",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "agent_heartbeat"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-6: Credential Access (MFA Burst)",
+      "event_id": "e9128301-921a-4123-b122-921830192832",
+      "time": "2025-07-30T15:10:20Z",
+      "log_source": "iam_identity_provider",
+      "event_type": "auth.step_up_challenge",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.15"
+      },
+      "object": {
+        "auth": {
+          "method": "sms_otp",
+          "challenge_id": "otp-229103",
+          "result": "failed",
+          "reason": "timeout",
+          "burst_counter_count": 3
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "auth_audit_log"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-7: Impact (Financial Fraud Detection)",
+      "event_id": "d1283019-2183-4921-9311-928301928374",
+      "time": "2025-07-30T15:18:45Z",
+      "log_source": "core_banking_fds",
+      "event_type": "bank.transfer_attempt_flagged",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "Android-102938",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.15"
+      },
+      "object": {
+        "risk_decision": "BLOCKED",
+        "result": "INTERCEPTED",
+        "amount": 2000000,
+        "currency": "KRW"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-001",
+        "bank_corr_id": "tx-88120394"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Impact",
+        "mitre_mobile": "T1636",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "fds_alert_log"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 10,
+    "malicious_events": 7,
+    "benign_context_events": 0,
+    "noise_events_included": 3,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "14:56:12 - 14:58:22",
+        "events": 4,
+        "desc": "Initial smishing message and malicious link click."
+      },
+      {
+        "phase": "Interaction",
+        "time_range": "14:58:25 - 15:01:45",
+        "events": 3,
+        "desc": "User bypasses security warning and submits sensitive form."
+      },
+      {
+        "phase": "Fraud Attempt",
+        "time_range": "15:10:20 - 15:18:45",
+        "events": 3,
+        "desc": "Attacker attempts high-value transfer, intercepted by FDS."
+      }
+    ],
+    "total_elapsed_minutes": 22.5,
+    "key_time_gaps_explained": {
+      "click_to_warning": "3 seconds - typical page load time and security scanner trigger.",
+      "warning_to_submission": "200 seconds - reflects user hesitation and eventual decision to proceed.",
+      "submission_to_mfa": "515 seconds - attacker processing the stolen credentials to initiate a transfer."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": true,
+      "fire_path": "evt-001 -> evt-003 -> evt-004",
+      "trigger": "SMS with URL (contains_url=true) followed by DNS and HTTP request to a new domain within 130s.",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": true,
+      "fire_path": "evt-005",
+      "trigger": "web.risk_warning event indicates ui_warning_shown=true AND user_bypassed_warning=true.",
+      "within_window": true
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> evt-007",
+      "trigger": "prerequisite (SMISH_REDIRECT_CHAIN) followed by a financial form submission within 203s.",
+      "within_window": true
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> evt-009/evt-010",
+      "trigger": "prerequisite (SMISH_REDIRECT_CHAIN) followed by MFA burst (3) and an FDS BLOCKED decision within 900s.",
+      "within_window": true
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 190,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 20,
+        "cloud_backup": 20
+      }
+    }
+  }
+}

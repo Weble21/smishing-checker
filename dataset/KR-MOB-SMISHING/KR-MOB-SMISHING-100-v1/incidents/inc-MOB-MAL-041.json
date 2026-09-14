@@ -1,0 +1,548 @@
+{
+  "incident_id": "inc-MOB-MAL-041",
+  "case_type": "malicious",
+  "theme": "택배/배송 실패 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "delayed_response (수시간 후 클릭)",
+  "start_time": "2025-04-27T12:27:00+09:00",
+  "end_time": "2025-04-27T18:45:00+09:00",
+  "platform_coverage": [
+    "Android",
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security",
+    "endpoint_protection",
+    "financial"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "http.redirect",
+    "ios.web.behavior",
+    "android.web_submission.blocked",
+    "bank.transfer_attempt_flagged",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.35
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [배송알림] 고객님의 물품이 주소지 불분명으로 보관 중입니다. 오늘 중 미확인 시 자동 반송 처리 예정입니다. 확인: https://k-delivery.check-parcel.example/v/3921",
+      "sender_type": "short_code",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "SMS Link Click",
+      "Parcel Status Page",
+      "Address Update Form",
+      "Identity Verification"
+    ],
+    "visual_style_notes": [
+      "Standard delivery carrier blue/white theme",
+      "Urgency countdown timer visible",
+      "Mobile-optimized responsive design"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "name",
+      "phone_number",
+      "delivery_address",
+      "zip_code"
+    ],
+    "detection_cues_for_human_analyst": [
+      "Domain TLD is .example (uncommon)",
+      "Redirect chain hides final landing page",
+      "Form requests exact residential address before showing tracking info",
+      "Domain age is 1 day"
+    ]
+  },
+  "persona": {
+    "user_id": "user-dev-771",
+    "job_title": "Software Developer",
+    "risk_profile": "LOW",
+    "devices": [
+      {
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0"
+      },
+      {
+        "device_id": "dev-ios-112",
+        "platform": "iOS",
+        "os_version": "17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A developer receives a smishing SMS on their Android work phone. Initially ignored, but later checked on both Android (where submission is blocked) and then followed through on an iOS personal device.",
+    "why_this_behavior": "Users often switch devices if a link 'doesn't work' (is blocked) on one platform, assuming it is a technical glitch rather than a security block.",
+    "time_gap_rationale": "6-hour gap between SMS receipt and interaction reflects a busy work schedule. Quick transition between devices (10 mins) shows active troubleshooting by the user."
+  },
+  "expected_rules": {
+    "must_fire": [
+      "SMISH_REDIRECT_CHAIN",
+      "SENSITIVE_FORM_SEQUENCE",
+      "POST_LURE_FINANCIAL_RISK_SIGNAL"
+    ],
+    "should_fire": [
+      "PLATFORM_DIVERGENCE"
+    ],
+    "optional": [],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "Android",
+        "trigger_events": [
+          "11706855-385c-4d87-9b21-82193b827e69",
+          "7096e897-f705-4c01-be19-61265882e307",
+          "6209c15f-5112-4d76-8092-28249822a101"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access",
+      "event_id": "11706855-385c-4d87-9b21-82193b827e69",
+      "time": "2025-04-27T12:27:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "GlobalLink",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "short_code",
+        "sender_id": "1588-0000-1111",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-041",
+        "message_id": "msg-99281-and"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "mitre_mobile": "T1660",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "SMS Gateway Log"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "22938121-abcd-4e12-8821-228391283912",
+      "time": "2025-04-27T14:30:00+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.10",
+        "http": {
+          "method": "POST",
+          "path": "/checkin",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-041"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "Enterprise MDM Agent"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Delivery (User Interaction)",
+      "event_id": "7096e897-f705-4c01-be19-61265882e307",
+      "time": "2025-04-27T18:30:00+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-delivery.check-parcel.example",
+        "dst_ip": "192.0.2.44",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-041"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "Recursive DNS"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-3: Defense Evasion (Redirect)",
+      "event_id": "6209c15f-5112-4d76-8092-28249822a101",
+      "time": "2025-04-27T18:30:05+09:00",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-gateway.check-parcel.example",
+        "dst_ip": "192.0.2.45",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/r/L92K",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 3,
+        "referrer_chain_domains_masked": [
+          "k-delivery.check-parcel.example",
+          "api-proxy.check-parcel.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-041",
+        "session_id": "sess-and-00192"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "WAF Log"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-4: Defense Evasion (Block on Android)",
+      "event_id": "ff821932-9213-4c92-b011-829312039123",
+      "time": "2025-04-27T18:30:08+09:00",
+      "log_source": "endpoint_protection",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "verify-parcel.check-parcel.example"
+      },
+      "object": {
+        "block_reason": "malicious_reputation_score",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-041",
+        "session_id": "sess-and-00192"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "Mobile Endpoint Security"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "a9213812-2819-4c12-8821-228391283abc",
+      "time": "2025-04-27T18:30:10+09:00",
+      "log_source": "endpoint_protection",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "dev-and-990",
+        "platform": "Android",
+        "os_version": "14.0",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "verify-parcel.check-parcel.example"
+      },
+      "object": {
+        "block_reason": "malicious_reputation_score",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-041",
+        "session_id": "sess-and-00192"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "PHASE-Noise (Duplicate)",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "ff821932-9213-4c92-b011-829312039123",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "Mobile Endpoint Security"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "82931283-bcde-4211-9921-120391283912",
+      "time": "2025-04-27T18:35:00+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "dev-ios-112",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.15"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-041"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "iOS System Activity"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-5: Platform Switch (iOS Behavior)",
+      "event_id": "92103821-3921-4d11-8213-921382910392",
+      "time": "2025-04-27T18:40:00+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "dev-ios-112",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "verify-parcel.check-parcel.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "navigation_to_malicious_domain",
+          "user_interaction": "continued",
+          "dwell_time_ms": 45000,
+          "form_focus_detected": true,
+          "tap_next": "navigation_actions"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-041",
+        "session_id": "sess-ios-99120"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "mitre_mobile": "T1417.002",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "iOS Webkit Telemetry"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-6: Impact (Financial Risk)",
+      "event_id": "33912039-1232-4e92-9112-829312839123",
+      "time": "2025-04-27T18:45:00+09:00",
+      "log_source": "financial",
+      "event_type": "bank.transfer_attempt_flagged",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-dev-771",
+        "device_id": "dev-ios-112",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "198.51.100.22"
+      },
+      "object": {
+        "risk_decision": "BLOCKED",
+        "result": "suspicious_login_location_after_credential_harvesting"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-041",
+        "bank_corr_id": "tx-881203"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Impact",
+        "mitre_mobile": "T1634",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "FDS Alert Engine"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 7,
+    "benign_context_events": 0,
+    "noise_events_included": 2,
+    "phases": [
+      {
+        "phase": "Initial Access",
+        "time_range": "12:27:00",
+        "events": 1,
+        "desc": "Smishing SMS received"
+      },
+      {
+        "phase": "Delivery & Evasion",
+        "time_range": "18:30:00 - 18:30:10",
+        "events": 4,
+        "desc": "User clicks link on Android, block event occurs"
+      },
+      {
+        "phase": "Impact",
+        "time_range": "18:40:00 - 18:45:00",
+        "events": 2,
+        "desc": "User finishes on iOS; secondary fraud detected"
+      }
+    ],
+    "total_elapsed_minutes": 378.0,
+    "key_time_gaps_explained": {
+      "sms_to_click": "363 minutes gap (User ignored work phone until evening)",
+      "android_to_ios_switch": "10 minutes gap (User switched devices after seeing block page)",
+      "form_to_impact": "5 minutes (Rapid fraud attempt using stolen credentials)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": true,
+      "fire_path": "sms.received -> dns.query -> http.redirect",
+      "trigger": "SMS with URL followed by DNS query and 3-hop redirect within 5 seconds of interaction.",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No web.risk_warning event generated (WB-3 variation).",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> ios.web.behavior",
+      "trigger": "iOS behavioral signals (dwell_time=45s, form_focus) following redirect chain.",
+      "within_window": true
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": true,
+      "fire_path": "android.web_submission.blocked AND ios.web.behavior",
+      "trigger": "Block event on Android followed by continued interaction on iOS by same user_id.",
+      "within_window": true
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> bank.transfer_attempt_flagged",
+      "trigger": "Bank transfer blocked (FDS flag) shortly after sensitive form submission.",
+      "within_window": true
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 15,
+        "cloud_backup": 26
+      }
+    }
+  }
+}

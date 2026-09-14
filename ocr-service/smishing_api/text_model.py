@@ -5,6 +5,7 @@ from typing import Any
 
 from .config import resolve_model_dir
 from .schemas import TextAnalysisResult
+from .message_context import INPUT_SCHEMA, encode_message
 
 
 _model: Any | None = None
@@ -55,13 +56,16 @@ def predict_text(text: str) -> TextAnalysisResult:
     import torch
 
     model, tokenizer, device = get_text_model()
-    encoded = tokenizer(
-        text,
-        return_tensors="pt",
-        truncation=True,
-        max_length=256,
-        padding=False,
-    )
+    if getattr(model.config, "smishing_input_schema", None) == INPUT_SCHEMA:
+        encoded = encode_message(tokenizer, text, return_tensors="pt")
+    else:
+        encoded = tokenizer(
+            text,
+            return_tensors="pt",
+            truncation=True,
+            max_length=256,
+            padding=False,
+        )
     encoded = {name: value.to(device) for name, value in encoded.items()}
     with _model_lock, torch.inference_mode():
         logits = model(**encoded).logits

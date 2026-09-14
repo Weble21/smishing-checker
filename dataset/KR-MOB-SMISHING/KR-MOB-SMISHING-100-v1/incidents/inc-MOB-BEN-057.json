@@ -1,0 +1,506 @@
+{
+  "incident_id": "inc-MOB-BEN-057",
+  "case_type": "benign",
+  "theme": "택배/배송 실패 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "rapid_chain (30분 이내)",
+  "start_time": "2026-09-03T16:34:12Z",
+  "end_time": "2026-09-03T16:58:45Z",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "endpoint",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.9
+  },
+  "message_samples_used": [
+    {
+      "target_device": "iOS-057-DEV",
+      "text": "[TRAINING] 배송주소 불일치로 인해 물품이 보관 중입니다. 오늘 18시까지 확인되지 않을 경우 반송 처리됩니다. 상세 정보 확인: https://parcel-check.logistics-service.example/v/392k1",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "landing",
+      "address_verification"
+    ],
+    "visual_style_notes": [
+      "공식 물류 포털의 컬러 스키마를 준수함",
+      "SSL 인증서가 적용된 보안 페이지로 표시됨"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "tracking_number",
+      "recipient_name"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "USR-EXE-492",
+    "job_title": "Executive Management",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "정상적인 택배 알림 수신 및 확인",
+    "why_this_behavior": "사용자는 실제로 기다리고 있던 택배의 주소 오류 알림을 받고 공식 물류 서비스 도메인으로 접속하여 정보를 확인한 것임.",
+    "time_gap_rationale": "사용자가 업무 중 문자를 확인하고 약 2분 뒤 한가해졌을 때 링크를 클릭함."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-0: System Initial",
+      "event_id": "4e758925-5f21-4148-892f-c5c84edc1562",
+      "time": "2026-09-03T16:34:12Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "USR-EXE-492",
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.45",
+        "http": {
+          "method": "POST",
+          "path": "/checkin",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-057"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭",
+        "activity_stage": "system_maintenance"
+      },
+      "original_source_hint": "MDM Agent Logs"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-1: Initial Access",
+      "event_id": "58e1c6b5-0c53-4316-8367-938363740263",
+      "time": "2026-09-03T16:35:45Z",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "USR-EXE-492",
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "GlobalLink",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-057"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭",
+        "activity_stage": "communication"
+      },
+      "original_source_hint": "SMS Gateway Logs"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise",
+      "event_id": "7878d65a-0c2d-41a4-9640-1534b8686e5c",
+      "time": "2026-09-03T16:36:10Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "USR-EXE-492",
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-057"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭",
+        "activity_stage": "app_usage"
+      },
+      "original_source_hint": "Application Traffic Logs"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "42971a81-79ec-4589-9832-1fbc8eb95015",
+      "time": "2026-09-03T16:36:12Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "USR-EXE-492",
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-057"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭",
+        "activity_stage": "app_usage"
+      },
+      "noise_metadata": {
+        "duplicate_of": "7878d65a-0c2d-41a4-9640-1534b8686e5c",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "Application Traffic Logs"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: DNS Resolution",
+      "event_id": "90e67615-585a-407b-845f-4a6c8e317c24",
+      "time": "2026-09-03T16:37:42Z",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "USR-EXE-492",
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "parcel-check.logistics-service.example",
+        "dst_ip": "198.51.100.22",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-057"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭",
+        "activity_stage": "normal_browsing"
+      },
+      "original_source_hint": "Recursive Resolver Logs"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise",
+      "event_id": "1e975510-9759-4508-8e8e-6c06a38618f3",
+      "time": "2026-09-03T16:37:43Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "USR-EXE-492",
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.88"
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-057"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭",
+        "activity_stage": "normal_browsing"
+      },
+      "original_source_hint": "CDN Node Logs"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-3: Web Access",
+      "event_id": "67327894-39f8-4228-a40a-9d6639d6757b",
+      "time": "2026-09-03T16:37:44Z",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "USR-EXE-492",
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Mobile Safari"
+      },
+      "network": {
+        "dst_domain": "parcel-check.logistics-service.example",
+        "dst_ip": "198.51.100.22",
+        "sni": "parcel-check.logistics-service.example",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1240,
+        "http": {
+          "method": "GET",
+          "path": "/v/392k1",
+          "status_code": 200,
+          "content_type": "text/html",
+          "bytes_in": 12400
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-057",
+        "session_id": "sess-ios-492-93k21"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭",
+        "activity_stage": "normal_browsing"
+      },
+      "original_source_hint": "Corporate Proxy Logs"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise",
+      "event_id": "62688863-7b43-41e9-9133-72787e9d9972",
+      "time": "2026-09-03T16:45:00Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "USR-EXE-492",
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.201"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-057"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭",
+        "activity_stage": "idle"
+      },
+      "original_source_hint": "OS Background Logs"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise",
+      "event_id": "18049103-68f4-4a47-9755-9a8435d82006",
+      "time": "2026-09-03T16:58:45Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "USR-EXE-492",
+        "device_id": "iOS-057-DEV",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "update.masked-corp.example",
+        "dst_ip": "203.0.113.5"
+      },
+      "object": {
+        "traffic_category": "software_update"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-057"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭",
+        "activity_stage": "system_maintenance"
+      },
+      "original_source_hint": "Endpoint Agent Logs"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 4,
+    "noise_events_included": 5,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "16:35:45",
+        "events": 1,
+        "desc": "정상 택배 알림 수신"
+      },
+      {
+        "phase": "2-3",
+        "time_range": "16:37:42 - 16:37:44",
+        "events": 2,
+        "desc": "정상 도메인 확인 및 접속"
+      }
+    ],
+    "total_elapsed_minutes": 24.55,
+    "key_time_gaps_explained": {
+      "sms_to_click": "117초 (업무 중 문자 확인 후 링크 실행)",
+      "dwell_time": "사용자가 페이지를 확인하고 닫기까지의 과정"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Domain is aged (1240 days) and redirection chain does not meet malicious criteria.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning shown for legitimate domain.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN did not fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN did not fire.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 30,
+        "push_notification": 40,
+        "software_update": 10,
+        "cdn_traffic": 35,
+        "utility_widgets": 15,
+        "mdm_checkin": 30,
+        "cloud_backup": 6
+      }
+    }
+  }
+}

@@ -14,6 +14,9 @@ services:
       VT_API_KEY: ${VT_API_KEY:-}
       VT_TIMEOUT_SECONDS: "5"
       OMP_NUM_THREADS: "2"
+      CONTEXT_LLM_MODEL: ${CONTEXT_LLM_MODEL:-}
+      CONTEXT_LLM_BASE_URL: ${CONTEXT_LLM_BASE_URL:-http://host.docker.internal:11434}
+      CONTEXT_LLM_TIMEOUT_SECONDS: ${CONTEXT_LLM_TIMEOUT_SECONDS:-30}
     volumes:
       - type: bind
         source: ${DOCKER_TEXT_MODEL_DIR:-./experiments/koelectra-baseline-v2-20260907T015430973273Z/checkpoints/checkpoint-497}

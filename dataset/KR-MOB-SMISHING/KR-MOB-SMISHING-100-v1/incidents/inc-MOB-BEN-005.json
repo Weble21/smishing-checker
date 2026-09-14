@@ -1,0 +1,428 @@
+{
+  "incident_id": "inc-MOB-BEN-005",
+  "case_type": "benign",
+  "theme": "모바일 금융앱 업데이트 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "multi_session (이탈 후 재접근)",
+  "start_time": "2025-07-30T13:14:22+09:00",
+  "end_time": "2025-07-30T13:28:45+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "iOS",
+      "text": "[TRAINING] 고객님, 사용 중이신 금융 서비스의 보안 정책이 강화되었습니다. 원활한 서비스 이용을 위해 최신 버전(v4.2.1)으로 업데이트 바랍니다. 미 업데이트 시 계정 보호를 위해 서비스 이용이 일시 중단될 수 있습니다. 확인: https://update.financial-service.example/app",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "메인 업데이트 안내",
+      "버전 확인 및 다운로드"
+    ],
+    "visual_style_notes": [
+      "공식 금융기관 웹사이트의 톤앤매너 준수",
+      "정식 SSL 인증서 사용",
+      "반응형 모바일 페이지"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "app_version"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-it-dev-99",
+    "job_title": "Senior Backend Developer",
+    "risk_profile": "LOW",
+    "devices": [
+      {
+        "device_id": "dev-ios-corp-01",
+        "platform": "iOS",
+        "os_version": "17.5.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "정상적인 금융 서비스 업데이트 알림 수신 및 확인 프로세스",
+    "why_this_behavior": "사용자는 IT 전문가로서 정기적인 보안 업데이트 알림을 받고, 공식 도메인임을 확인한 후 절차에 따라 앱스토어 업데이트를 진행함.",
+    "time_gap_rationale": "업무 중 알림 확인 후 점심시간 혹은 휴식 시간에 맞춰 접속하는 행동 패턴 반영."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Notification",
+      "event_id": "673f328d-1768-450a-9d9e-1e967f677561",
+      "time": "2025-07-30T13:14:22+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-it-dev-99",
+        "device_id": "dev-ios-corp-01",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Global-Telecom",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": false,
+          "sender_verification": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-005"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background Activity",
+      "event_id": "893c52a1-e234-4211-9032-6123498abcdf",
+      "time": "2025-07-30T13:15:10+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-it-dev-99",
+        "device_id": "dev-ios-corp-01",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.45"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-005"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "system_maintenance",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "MDM_AGENT_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "b1234567-890a-bcde-f123-4567890abcde",
+      "time": "2025-07-30T13:15:12+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-it-dev-99",
+        "device_id": "dev-ios-corp-01",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.45"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "noise_metadata": {
+        "duplicate_of": "893c52a1-e234-4211-9032-6123498abcdf",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-005"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "system_maintenance",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "MDM_AGENT_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: DNS Resolution",
+      "event_id": "92da831a-8812-411a-8321-00129bcdef12",
+      "time": "2025-07-30T13:25:05+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-it-dev-99",
+        "device_id": "dev-ios-corp-01",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "update.financial-service.example",
+        "dst_ip": "198.51.100.11",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-005"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "DNS_RECURSIVE_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: Web Access",
+      "event_id": "f55e3211-992a-4311-b111-c98765432101",
+      "time": "2025-07-30T13:25:08+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-it-dev-99",
+        "device_id": "dev-ios-corp-01",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "update.financial-service.example",
+        "dst_ip": "198.51.100.11",
+        "http": {
+          "method": "GET",
+          "path": "/app/security-update",
+          "status_code": 200,
+          "content_type": "text/html"
+        },
+        "domain_age_days": 1240
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-005",
+        "session_id": "sess-ios-9283120"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "WEB_PROXY_LOG"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise: Background Activity",
+      "event_id": "772211aa-bb22-33cc-dd44-ee5566778899",
+      "time": "2025-07-30T13:26:15+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-it-dev-99",
+        "device_id": "dev-ios-corp-01",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.88"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-005"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "NETFLOW_LOG"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: Safe Interaction",
+      "event_id": "d9988776-5544-3322-1100-abcdef012345",
+      "time": "2025-07-30T13:28:45+09:00",
+      "log_source": "browser_security",
+      "event_type": "ios.web.behavior",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-it-dev-99",
+        "device_id": "dev-ios-corp-01",
+        "platform": "iOS",
+        "os_version": "17.5.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "update.financial-service.example",
+        "domain_age_days": 1240
+      },
+      "object": {
+        "behavior": {
+          "signal": "legitimate_interaction",
+          "user_interaction": "completed",
+          "dwell_time_ms": 145000
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-005",
+        "session_id": "sess-ios-9283120"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "IOS_WEBKIT_LOG"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 7,
+    "malicious_events": 0,
+    "benign_context_events": 4,
+    "noise_events_included": 3,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "13:14:22",
+        "events": 1,
+        "desc": "정상 업데이트 안내 SMS 수신"
+      },
+      {
+        "phase": "2-3",
+        "time_range": "13:25:05 - 13:25:08",
+        "events": 2,
+        "desc": "도메인 확인 및 정상 웹 사이트 접속"
+      },
+      {
+        "phase": "4",
+        "time_range": "13:28:45",
+        "events": 1,
+        "desc": "정상적인 페이지 탐색 및 종료"
+      }
+    ],
+    "total_elapsed_minutes": 14.38,
+    "key_time_gaps_explained": {
+      "SMS_to_Web_Access": "약 11분 경과. 사용자가 업무 처리 후 휴식 시간에 링크 확인.",
+      "Web_Dwell_Time": "약 2분 25초. 업데이트 내용 숙지 및 스토어 연결 대기."
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "domain_age_days(1240) and ttl_sec(3600) do not meet malicious criteria.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning triggered for legitimate domain.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No prerequisite rules fired and domain is reputable.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No lure sequence or financial risk detected.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 193,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 15,
+        "cdn_traffic": 40,
+        "utility_widgets": 10,
+        "mdm_checkin": 40,
+        "cloud_backup": 8
+      }
+    }
+  }
+}

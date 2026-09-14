@@ -1,0 +1,572 @@
+{
+  "incident_id": "inc-MOB-BEN-028",
+  "case_type": "benign_lookalike",
+  "theme": "택배/배송 실패 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "rapid_chain (30분 이내)",
+  "start_time": "2025-03-19T08:53:10+09:00",
+  "end_time": "2025-03-19T09:15:45+09:00",
+  "platform_coverage": [
+    "Android",
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "web.risk_warning",
+    "ios.web.behavior",
+    "android.web_submission.blocked"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "web.risk_warning",
+    "ios.web.behavior",
+    "android.web_submission.blocked",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [배송알림] 주소지 불분명으로 배송이 중단되었습니다. 금일 중 미확인 시 자동 반송 처리됩니다. 확인: https://parcel-check.logis-track.example",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "송장번호 조회",
+      "주소지 수정",
+      "본인 인증"
+    ],
+    "visual_style_notes": [
+      "공식 배송 조회 페이지와 유사한 폰트 및 컬러 스킴 사용",
+      "긴급성을 강조하는 팝업 문구 노출"
+    ],
+    "form_risk_class": "credential_or_identity",
+    "fields_requested": [
+      "name",
+      "phone_number",
+      "address",
+      "postal_code"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일이 3일 미만임",
+      "TLD가 .example로 비정상적임",
+      "사용자 중단으로 실제 데이터 제출은 발생하지 않음"
+    ]
+  },
+  "persona": {
+    "user_id": "user-9921",
+    "job_title": "고령 사용자",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-112",
+        "platform": "Android",
+        "os_version": "13.0"
+      },
+      {
+        "device_id": "dev-ios-554",
+        "platform": "iOS",
+        "os_version": "17.4"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 배송 실패 문자를 받고 안드로이드 폰으로 접속하려 했으나 브라우저 차단으로 중단됨. 이후 동일 링크를 iOS 기기에서 열어 탐색했으나 보안 경고를 보고 입력을 최종 중단함.",
+    "why_this_behavior": "고령 사용자는 기기 간 동기화된 메시지를 확인하며, 안드로이드에서 차단된 사이트를 iOS에서 다시 시도하는 경향이 있음.",
+    "time_gap_rationale": "문자 수신 후 확인까지 약 2분, 기기 변경 및 재시도에 약 5분이 소요됨."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [
+      "PLATFORM_DIVERGENCE"
+    ],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "Android",
+        "trigger_events": [
+          "53716618-62a2-4796-932d-304a9f997f80"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access (Delivery)",
+      "event_id": "53716618-62a2-4796-932d-304a9f997f80",
+      "time": "2025-03-19T08:53:10+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-and-112",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Carrier-A",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1122",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1660",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "90212f45-6294-47e0-b969-a1b65e92978d",
+      "time": "2025-03-19T08:54:15+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-and-112",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "OS_NETWORK_DAEMON"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Redirect Analysis (Android)",
+      "event_id": "b1821817-21a4-4458-8167-1981881829e1",
+      "time": "2025-03-19T08:55:05+09:00",
+      "log_source": "dns.query",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-and-112",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "parcel-check.logis-track.example",
+        "dst_ip": "192.0.2.44",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "DNS_CACHE_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-3: Defense Evasion (Android Blocked)",
+      "event_id": "e2928371-12a1-432a-bc91-2918e1928371",
+      "time": "2025-03-19T08:55:08+09:00",
+      "log_source": "android.web_submission.blocked",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-and-112",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "parcel-check.logis-track.example",
+        "dst_ip": "192.0.2.44"
+      },
+      "object": {
+        "block_reason": "malicious_url_reputation",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028",
+        "session_id": "sess-and-8821"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "WEBVIEW_SECURITY_FILTER"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "d0d0d0d0-12a1-432a-bc91-2918e1928371",
+      "time": "2025-03-19T08:55:09+09:00",
+      "log_source": "android.web_submission.blocked",
+      "event_type": "android.web_submission.blocked",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-and-112",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "parcel-check.logis-track.example",
+        "dst_ip": "192.0.2.44"
+      },
+      "object": {
+        "block_reason": "malicious_url_reputation",
+        "action": "BLOCK_SUBMISSION"
+      },
+      "noise_metadata": {
+        "duplicate_of": "e2928371-12a1-432a-bc91-2918e1928371",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028",
+        "session_id": "sess-and-8821"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "WEBVIEW_SECURITY_FILTER"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "c1c1c1c1-4796-932d-304a-9f997f805371",
+      "time": "2025-03-19T08:58:20+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-ios-554",
+        "platform": "iOS",
+        "os_version": "17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "http": {
+          "method": "POST",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "IOS_NETWORK_STACK"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: Cross-Platform Access (iOS)",
+      "event_id": "a2a2a2a2-21a4-4458-8167-1981881829e1",
+      "time": "2025-03-19T09:05:15+09:00",
+      "log_source": "http.request",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-ios-554",
+        "platform": "iOS",
+        "os_version": "17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "parcel-check.logis-track.example",
+        "dst_ip": "192.0.2.44",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/track/failure",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028",
+        "session_id": "sess-ios-9901"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "IOS_WEBKIT_LOG"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-5: Warning Display (iOS)",
+      "event_id": "f5f5f5f5-12a1-432a-bc91-2918e1928371",
+      "time": "2025-03-19T09:05:18+09:00",
+      "log_source": "web.risk_warning",
+      "event_type": "web.risk_warning",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-ios-554",
+        "platform": "iOS",
+        "os_version": "17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "parcel-check.logis-track.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "phishing_protection",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028",
+        "session_id": "sess-ios-9901"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "SAFARI_SECURITY_TELEMETRY"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-6: User Termination (iOS Behavior)",
+      "event_id": "b7b7b7b7-62a2-4796-932d-304a9f997f80",
+      "time": "2025-03-19T09:05:35+09:00",
+      "log_source": "ios.web.behavior",
+      "event_type": "ios.web.behavior",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-ios-554",
+        "platform": "iOS",
+        "os_version": "17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "parcel-check.logis-track.example",
+        "domain_age_days": 1
+      },
+      "object": {
+        "behavior": {
+          "signal": "navigation_interrupted",
+          "user_interaction": "dismissed",
+          "dwell_time_ms": 17000
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028",
+        "session_id": "sess-ios-9901"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "IOS_WEBKIT_TELEMETRY"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "e8e8e8e8-4796-932d-304a-9f997f805371",
+      "time": "2025-03-19T09:15:45+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9921",
+        "device_id": "dev-ios-554",
+        "platform": "iOS",
+        "os_version": "17.4",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-028"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "mitre_mobile": null,
+        "theme": "택배/배송 실패 사칭"
+      },
+      "original_source_hint": "IOS_NETWORK_STACK"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 10,
+    "malicious_events": 0,
+    "benign_context_events": 7,
+    "noise_events_included": 3,
+    "phases": [
+      {
+        "phase": "Delivery (Initial)",
+        "time_range": "08:53:10 - 08:55:09",
+        "events": 5,
+        "desc": "Android 기기에서 스미싱 링크 접속 시도 및 차단"
+      },
+      {
+        "phase": "Delivery (Cross-Platform)",
+        "time_range": "09:05:15 - 09:05:35",
+        "events": 3,
+        "desc": "iOS 기기로 재접속 시도 후 보안 경고로 인한 중단"
+      }
+    ],
+    "total_elapsed_minutes": 22.58,
+    "key_time_gaps_explained": {
+      "sms_to_click_android": "115초 (사용자 인지 및 클릭)",
+      "android_to_ios_switch": "약 10분 (기기 변경 시간)",
+      "ios_warning_to_dismissal": "17초 (보안 경고 확인 및 이탈)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "http.redirect(hops>=2) 조건 미충족 (직접 랜딩)",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "user_bypassed_warning=false (사용자가 이탈함)",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "prerequisite(SMISH_REDIRECT_CHAIN) 미충족 및 제출 미발생",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "iOS 체류 시간(17s)이 임계치(15s)를 넘었으나, 안드로이드 차단과 시간 간격(약 10분)이 정책에 따른 분석가 판단 영역임.",
+      "within_window": true
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "금융 리스크 신호 발생 안 함",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 190,
+      "background_composition": {
+        "messaging_sync": 30,
+        "email_sync": 25,
+        "push_notification": 40,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 0,
+        "cloud_backup": 25
+      }
+    }
+  }
+}

@@ -1,0 +1,477 @@
+{
+  "incident_id": "inc-MOB-BEN-020",
+  "case_type": "benign_lookalike",
+  "theme": "가족/지인 사칭 긴급 송금",
+  "difficulty_tier": "DT-LOW",
+  "timeline_profile": "delayed_response (수시간 후 클릭)",
+  "start_time": "2025-05-21T17:58:00+09:00",
+  "end_time": "2025-05-21T21:15:30+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "browser_security"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "browser_security",
+    "endpoint",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "iOS_iPhone15_Pro",
+      "text": "[TRAINING] 아빠 나 폰 고장나서 수리 맡겼어. 연락 안되니까 이 번호로 답장 줘. 급하게 송금할 데가 있는데 대신 좀 해줄 수 있어? http://k-gov.refund-check.example/loan",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "접속 확인",
+      "본인 인증 안내"
+    ],
+    "visual_style_notes": [
+      "정부 기관 스타일의 폰트와 색상 사용",
+      "긴급함을 강조하는 붉은색 알림 바"
+    ],
+    "form_risk_class": "financial",
+    "fields_requested": [
+      "name",
+      "account_number",
+      "bank_name"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일이 매우 최근임",
+      "공식 앱이 아닌 웹 브라우저에서의 금융 정보 요구",
+      "메시지의 발신 번호와 실제 지인의 번호가 불일치"
+    ]
+  },
+  "persona": {
+    "user_id": "user-8821",
+    "job_title": "영업/현장직",
+    "risk_profile": "MEDIUM",
+    "devices": [
+      {
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 퇴근 후 늦게 메시지를 확인하고 링크를 클릭했으나, 브라우저의 보안 경고를 보고 불안감을 느껴 중간에 중단함.",
+    "why_this_behavior": "최근 스미싱 교육을 받은 기억이 있어 모르는 번호의 링크와 경고창에 민감하게 반응함.",
+    "time_gap_rationale": "메시지 수신(17:58) 후 실제 활동(21:05)까지의 긴 간격은 업무 중 미확인 상태를 반영함."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "a1b2c3d4-e5f6-4001-a1b2-c3d4e5f60001",
+      "time": "2025-05-21T17:58:05+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "SKT",
+        "carrier_network_type": "LTE",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1234",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-020",
+        "message_id": "msg-99281726"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1660",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "SMS_Gateway_Log"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "b2c3d4e5-f6a7-4002-b2c3-d4e5f6a70001",
+      "time": "2025-05-21T18:30:12+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.45"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-020"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "idle",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "Network_Traffic_Log"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-2: Redirect Chain Start",
+      "event_id": "c3d4e5f6-a7b8-4003-c3d4-e5f6a7b80001",
+      "time": "2025-05-21T21:05:45+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-gov.refund-check.example",
+        "dst_ip": "192.0.2.10",
+        "ttl_sec": 60,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-020"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "DNS_Resolver_Log"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "d4e5f6a7-b8c9-4004-d4e5-f6a7b8c90001",
+      "time": "2025-05-21T21:05:50+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.88"
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-020"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "Network_Traffic_Log"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: Initial Request",
+      "event_id": "e5f6a7b8-c9d0-4005-e5f6a7b8c9d00001",
+      "time": "2025-05-21T21:05:55+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-gov.refund-check.example",
+        "dst_ip": "192.0.2.10",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/loan",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-020",
+        "session_id": "sess-ios-556677"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "Web_Proxy_Log"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "f6a7b8c9-d0e1-4006-f6a7b8c9d0e10001",
+      "time": "2025-05-21T21:05:56+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "k-gov.refund-check.example",
+        "dst_ip": "192.0.2.10",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/loan",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-020",
+        "session_id": "sess-ios-556677"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "noise_metadata": {
+        "duplicate_of": "e5f6a7b8-c9d0-4005-e5f6a7b8c9d00001",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "Web_Proxy_Log"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: Security Warning",
+      "event_id": "g7h8i9j0-k1l2-4007-g7h8i9j0k1l20001",
+      "time": "2025-05-21T21:06:05+09:00",
+      "log_source": "browser_security",
+      "event_type": "web.risk_warning",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Safari"
+      },
+      "network": {
+        "dst_domain": "k-gov.refund-check.example"
+      },
+      "object": {
+        "warning": {
+          "warning_type": "deceptive_site",
+          "ui_warning_shown": true,
+          "user_bypassed_warning": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-020",
+        "session_id": "sess-ios-556677"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": null,
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "iOS_Safari_Security"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise: Background",
+      "event_index": "evt-008",
+      "event_id": "h8i9j0k1-l2m3-4008-h8i9j0k1l2m30001",
+      "time": "2025-05-21T21:10:00+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-ios-9921",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-020"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "가족/지인 사칭 긴급 송금"
+      },
+      "original_source_hint": "Network_Traffic_Log"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 8,
+    "malicious_events": 0,
+    "benign_context_events": 3,
+    "noise_events_included": 5,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "17:58:05",
+        "events": 1,
+        "desc": "공격 SMS 수신"
+      },
+      {
+        "phase": "2-3",
+        "time_range": "21:05:45 - 21:05:56",
+        "events": 4,
+        "desc": "수시간 후 링크 클릭 및 리디렉션 시도"
+      },
+      {
+        "phase": "4",
+        "time_range": "21:06:05",
+        "events": 1,
+        "desc": "보안 경고 발생 및 사용자 중단"
+      }
+    ],
+    "total_elapsed_minutes": 197.4,
+    "key_time_gaps_explained": {
+      "sms_to_click": "사용자가 업무 종료 후 저녁 시간에 메시지를 확인하여 187분 후 클릭",
+      "warning_reaction": "보안 경고 노출 후 약 10초간 고민하다 브라우저를 닫음"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S3(http.redirect) condition not met (hops=0 recorded, requirement >=2).",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "User did not bypass the warning (user_bypassed_warning=false).",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite rules did not fire.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk signals or step-up challenges occurred.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 192,
+      "background_composition": {
+        "messaging_sync": 40,
+        "email_sync": 20,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 50,
+        "utility_widgets": 20,
+        "mdm_checkin": 12,
+        "cloud_backup": 10
+      }
+    }
+  }
+}

@@ -1,0 +1,765 @@
+{
+  "incident_id": "inc-MOB-MAL-023",
+  "case_type": "malicious",
+  "theme": "인증서 갱신/만료 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "multi_session (이탈 후 재접근)",
+  "start_time": "2025-03-19T08:05:00+09:00",
+  "end_time": "2025-03-19T08:24:45+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint",
+    "identity",
+    "financial"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "http.redirect",
+    "form.interaction",
+    "auth.step_up_challenge",
+    "bank.transfer_attempt_flagged",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.35
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [안내] 고객님의 공동인증서 만료가 금일(19일) 24시부로 종료됩니다. 갱신하지 않을 경우 모든 금융거래가 제한됩니다. 즉시 갱신바랍니다. https://cert-update.refund-check.example",
+      "sender_type": "personal_number",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "본인인증",
+      "계좌정보입력",
+      "인증서비밀번호입력",
+      "갱신완료화면"
+    ],
+    "visual_style_notes": [
+      "신뢰감을 주기 위한 푸른색 계열의 UI 구성",
+      "보안 로딩 애니메이션 포함",
+      "실제 기관명이 아닌 일반적인 '공인인증센터' 명칭 사용"
+    ],
+    "form_risk_class": "financial",
+    "fields_requested": [
+      "user_name",
+      "resident_registration_number",
+      "phone_number",
+      "bank_account",
+      "cert_password"
+    ],
+    "detection_cues_for_human_analyst": [
+      "도메인 생성일이 1일 미만임",
+      "비정상적인 다단계 리디렉션",
+      "입력 폼에서 주민등록번호 전체와 비밀번호를 동시에 요구"
+    ]
+  },
+  "persona": {
+    "user_id": "user-6612",
+    "job_title": "신입 인턴",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 출근길에 인증서 만료 문자를 받고 급하게 링크를 클릭했으나, 처음에는 네트워크 불안정으로 이탈함. 이후 사무실 도착 후 다시 접속하여 개인정보와 인증서 비밀번호를 입력함. 공격자는 이를 탈취하여 즉시 타인 계좌 송금을 시도함.",
+    "why_this_behavior": "신입 사원으로서 금융 거래 제한에 대한 두려움이 커서 보안 경고를 무시하고 진행함.",
+    "time_gap_rationale": "SMS 수신 후 첫 클릭까지 2분(이동 중), 재접속까지 약 10분의 간격 발생(사무실 도착)."
+  },
+  "expected_rules": {
+    "must_fire": [
+      "SMISH_REDIRECT_CHAIN",
+      "SENSITIVE_FORM_SEQUENCE"
+    ],
+    "should_fire": [
+      "POST_LURE_FINANCIAL_RISK_SIGNAL"
+    ],
+    "optional": [],
+    "expected_fire_path": {
+      "SMISH_REDIRECT_CHAIN": {
+        "platform": "Android",
+        "trigger_events": [
+          "a001",
+          "a003",
+          "a004"
+        ]
+      },
+      "SENSITIVE_FORM_SEQUENCE": {
+        "platform": "Android",
+        "trigger_events": [
+          "a009"
+        ]
+      },
+      "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+        "platform": "Android",
+        "trigger_events": [
+          "a011",
+          "a012",
+          "a013",
+          "a014"
+        ]
+      }
+    }
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Access",
+      "event_id": "a001",
+      "time": "2025-03-19T08:05:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KR-SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1123",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023",
+        "message_id": "msg-88712"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "mitre_mobile": "T1660",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "mobile_sms_log"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "a001-dup",
+      "time": "2025-03-19T08:05:02+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KR-SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "personal_number",
+        "sender_id": "010-0000-1123",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023",
+        "message_id": "msg-88712"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Initial Access",
+        "mitre_mobile": "T1660",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "a001",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "mobile_sms_log"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise",
+      "event_id": "n001",
+      "time": "2025-03-19T08:06:10+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "http": {
+          "method": "POST",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "http_proxy_log"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: Delivery (First Click)",
+      "event_id": "a003",
+      "time": "2025-03-19T08:07:05+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cert-update.refund-check.example",
+        "dst_ip": "192.0.2.45",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1663",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "dns_server_log"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: Delivery (Redirect)",
+      "event_id": "a004",
+      "time": "2025-03-19T08:07:06+09:00",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-verify.refund-check.example",
+        "dst_ip": "192.0.2.88",
+        "domain_age_days": 1,
+        "http": {
+          "method": "GET",
+          "path": "/renewal/start",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 2,
+        "referrer_chain_domains_masked": [
+          "cert-update.refund-check.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023",
+        "session_id": "sess-and-00991",
+        "redirect_chain_id": "red-1234"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Delivery",
+        "mitre_mobile": "T1417.002",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "http_proxy_log"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise",
+      "event_id": "n002",
+      "time": "2025-03-19T08:08:30+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "http_proxy_log"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise",
+      "event_id": "n003",
+      "time": "2025-03-19T08:12:00+09:00",
+      "log_source": "endpoint",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "mdm_agent_log"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-3: Defense Evasion (Second Attempt)",
+      "event_id": "a008",
+      "time": "2025-03-19T08:18:10+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-verify.refund-check.example",
+        "dst_ip": "192.0.2.88",
+        "domain_age_days": 1,
+        "http": {
+          "method": "POST",
+          "path": "/renewal/auth-page",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023",
+        "session_id": "sess-and-00992"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Defense Evasion",
+        "mitre_mobile": "T1663",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "http_proxy_log"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-4: Collection",
+      "event_id": "a009",
+      "time": "2025-03-19T08:19:45+09:00",
+      "log_source": "web_telemetry",
+      "event_type": "form.interaction",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "secure-verify.refund-check.example"
+      },
+      "object": {
+        "form": {
+          "risk_class": "financial",
+          "submission_attempted": true,
+          "fields_present": [
+            "name",
+            "ssn",
+            "account",
+            "cert_pw"
+          ]
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023",
+        "session_id": "sess-and-00992"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Collection",
+        "mitre_mobile": "T1417.002",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "browser_telemetry"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-Noise",
+      "event_id": "n004",
+      "time": "2025-03-19T08:20:10+09:00",
+      "log_source": "network",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "api.masked-saas.example"
+      },
+      "object": {
+        "traffic_category": "push_notification"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "malicious",
+        "attack_stage": null,
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "http_proxy_log"
+    },
+    {
+      "_event_index": "evt-011",
+      "_phase": "PHASE-5: Impact (MFA Burst 1)",
+      "event_id": "a011",
+      "time": "2025-03-19T08:22:10+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.88"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "auth-6612-v1",
+          "result": "FAIL",
+          "reason": "TIMEOUT"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "auth_server_log"
+    },
+    {
+      "_event_index": "evt-012",
+      "_phase": "PHASE-5: Impact (MFA Burst 2)",
+      "event_id": "a012",
+      "time": "2025-03-19T08:22:40+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.88"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "auth-6612-v2",
+          "result": "FAIL",
+          "reason": "INVALID_CODE"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "auth_server_log"
+    },
+    {
+      "_event_index": "evt-013",
+      "_phase": "PHASE-5: Impact (MFA Burst 3)",
+      "event_id": "a013",
+      "time": "2025-03-19T08:23:10+09:00",
+      "log_source": "identity",
+      "event_type": "auth.step_up_challenge",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.88"
+      },
+      "object": {
+        "auth": {
+          "method": "SMS_OTP",
+          "challenge_id": "auth-6612-v3",
+          "result": "SUCCESS",
+          "reason": "BURST_ATTEMPT_SUCCESS"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Credential Access",
+        "mitre_mobile": "T1634",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "auth_server_log"
+    },
+    {
+      "_event_index": "evt-014",
+      "_phase": "PHASE-5: Impact (FDS Flagged)",
+      "event_id": "a014",
+      "time": "2025-03-19T08:24:45+09:00",
+      "log_source": "financial",
+      "event_type": "bank.transfer_attempt_flagged",
+      "severity": "CRITICAL",
+      "entity": {
+        "user_id": "user-6612",
+        "device_id": "dev-and-9901",
+        "platform": "Android",
+        "os_version": "Android 13",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "src_ip": "192.0.2.88"
+      },
+      "object": {
+        "risk_decision": "BLOCKED",
+        "result": "TRANSFER_PREVENTED",
+        "details": {
+          "amount": 5000000,
+          "target_account": "998-22-xxxxxx",
+          "reason": "UNUSUAL_DEVICE_IP_COMBINATION"
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-MAL-023",
+        "bank_corr_id": "tx-992011"
+      },
+      "label": {
+        "ground_truth": "malicious",
+        "case_type": "malicious",
+        "attack_stage": "Impact",
+        "mitre_mobile": "T1636.004",
+        "theme": "인증서 갱신/만료 사칭"
+      },
+      "original_source_hint": "bank_fds_log"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 15,
+    "malicious_events": 10,
+    "benign_context_events": 0,
+    "noise_events_included": 5,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "08:05:00 - 08:05:02",
+        "events": 2,
+        "desc": "SMS 수신"
+      },
+      {
+        "phase": "2",
+        "time_range": "08:07:05 - 08:07:06",
+        "events": 2,
+        "desc": "1차 접속 시도 (리디렉션)"
+      },
+      {
+        "phase": "3",
+        "time_range": "08:18:10 - 08:19:45",
+        "events": 2,
+        "desc": "2차 접속 및 정보 탈취"
+      },
+      {
+        "phase": "4",
+        "time_range": "08:22:10 - 08:24:45",
+        "events": 4,
+        "desc": "MFA 우회 및 송금 시도 차단"
+      }
+    ],
+    "total_elapsed_minutes": 19.75,
+    "key_time_gaps_explained": {
+      "initial_lure_to_first_click": "125 seconds (사용자 메시지 확인 시간)",
+      "abandonment_gap": "664 seconds (네트워크 문제 또는 이동으로 인한 이탈 후 재접속)",
+      "collection_to_exploitation": "145 seconds (공격자의 정보 검증 및 송금 시도 준비)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": true,
+      "fire_path": "a001 -> a003 -> a004",
+      "trigger": "SMS urgency + DNS age(1d) + HTTP Redirect within 180s (Actual: 126s)",
+      "within_window": true
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Warning action not captured (WB-3: shown=false)",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> a009",
+      "trigger": "Prerequisite met -> Form submission(risk=financial) within 600s of second session start",
+      "within_window": true
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": true,
+      "fire_path": "SMISH_REDIRECT_CHAIN -> a011, a012, a013, a014",
+      "trigger": "Prerequisite met -> MFA Burst (3 attempts within 60s) AND Bank transfer blocked",
+      "within_window": true
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 185,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 20,
+        "push_notification": 35,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 15,
+        "cloud_backup": 20
+      }
+    }
+  }
+}

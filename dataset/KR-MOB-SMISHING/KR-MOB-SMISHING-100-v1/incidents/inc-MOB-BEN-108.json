@@ -1,0 +1,485 @@
+{
+  "incident_id": "inc-MOB-BEN-108",
+  "case_type": "benign_lookalike",
+  "theme": "모바일 금융앱 업데이트 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "rapid_chain",
+  "start_time": "2026-07-07T10:30:00Z",
+  "end_time": "2026-07-07T10:48:45Z",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "endpoint",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [금융보안센터] 고객님, 필수 보안 모듈 업데이트가 완료되지 않았습니다. 07월 07일까지 미업데이트 시 금융 서비스 이용이 제한될 수 있습니다. 설치: https://safe-auth-update.bank-service.example/v2",
+      "sender_type": "short_code",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Landing",
+      "Permission Request",
+      "Download Started"
+    ],
+    "visual_style_notes": [
+      "Standard system alert style",
+      "Urgency countdown timer"
+    ],
+    "form_risk_class": "malicious_apk_distribution",
+    "fields_requested": [],
+    "detection_cues_for_human_analyst": [
+      "URL uses .example TLD",
+      "Suspiciously short domain age",
+      "Aggressive push for accessibility permission"
+    ]
+  },
+  "persona": {
+    "user_id": "user-8821",
+    "job_title": "고령 사용자",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 스미싱 문자를 받고 피싱 사이트에 접속하여 악성 앱 다운로드 페이지까지 도달했으나, 브라우저의 파일 다운로드 경고창을 보고 겁을 먹어 브라우저를 종료함.",
+    "why_this_behavior": "고령 사용자의 경우 보안 경고 팝업이 뜨면 해킹되었다고 판단하여 즉시 앱을 닫는 경향이 있음.",
+    "time_gap_rationale": "문자 수신 후 확인까지 3분, 도메인 리디렉션 5초, 페이지 체류 45초."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "e001-f2f2-494b-97e3-057026779421",
+      "time": "2026-07-07T10:30:00Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.15",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-108"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "weather_widget_sync"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "e002-a1b2-c3d4-e5f6-777788889999",
+      "time": "2026-07-07T10:33:12Z",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "Mobile-ISP-A",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "short_code",
+        "sender_id": "1588-0000",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-108",
+        "message_id": "msg-9921-android"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1660",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "sms_inbox_telemetry"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "e003-8822-4a11-bba2-cc2233445566",
+      "time": "2026-07-07T10:34:45Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.44",
+        "http": {
+          "method": "POST",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-108"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "messaging_sync"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-2: Redirect Chain",
+      "event_id": "e004-9988-1122-3344-556677889900",
+      "time": "2026-07-07T10:36:10Z",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "MEDIUM",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "safe-auth-update.bank-service.example",
+        "dst_ip": "192.0.2.10",
+        "ttl_sec": 30,
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-108"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "dns_resolver_logs"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: Redirect Chain",
+      "event_id": "e005-7777-6666-5555-444433332222",
+      "time": "2026-07-07T10:36:12Z",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn-origin-bank.update-auth.example",
+        "dst_ip": "192.0.2.22",
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "http": {
+          "method": "GET",
+          "path": "/v2/download",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 2,
+        "referrer_chain_domains_masked": [
+          "safe-auth-update.bank-service.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-108",
+        "session_id": "sess-and-v2-4411"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "http_proxy_logs"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "e006-7777-6666-5555-444433332222-DUP",
+      "time": "2026-07-07T10:36:13Z",
+      "log_source": "network",
+      "event_type": "http.redirect",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn-origin-bank.update-auth.example",
+        "dst_ip": "192.0.2.22",
+        "domain_age_days": 1,
+        "domain_reputation": 0.1,
+        "http": {
+          "method": "GET",
+          "path": "/v2/download",
+          "status_code": 302
+        }
+      },
+      "object": {
+        "redirect_hops_total": 2,
+        "referrer_chain_domains_masked": [
+          "safe-auth-update.bank-service.example"
+        ]
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-108",
+        "session_id": "sess-and-v2-4411"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "noise_metadata": {
+        "duplicate_of": "e005-7777-6666-5555-444433332222",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "original_source_hint": "http_proxy_logs"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-3: Malicious Interaction",
+      "event_id": "e007-abcd-1234-5678-9900-aabbccddeeff",
+      "time": "2026-07-07T10:36:55Z",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "HIGH",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "bank-secure-update.cdn-origin.example",
+        "dst_ip": "192.0.2.33",
+        "domain_age_days": 1,
+        "domain_reputation": 0.05,
+        "http": {
+          "method": "GET",
+          "path": "/assets/bank_security_v3.apk",
+          "status_code": 200
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-108",
+        "session_id": "sess-and-v2-4411"
+      },
+      "label": {
+        "ground_truth": "suspicious",
+        "case_type": "benign_lookalike",
+        "attack_stage": "attempted_delivery",
+        "mitre_mobile": "T1663",
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "chrome_browser_network_events"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise: Background",
+      "event_id": "e008-5566-7788-9900-112233445566",
+      "time": "2026-07-07T10:40:00Z",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-8821",
+        "device_id": "dev-and-9902",
+        "platform": "Android",
+        "os_version": "Android 11",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.88",
+        "http": {
+          "method": "GET",
+          "status_code": 200
+        }
+      },
+      "object": {},
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-108"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign_lookalike",
+        "attack_stage": null,
+        "theme": "모바일 금융앱 업데이트 사칭"
+      },
+      "original_source_hint": "cdn_traffic"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 8,
+    "malicious_events": 0,
+    "benign_context_events": 3,
+    "noise_events_included": 5,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "10:33:12",
+        "events": 1,
+        "desc": "SMS Lure received"
+      },
+      {
+        "phase": "Redirect Chain",
+        "time_range": "10:36:10 - 10:36:13",
+        "events": 3,
+        "desc": "Accessing short-lived domain and redirecting to APK host"
+      },
+      {
+        "phase": "Interaction",
+        "time_range": "10:36:55",
+        "events": 1,
+        "desc": "User land on APK download page but stops"
+      }
+    ],
+    "total_elapsed_minutes": 18.75,
+    "key_time_gaps_explained": {
+      "sms_to_click": "2분 58초 (사용자가 문자 확인 후 링크 클릭)",
+      "dwell_time": "45초 (사용자가 악성 페이지 내용을 읽는 시간)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Missing S3 (http.redirect/request) with hops >= 2 within 180s from S1. Although S3 exists, S2 and S3 are after 180s window from S1.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No web.risk_warning event generated.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed and no sensitive form submission detected.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed and no financial risk events occurred.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 192,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 20,
+        "push_notification": 40,
+        "software_update": 10,
+        "cdn_traffic": 50,
+        "utility_widgets": 20,
+        "mdm_checkin": 0,
+        "cloud_backup": 27
+      }
+    }
+  }
+}

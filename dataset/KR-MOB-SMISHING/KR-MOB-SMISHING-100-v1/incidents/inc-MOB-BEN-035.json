@@ -1,0 +1,489 @@
+{
+  "incident_id": "inc-MOB-BEN-035",
+  "case_type": "benign",
+  "theme": "결제/승인 확인 사칭",
+  "difficulty_tier": "DT-HIGH",
+  "timeline_profile": "TP-1",
+  "start_time": "2025-07-24T12:35:00+09:00",
+  "end_time": "2025-07-24T12:45:30+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint"
+  ],
+  "full_log_sources_used": [
+    "sms.received",
+    "dns.query",
+    "http.request",
+    "background.normal_traffic"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.65
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [Web발급] 07/24 12:35 카드 승인 458,000원(일시불) 본인 요청 아닐 시 즉시 확인 및 신고 바랍니다. https://pay-service-center.example/status",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "정상 카드사 메인",
+      "로그인",
+      "결제 내역 조회"
+    ],
+    "visual_style_notes": [
+      "정상적인 금융 기관 UI"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "id",
+      "password"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-finance-9921",
+    "job_title": "경리/회계",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "사용자가 정상적인 카드 결제 확인 메시지를 수신하고 공식 홈페이지에 접속하여 내역을 확인하는 정상 시나리오",
+    "why_this_behavior": "사용자는 업무 특성상 결제 내역에 민감하며, 제공된 링크가 실제 신뢰하는 기관의 도메인(.example)임을 확인 후 접속",
+    "time_gap_rationale": "메시지 수신 후 즉시 확인을 위해 약 2분 내 접속 시도"
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-0: Background",
+      "event_id": "4c9e8211-7365-4f40-8480-164998730911",
+      "time": "2025-07-24T12:31:05+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-9921",
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.45"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-035"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "MDM_AGENT_LOG"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-1: Delivery",
+      "event_id": "a90b82c1-8841-411a-9f44-987722109abc",
+      "time": "2025-07-24T12:35:00+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-9921",
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-035",
+        "message_id": "msg-99281-20250724"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "communication",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise: Duplicate",
+      "event_id": "d1101e42-9981-421c-a112-882290199f1c",
+      "time": "2025-07-24T12:35:02+09:00",
+      "log_source": "sms.received",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-9921",
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "SKT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": true
+        }
+      },
+      "noise_metadata": {
+        "duplicate_of": "a90b82c1-8841-411a-9f44-987722109abc",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-035",
+        "message_id": "msg-99281-20250724"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "communication",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "SMS_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise",
+      "event_id": "677d2191-2291-4411-b112-998817266152",
+      "time": "2025-07-24T12:36:12+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-9921",
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.12"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-035"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "APP_TRAFFIC_LOG"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: DNS Query",
+      "event_id": "2d1182c4-7261-4c12-9011-887721556011",
+      "time": "2025-07-24T12:37:05+09:00",
+      "log_source": "dns.query",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-9921",
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "pay-service-center.example",
+        "dst_ip": "198.51.100.40",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-035"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "OS_RESOLVER_LOG"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-3: HTTP Request",
+      "event_id": "ff9182a1-0021-421c-bd11-998771221ac1",
+      "time": "2025-07-24T12:37:08+09:00",
+      "log_source": "http.request",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-9921",
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "pay-service-center.example",
+        "dst_ip": "198.51.100.40",
+        "domain_age_days": 1240,
+        "http": {
+          "method": "GET",
+          "path": "/status",
+          "status_code": 200,
+          "content_type": "text/html",
+          "latency_ms": 45
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-035",
+        "session_id": "sess-and-pay-99281"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "WEB_PROXY_LOG"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise",
+      "event_id": "772c1912-1111-4421-9921-228177366151",
+      "time": "2025-07-24T12:39:15+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-9921",
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.88"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-035"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "idle",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "APP_TRAFFIC_LOG"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-Noise",
+      "event_id": "992b82c1-3311-4f11-a112-998827311152",
+      "time": "2025-07-24T12:42:00+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-9921",
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.201"
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-035"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "normal_browsing",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "CDN_GATEWAY_LOG"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-Noise",
+      "event_id": "cc1192d4-5512-4a11-b112-998177211153",
+      "time": "2025-07-24T12:45:30+09:00",
+      "log_source": "background.normal_traffic",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-finance-9921",
+        "device_id": "dev-and-8821",
+        "platform": "Android",
+        "os_version": "Android 14",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "update.masked-corp.example",
+        "dst_ip": "203.0.113.10"
+      },
+      "object": {
+        "traffic_category": "software_update"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-035"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "activity_stage": "system_maintenance",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "SYSTEM_UPDATE_LOG"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 9,
+    "malicious_events": 0,
+    "benign_context_events": 4,
+    "noise_events_included": 5,
+    "phases": [
+      {
+        "phase": "Delivery",
+        "time_range": "12:35:00",
+        "events": 2,
+        "desc": "정상 카드사 알림 SMS 수신 및 중복 수신"
+      },
+      {
+        "phase": "Navigation",
+        "time_range": "12:37:05 - 12:37:08",
+        "events": 2,
+        "desc": "정상 도메인 DNS 쿼리 및 HTTP 접속"
+      }
+    ],
+    "total_elapsed_minutes": 14.4,
+    "key_time_gaps_explained": {
+      "SMS_to_DNS": "사용자가 메시지를 확인하고 링크를 클릭하는 데 소요된 시간 (125초)",
+      "DNS_to_HTTP": "도메인 해석 후 브라우저 렌더링 시작 시간 (3초)"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S2 condition failed: domain_age_days (1240) is not <= 3, and S3 condition failed: no redirects or multiple hops detected.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No web.risk_warning event generated for benign domain.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN not met.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN not met and no financial risk signals observed.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 191,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 15,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 26,
+        "cloud_backup": 10
+      }
+    }
+  }
+}

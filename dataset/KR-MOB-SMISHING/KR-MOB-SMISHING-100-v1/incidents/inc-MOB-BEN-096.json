@@ -1,0 +1,529 @@
+{
+  "incident_id": "inc-MOB-BEN-096",
+  "case_type": "benign",
+  "theme": "결제/승인 확인 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "TP-1",
+  "start_time": "2025-08-15T14:05:00+09:00",
+  "end_time": "2025-08-15T14:28:45+09:00",
+  "platform_coverage": [
+    "Android"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "endpoint",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "Android",
+      "text": "[TRAINING] [카드승인] 08/15 14:05 982,000원(해외결제) 본인요청 아닐시 즉시 신고/취소: https://pay-check.corporate.example",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "landing",
+      "login"
+    ],
+    "visual_style_notes": [
+      "Clean corporate design",
+      "Standard HTTPS implementation"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "user_id",
+      "password"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "user-9281",
+    "job_title": "영업/현장직",
+    "risk_profile": "MEDIUM",
+    "devices": [
+      {
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A user receives a legitimate card approval alert from their corporate card provider. They check the details on the official portal and proceed with normal business activities.",
+    "why_this_behavior": "The domain is a verified corporate asset, and the user's interaction follows standard operational procedures without any security warnings.",
+    "time_gap_rationale": "SMS to site visit takes about 2 minutes as the user was in the middle of field work."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Background",
+      "event_id": "f8a2e1b1-11c2-4a7b-8d9e-111111111111",
+      "time": "2025-08-15T14:03:10+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.15"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "app_traffic_log"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-2: Communication",
+      "event_id": "a9b8c7d6-e5f4-3210-9876-543210fedcba",
+      "time": "2025-08-15T14:05:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "MobileNet",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096",
+        "message_id": "msg-0982-card"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "sms_gateway"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "d1e2f3a4-b5c6-7d8e-9f0a-1b2c3d4e5f6g",
+      "time": "2025-08-15T14:05:02+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "MobileNet",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true
+      },
+      "noise_metadata": {
+        "duplicate_of": "a9b8c7d6-e5f4-3210-9876-543210fedcba",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096",
+        "message_id": "msg-0982-card"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "sms_gateway"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-3: Normal Browsing",
+      "event_id": "12345678-1234-1234-1234-123456789012",
+      "time": "2025-08-15T14:07:15+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "pay-check.corporate.example",
+        "dst_ip": "198.51.100.42",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.98,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "system_dns_cache"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-3: Normal Browsing",
+      "event_id": "b2c3d4e5-f6a7-8b9c-0d1e-2f3a4b5c6d7e",
+      "time": "2025-08-15T14:07:18+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Chrome Mobile"
+      },
+      "network": {
+        "dst_domain": "pay-check.corporate.example",
+        "dst_ip": "198.51.100.42",
+        "tls_version": "TLSv1.3",
+        "domain_age_days": 1240,
+        "http": {
+          "method": "GET",
+          "path": "/",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096",
+        "session_id": "sess-and-9922-legit"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "web_proxy"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-4: Background Traffic",
+      "event_id": "8e7d6c5b-4a32-10f9-8e7d-6c5b4a3210f9",
+      "time": "2025-08-15T14:12:00+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "maps-api.masked-geo.example",
+        "dst_ip": "203.0.113.88"
+      },
+      "object": {
+        "traffic_category": "location_service"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "app_traffic_log"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-4: Background Traffic",
+      "event_id": "c9d8e7f6-a5b4-3210-fedc-ba9876543210",
+      "time": "2025-08-15T14:15:30+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.102"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "app_traffic_log"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-4: Background Traffic",
+      "event_id": "f1e2d3c4-b5a6-9788-7766-554433221100",
+      "time": "2025-08-15T14:20:45+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "cdn.masked-static.example",
+        "dst_ip": "203.0.113.200"
+      },
+      "object": {
+        "traffic_category": "cdn_traffic"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "app_traffic_log"
+    },
+    {
+      "_event_index": "evt-009",
+      "_phase": "PHASE-4: Background Traffic",
+      "event_id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+      "time": "2025-08-15T14:25:10+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "api.masked-saas.example",
+        "dst_ip": "203.0.113.44"
+      },
+      "object": {
+        "traffic_category": "push_notification"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "app_traffic_log"
+    },
+    {
+      "_event_index": "evt-010",
+      "_phase": "PHASE-4: Background Traffic",
+      "event_id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+      "time": "2025-08-15T14:28:45+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "user-9281",
+        "device_id": "dev-and-7742",
+        "platform": "Android",
+        "os_version": "13.0",
+        "mdm_enrolled": false,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mail.masked-corp.example",
+        "dst_ip": "203.0.113.11"
+      },
+      "object": {
+        "traffic_category": "email_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-096"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "theme": "결제/승인 확인 사칭"
+      },
+      "original_source_hint": "app_traffic_log"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 10,
+    "malicious_events": 0,
+    "benign_context_events": 4,
+    "noise_events_included": 6,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "14:03:10 - 14:05:02",
+        "events": 3,
+        "desc": "Pre-alert background and SMS receipt"
+      },
+      {
+        "phase": "2",
+        "time_range": "14:07:15 - 14:07:18",
+        "events": 2,
+        "desc": "Legitimate portal check"
+      },
+      {
+        "phase": "3",
+        "time_range": "14:12:00 - 14:28:45",
+        "events": 5,
+        "desc": "Normal post-check background traffic"
+      }
+    ],
+    "total_elapsed_minutes": 25.58,
+    "key_time_gaps_explained": {
+      "sms_to_check": "135 seconds gap as user opens the link from a verified sender",
+      "check_to_background": "Extended background activity showing normal device usage after verifying the transaction"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Domain reputation is high (0.98) and age is old (1240 days). No redirect chain exists.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning was generated for a legitimate domain.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No prerequisite rules fired and domain is not malicious.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No financial risk signals or step-up challenges detected.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 190,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 0,
+        "cloud_backup": 40
+      }
+    }
+  }
+}

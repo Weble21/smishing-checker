@@ -1,0 +1,467 @@
+{
+  "incident_id": "inc-MOB-BEN-077",
+  "case_type": "benign",
+  "theme": "공공기관 과태료/세금 사칭",
+  "difficulty_tier": "DT-MEDIUM",
+  "timeline_profile": "delayed_response (수시간 후 클릭)",
+  "start_time": "2025-11-11T14:41:00+09:00",
+  "end_time": "2025-11-11T16:55:42+09:00",
+  "platform_coverage": [
+    "iOS"
+  ],
+  "minimum_log_sources_required": [
+    "messaging",
+    "network",
+    "endpoint"
+  ],
+  "full_log_sources_used": [
+    "messaging",
+    "network",
+    "endpoint",
+    "noise"
+  ],
+  "noise_model_applied": {
+    "profile": "standard_enterprise",
+    "background_event_ratio": 0.88
+  },
+  "message_samples_used": [
+    {
+      "target_device": "dv-ios-0992",
+      "text": "[TRAINING] [정부24] 고객님, 미납된 지방세 과태료가 있습니다. 11월 15일까지 납부하지 않을 경우 가산금이 발생하오니 아래 링크에서 확인 바랍니다. https://gov-portal.official-site.example/taxes",
+      "sender_type": "verified_sender",
+      "delivery_channel": "SMS"
+    }
+  ],
+  "page_construction_detail_safe": {
+    "no_brand_copy": true,
+    "stepper_ui_flow": [
+      "Login",
+      "Tax Inquiry",
+      "Payment Confirmation"
+    ],
+    "visual_style_notes": [
+      "Standard government design language",
+      "Verified SSL certificate from major CA"
+    ],
+    "form_risk_class": "legitimate",
+    "fields_requested": [
+      "taxpayer_id",
+      "verification_code"
+    ],
+    "detection_cues_for_human_analyst": []
+  },
+  "persona": {
+    "user_id": "usr-intern-88",
+    "job_title": "신입 인턴",
+    "risk_profile": "HIGH",
+    "devices": [
+      {
+        "device_id": "dv-ios-0992",
+        "platform": "iOS",
+        "os_version": "17.4.1"
+      }
+    ]
+  },
+  "behavioral_model_for_this_incident": {
+    "scenario": "A user receives a legitimate tax notification from a government portal. Since the user is an intern and cautious about finances, they check the link after a few hours of work. The interaction is entirely with a legitimate site.",
+    "why_this_behavior": "The user is careful and only accesses verified institutional domains. The delay is due to work hours.",
+    "time_gap_rationale": "SMS to click gap is ~2 hours (delayed response). Dwell time on the legitimate site is sufficient for reading notices."
+  },
+  "expected_rules": {
+    "must_fire": [],
+    "should_fire": [],
+    "optional": [],
+    "expected_fire_path": {}
+  },
+  "event_stream": [
+    {
+      "_event_index": "evt-001",
+      "_phase": "PHASE-1: Initial Messaging",
+      "event_id": "b3f021e1-45a7-4b71-9c8a-c47285519f01",
+      "time": "2025-11-11T14:41:00+09:00",
+      "log_source": "messaging",
+      "event_type": "sms.received",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-intern-88",
+        "device_id": "dv-ios-0992",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "carrier": "KT",
+        "carrier_network_type": "5G",
+        "roaming": false
+      },
+      "object": {
+        "sender_type": "verified_sender",
+        "sender_id": "1588-xxxx",
+        "contains_url": true,
+        "message_features": {
+          "urgency_language": true,
+          "sender_verification": true
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-077",
+        "message_id": "msg-8829-ios"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "SMS Gateway"
+    },
+    {
+      "_event_index": "evt-002",
+      "_phase": "PHASE-Noise",
+      "event_id": "c1a2b3c4-d5e6-4f7g-8h9i-j0k1l2m3n4o5",
+      "time": "2025-11-11T14:45:12+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-intern-88",
+        "device_id": "dv-ios-0992",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.10"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-077"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "system_maintenance",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "MDM Agent"
+    },
+    {
+      "_event_index": "evt-003",
+      "_phase": "PHASE-Noise (Duplicate)",
+      "event_id": "d9817625-2718-493a-829b-bc223910c223",
+      "time": "2025-11-11T14:45:15+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-intern-88",
+        "device_id": "dv-ios-0992",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "mdm.masked-corp.example",
+        "dst_ip": "203.0.113.10"
+      },
+      "object": {
+        "traffic_category": "mdm_checkin"
+      },
+      "noise_metadata": {
+        "duplicate_of": "c1a2b3c4-d5e6-4f7g-8h9i-j0k1l2m3n4o5",
+        "reason": "log_ingestion_delay_retry"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-077"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "system_maintenance",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "MDM Agent"
+    },
+    {
+      "_event_index": "evt-004",
+      "_phase": "PHASE-Noise",
+      "event_id": "e2f3g4h5-i6j7-k8l9-m0n1-o2p3q4r5s6t7",
+      "time": "2025-11-11T15:10:22+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-intern-88",
+        "device_id": "dv-ios-0992",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "messenger-api.masked-service.example",
+        "dst_ip": "203.0.113.45"
+      },
+      "object": {
+        "traffic_category": "messaging_sync"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-077"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "communication",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "App Network Monitor"
+    },
+    {
+      "_event_index": "evt-005",
+      "_phase": "PHASE-2: Delayed User Action",
+      "event_id": "a98442e1-7c91-4e12-b88a-111222333444",
+      "time": "2025-11-11T16:50:00+09:00",
+      "log_source": "network",
+      "event_type": "dns.query",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-intern-88",
+        "device_id": "dv-ios-0992",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-portal.official-site.example",
+        "dst_ip": "198.51.100.22",
+        "ttl_sec": 3600,
+        "domain_age_days": 1240,
+        "domain_reputation": 0.99,
+        "resolver": "8.8.8.8"
+      },
+      "object": {
+        "qtype": "A"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-077"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "OS DNS Resolver"
+    },
+    {
+      "_event_index": "evt-006",
+      "_phase": "PHASE-2: Delayed User Action",
+      "event_id": "f8a7b6c5-d4e3-2f1g-0h9i-j8k7l6m5n4o3",
+      "time": "2025-11-11T16:50:05+09:00",
+      "log_source": "network",
+      "event_type": "http.request",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-intern-88",
+        "device_id": "dv-ios-0992",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN",
+        "browser": "Mobile Safari"
+      },
+      "network": {
+        "dst_domain": "gov-portal.official-site.example",
+        "dst_ip": "198.51.100.22",
+        "tls_version": "TLSv1.3",
+        "http": {
+          "method": "GET",
+          "path": "/taxes",
+          "status_code": 200,
+          "content_type": "text/html"
+        }
+      },
+      "object": {
+        "user_initiated": true
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-077",
+        "session_id": "sess-ios-legit-9981"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Browser Telemetry"
+    },
+    {
+      "_event_index": "evt-007",
+      "_phase": "PHASE-Noise",
+      "event_id": "8c7b6a5e-4d3c-2b1a-0f9e-8d7c6b5a4f3e",
+      "time": "2025-11-11T16:52:10+09:00",
+      "log_source": "noise",
+      "event_type": "background.normal_traffic",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-intern-88",
+        "device_id": "dv-ios-0992",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "weather.masked-info.example",
+        "dst_ip": "203.0.113.88"
+      },
+      "object": {
+        "traffic_category": "utility_widgets"
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-077"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "idle",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Widget Service"
+    },
+    {
+      "_event_index": "evt-008",
+      "_phase": "PHASE-3: Legitimate Behavior",
+      "event_id": "e4d3c2b1-a0f9-8e7d-6c5b-4a3f2e1d0c9b",
+      "time": "2025-11-11T16:55:42+09:00",
+      "log_source": "endpoint",
+      "event_type": "ios.web.behavior",
+      "severity": "LOW",
+      "entity": {
+        "user_id": "usr-intern-88",
+        "device_id": "dv-ios-0992",
+        "platform": "iOS",
+        "os_version": "17.4.1",
+        "mdm_enrolled": true,
+        "device_fingerprint_status": "KNOWN"
+      },
+      "network": {
+        "dst_domain": "gov-portal.official-site.example",
+        "domain_age_days": 1240
+      },
+      "object": {
+        "behavior": {
+          "signal": "navigation",
+          "user_interaction": "continued",
+          "dwell_time_ms": 120000,
+          "form_focus_detected": false
+        }
+      },
+      "correlation": {
+        "incident_id": "inc-MOB-BEN-077",
+        "session_id": "sess-ios-legit-9981"
+      },
+      "label": {
+        "ground_truth": "benign",
+        "case_type": "benign",
+        "attack_stage": null,
+        "activity_stage": "normal_browsing",
+        "theme": "공공기관 과태료/세금 사칭"
+      },
+      "original_source_hint": "Webkit Behavioral Signal"
+    }
+  ],
+  "event_stream_timeline_summary": {
+    "total_events": 8,
+    "malicious_events": 0,
+    "benign_context_events": 3,
+    "noise_events_included": 5,
+    "phases": [
+      {
+        "phase": "1",
+        "time_range": "14:41:00",
+        "events": 1,
+        "desc": "SMS notification received"
+      },
+      {
+        "phase": "2",
+        "time_range": "16:50:00 - 16:50:05",
+        "events": 2,
+        "desc": "Delayed browsing to official site"
+      },
+      {
+        "phase": "3",
+        "time_range": "16:55:42",
+        "events": 1,
+        "desc": "Normal session conclusion"
+      }
+    ],
+    "total_elapsed_minutes": 134.7,
+    "key_time_gaps_explained": {
+      "sms_to_click": "129 minutes delay reflecting work-hour latency",
+      "session_duration": "5 minutes total interaction time"
+    }
+  },
+  "rule_fire_verification": {
+    "SMISH_REDIRECT_CHAIN": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "S1 exists but S2/S3 conditions (domain age, redirect chain) are not met. Domain is long-standing and legitimate.",
+      "within_window": false
+    },
+    "PHISH_WARNING_BYPASS": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "No risk warning was generated for a legitimate domain.",
+      "within_window": false
+    },
+    "SENSITIVE_FORM_SEQUENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed.",
+      "within_window": false
+    },
+    "PLATFORM_DIVERGENCE": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Single platform incident — no cross-platform signal available.",
+      "within_window": false
+    },
+    "POST_LURE_FINANCIAL_RISK_SIGNAL": {
+      "fires": false,
+      "fire_path": "null",
+      "trigger": "Prerequisite SMISH_REDIRECT_CHAIN failed.",
+      "within_window": false
+    }
+  },
+  "scaling_template": {
+    "to_reach_200_events": {
+      "background_events_to_add": 192,
+      "background_composition": {
+        "messaging_sync": 25,
+        "email_sync": 25,
+        "push_notification": 30,
+        "software_update": 10,
+        "cdn_traffic": 40,
+        "utility_widgets": 20,
+        "mdm_checkin": 30,
+        "cloud_backup": 12
+      }
+    }
+  }
+}

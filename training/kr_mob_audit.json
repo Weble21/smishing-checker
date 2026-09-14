@@ -1,0 +1,57 @@
+{
+  "json_files": 100,
+  "parse_failures": [],
+  "incident_case_counts": {
+    "benign": 31,
+    "benign_lookalike": 32,
+    "malicious": 37
+  },
+  "duplicate_incident_ids": 0,
+  "theme_counts": {
+    "모바일 금융앱 업데이트 사칭": 6,
+    "정부지원금/환급금 사칭": 7,
+    "가족/지인 사칭 긴급 송금": 12,
+    "채용/면접 결과 사칭": 12,
+    "통신사 요금/데이터 사칭": 9,
+    "계정 보안 경고 사칭": 13,
+    "인증서 갱신/만료 사칭": 12,
+    "택배/배송 실패 사칭": 9,
+    "결제/승인 확인 사칭": 9,
+    "채용/면접 결과 안내": 1,
+    "결제/승인 확인 사칭 (정상)": 1,
+    "결제/승인 확인 사칭 (정상 서비스)": 1,
+    "공공기관 과태료/세금 사칭": 6,
+    "계정 보안 경고 사칭 (정상 서비스)": 1,
+    "통신사 요금/데이터 확인": 1
+  },
+  "incidents_without_message": [],
+  "sms_sample_count": 104,
+  "sms_by_case": {
+    "benign": 31,
+    "benign_lookalike": 32,
+    "malicious": 41
+  },
+  "empty_messages": 0,
+  "watermarked_messages": 104,
+  "messages_with_url_by_case": {
+    "benign": 30,
+    "benign_lookalike": 32,
+    "malicious": 41
+  },
+  "invalid_url_incidents": [],
+  "unique_hosts": 90,
+  "example_host_count": 90,
+  "registered_domain_occurrences_by_case": {},
+  "unique_clean_messages": 104,
+  "duplicate_message_groups": 0,
+  "exact_conflicting_binary_labels": [],
+  "unique_templates": 103,
+  "templates_spanning_incidents": 0,
+  "exact_overlap_with_local_synthetic_sets": 0,
+  "sms_event_ground_truth": {
+    "benign": 41,
+    "suspicious": 64,
+    "malicious": 16
+  },
+  "note": "Incident outcome labels are not automatically SMS labels. Review benign_lookalike and mixed incidents."
+}
