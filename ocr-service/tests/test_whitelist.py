@@ -28,8 +28,11 @@ def test_message_url_pair_policy(row):
         [result(row["url"])], message,
     )
     # UNKNOWN is deliberately injected: CSV labels must not become model evidence.
-    # An unverified URL alone no longer raises the final grade.
-    assert level == "LOW"
+    # Unverified URLs are cautionary; direct/indirect lures may raise HIGH.
+    if row["url_category"] == "official" and row["semantic_match"] == "True":
+        assert level == "LOW"
+    elif row["url_category"] != "official":
+        assert level in {"MEDIUM", "HIGH"}
 
 
 def test_shared_domain_keeps_all_brands():
@@ -49,7 +52,7 @@ def test_lookalike_is_not_whitelisted(host):
 
 
 @pytest.mark.parametrize("verdict,score,expected", [
-    ("DANGEROUS", 0.05, "LOW"), ("SUSPICIOUS", 0.05, "LOW"),
+    ("DANGEROUS", 0.05, "HIGH"), ("SUSPICIOUS", 0.05, "LOW"),
     ("UNKNOWN", 0.99, "LOW"),
 ])
 def test_official_domain_set_is_low_despite_url_model_noise(verdict, score, expected):

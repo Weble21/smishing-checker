@@ -146,7 +146,7 @@ async def test_dangerous_url_without_sensitive_request_becomes_caution() -> None
         [url_result],
     )
     assert url_result.verdict == "DANGEROUS"
-    assert risk_level == "MEDIUM"
+    assert risk_level == "HIGH"
 
 
 def test_unknown_reputation_alone_does_not_raise_grade() -> None:
@@ -162,7 +162,7 @@ def test_unknown_reputation_alone_does_not_raise_grade() -> None:
         TextAnalysisResult(label="NORMAL", riskScore=0.05),
         [unknown],
     )
-    assert risk_level == "LOW"
+    assert risk_level == "MEDIUM"
 
 
 def test_high_text_score_without_request_stays_low() -> None:
@@ -171,7 +171,7 @@ def test_high_text_score_without_request_stays_low() -> None:
         [],
     )
     assert risk_level == "LOW"
-    assert "안전이 확인" in summary
+    assert "URL이 없어" in summary
 
 
 def test_high_text_score_with_unknown_url_stays_low() -> None:
@@ -187,7 +187,7 @@ def test_high_text_score_with_unknown_url_stays_low() -> None:
         TextAnalysisResult(label="RISK", riskScore=0.99),
         [unknown],
     )
-    assert risk_level == "LOW"
+    assert risk_level == "MEDIUM"
 
 
 def test_official_domain_requires_domain_boundary_and_brand_match() -> None:
@@ -231,11 +231,11 @@ def test_messenger_link_without_url_risk_stays_low() -> None:
         [messenger],
         "상담은 오픈채팅으로 문의하세요.",
     )
-    assert risk_level == "LOW"
+    assert risk_level == "MEDIUM"
     assert any("메신저" in reason for reason in reasons)
 
 
-def test_explicit_personal_information_request_without_url_is_medium() -> None:
+def test_explicit_personal_information_request_without_url_is_low() -> None:
     risk_level, _, reasons, _ = combine_analysis(
         TextAnalysisResult(label="NORMAL", riskScore=0.05),
         [],

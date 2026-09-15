@@ -1,3 +1,5 @@
+> 2026-09-15 변경: 최종 판정은 [URL 우선 정책](../docs/url-first-policy.md)을 따릅니다. /analyze의 LLM 보조 판정 호출은 제거됐으며 아래 LLM 연결 설명은 이전 구현 기록입니다.
+
 # 통합 FastAPI 분석 서비스
 
 기존 PaddleOCR `/ocr` API에 KoELECTRA 문자 분류, URL 구조·VirusTotal 평판 분석, 이미지 통합 `/analyze` API를 추가했습니다. 자세한 설치, 환경변수와 실행 방법은 프로젝트 루트의 `README.md`를 참고하세요.

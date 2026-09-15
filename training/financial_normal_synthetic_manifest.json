@@ -1,0 +1,73 @@
+{
+  "version": "financial-normal-synthetic-v2",
+  "count": 300,
+  "label": 0,
+  "seed": 42,
+  "input_datasets": [],
+  "dacon_open_data_used": false,
+  "reason_dacon_excluded": "Anonymized V1-V30 transaction features have no SMS text or message-context semantics.",
+  "source_families_excluded_to_protect_evaluation": [
+    "신한카드",
+    "삼성카드"
+  ],
+  "template_counts": {
+    "approval_cancelled": 17,
+    "approval_declined": 21,
+    "approval_with_total": 22,
+    "check_withdrawal": 27,
+    "domestic_approval": 31,
+    "installment_approval": 18,
+    "online_approval": 32,
+    "overseas_approval": 24,
+    "payment_deposit_completed": 26,
+    "recurring_approval": 36,
+    "sale_cancelled": 22,
+    "transit_payment": 24
+  },
+  "issuer_counts": {
+    "BC카드": 53,
+    "KB국민카드": 44,
+    "NH농협카드": 51,
+    "롯데카드": 44,
+    "하나카드": 49,
+    "현대카드": 59
+  },
+  "official_url_rows": 31,
+  "issuer_sources": [
+    {
+      "issuer": "현대카드",
+      "url": "https://www.hyundaicard.com/upload/card/T_AOB-20260403-1734-28_%EA%B0%80%EC%9D%B4%EB%93%9C%EB%B6%81_SKT_M%20Ed3_%ED%86%B5%EC%8B%A02.0_V3_%EA%B3%B5%EC%8B%A4%EC%9A%A9.pdf",
+      "official_domain": "https://www.hyundaicard.com/"
+    },
+    {
+      "issuer": "하나카드",
+      "url": "https://www.hanacard.co.kr/contents/popup/club_sk/enclean/OPY15000000M.web?mID=OPY15000000M&schID=pcd",
+      "official_domain": "https://www.hanacard.co.kr/"
+    },
+    {
+      "issuer": "KB국민카드",
+      "url": "https://github.com/kakao/credit-card-sms-parser/blob/master/test/test_credit_card_sms_parser.rb",
+      "official_domain": "https://card.kbcard.com/"
+    },
+    {
+      "issuer": "NH농협카드",
+      "url": "https://github.com/kakao/credit-card-sms-parser/blob/master/test/test_credit_card_sms_parser.rb",
+      "official_domain": "https://card.nonghyup.com/"
+    },
+    {
+      "issuer": "BC카드",
+      "url": "https://www.bccard.com/app/card/ContentsLinkActn.do?pgm_id=ind1074",
+      "official_domain": "https://www.bccard.com/"
+    },
+    {
+      "issuer": "롯데카드",
+      "url": "https://www.lottecard.co.kr/app/LPBNFBD_V500.lc",
+      "official_domain": "https://www.lottecard.co.kr/"
+    }
+  ],
+  "limitations": [
+    "Synthetic normal notifications, not received SMS",
+    "Training-only data; not a temporal or independent evaluation set",
+    "Amounts, dates, card suffixes and merchants are artificial"
+  ]
+}

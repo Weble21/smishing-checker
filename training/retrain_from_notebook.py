@@ -31,15 +31,15 @@ def main():
     dataset_sha = hub.dataset_info(dataset_id).sha
     manifest = {"model_id": model_id, "model_revision": model_sha,
                 "dataset_id": dataset_id, "dataset_revision": dataset_sha,
-                "source_label_map": {"2": 1, "3": 0},
+                "source_label_map": {"1": 0, "2": 1, "3": 0},
                 "initialization": "Pretrained backbone with newly initialized binary classifier; not deployed weights",
                 "seed": 42}
     (args.output / "source_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     frame = load_dataset(dataset_id, revision=dataset_sha)["train"].to_pandas()
-    frame = frame.loc[frame["class"].isin([2, 3]), ["content", "class"]].copy()
+    frame = frame.loc[frame["class"].isin([1, 2, 3]), ["content", "class"]].copy()
     frame["text"] = frame["content"].map(lambda value: re.sub(r"\s+", " ", unicodedata.normalize("NFKC", value)).strip()
                                         if isinstance(value, str) else "")
-    frame["label"] = frame["class"].map({2: 1, 3: 0}).astype(int)
+    frame["label"] = frame["class"].map({1: 0, 2: 1, 3: 0}).astype(int)
     frame = frame.loc[frame["text"].ne("")].copy()
     frame["group_id"] = frame["text"].map(template)
     conflicts = frame.groupby("group_id")["label"].nunique()

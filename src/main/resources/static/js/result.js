@@ -26,7 +26,7 @@
     },
     LOW: {
       icon: "🟢",
-      title: "뚜렷한 위험 요소가 없어요",
+      title: "URL 기준 안전으로 분류했어요",
       className: "risk-card--low",
     },
     REVIEW_REQUIRED: {

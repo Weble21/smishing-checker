@@ -1,0 +1,121 @@
+{
+  "sources": [
+    {
+      "family": "kb",
+      "split": "train",
+      "url": "https://obank.kbstar.com/quics?page=C106615",
+      "title": "KB스타뱅킹 알림서비스",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "netflix",
+      "split": "train",
+      "url": "https://help.netflix.com/ko/node/407",
+      "title": "넷플릭스 해지 방법",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "airkorea",
+      "split": "train",
+      "url": "https://airkorea.or.kr/web/smsService?pMENU_NO=209",
+      "title": "에어코리아 예보 알림 신청",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "ntok",
+      "split": "train",
+      "url": "https://partner.ntok.go.kr/Static/국립극장_대관사용자_메뉴얼_250204.pdf",
+      "title": "국립극장 대관 사용자 매뉴얼",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "naver",
+      "split": "valid",
+      "url": "https://help.naver.com/service/5594/contents/9110?lang=ko&osType=MOBILE",
+      "title": "MYBOX 구독 해지 도움말",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "apple",
+      "split": "valid",
+      "url": "https://support.apple.com/ko-kr/118428",
+      "title": "Apple 구독 취소 안내",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "samsungcard",
+      "split": "valid",
+      "url": "https://www.samsungcard.com/personal/services/UHPPAS0401M0.jsp?codeDv=debt",
+      "title": "삼성카드 케어서비스 편의점 택배 안내",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "shinhan",
+      "split": "test",
+      "url": "https://www.shinhancard.com/pconts/html/helpdesk/dataRoom/MOBFM164N/1223450_1119.html",
+      "title": "신한 MyTeenS 승인알림 변경 공지",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "kakao",
+      "split": "test",
+      "url": "https://business.kakao.com/info/booking/",
+      "title": "카카오톡 예약하기 공식 소개",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "oneroof",
+      "split": "test",
+      "url": "https://www.oneroof.co.kr/partner-guide/?bmode=view&idx=17401097",
+      "title": "원루프 파트너 알림톡 가이드",
+      "retrieved_at": "2026-09-15",
+      "origin": "source_grounded_paraphrase",
+      "review_method": "assistant_source_check",
+      "limitations": "Not received SMS; public documentation paraphrase; not a temporal benchmark"
+    },
+    {
+      "family": "kakao_credit_card_sms_parser",
+      "split": "train",
+      "url": "https://github.com/kakao/credit-card-sms-parser",
+      "title": "Kakao credit-card-sms-parser 테스트 픽스처",
+      "retrieved_at": "2026-09-15",
+      "origin": "licensed_fixture_anonymized",
+      "review_method": "assistant_source_check",
+      "license": "BSD-3-Clause",
+      "limitations": "Archived in 2018; anonymized historical parser fixtures; normal-class training only; not a temporal benchmark"
+    }
+  ],
+  "counts": {
+    "train": 33,
+    "valid": 16,
+    "test": 12
+  },
+  "scope": "Small source-grounded pilot, not verified real received messages. No fabricated temporal test."
+}

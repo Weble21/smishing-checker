@@ -51,4 +51,5 @@ def encode_message(tokenizer, message: str, *, return_tensors=None):
     return tokenizer.prepare_for_model(
         context_ids, pair_ids=body_ids[:available], padding=False,
         return_tensors=return_tensors, return_attention_mask=True,
+        prepend_batch_axis=return_tensors is not None,
     )

@@ -41,6 +41,8 @@ class UrlAnalyzeResponse(BaseModel):
 
 
 class TextAnalysisResult(BaseModel):
+    # Internal provenance: legacy spam classifiers cannot activate contextual rules.
+    contextModel: bool = Field(default=False, exclude=True)
     label: Literal["NORMAL", "RISK"]
     riskScore: float = Field(ge=0, le=1)
 

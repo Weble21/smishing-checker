@@ -24,11 +24,12 @@ def read_rows(path):
 
 
 def template(text):
+    text = re.sub(r"[가-힣]{2,4}(?=\s*(?:고객님|회원님))", "<NAME>", text)
     text = re.sub(r"https?://\S+", "<URL>", text.casefold())
     return re.sub(r"\s+", "", re.sub(r"\d+", "<NUM>", text))
 
 
-def prepare(base_dir, seed_path=SEEDS, brand_seed_path=BRAND_SEEDS):
+def prepare(base_dir, seed_path=SEEDS, brand_seed_path=BRAND_SEEDS, kr_path=None):
     seeds = read_rows(seed_path)
     seeds += read_rows(brand_seed_path)
     families = {}
@@ -45,6 +46,8 @@ def prepare(base_dir, seed_path=SEEDS, brand_seed_path=BRAND_SEEDS):
                 for row in read_rows(Path(base_dir) / f"{split}.csv")]
         rows += [{**row, "slice": "brand_link" if row["id"].startswith("bl") else "indirect_lure"}
                  for row in seeds if row["split"] == split]
+        if split == "train" and kr_path is not None:
+            rows += [{**row, "slice": "kr_mob_curated"} for row in read_rows(kr_path)]
         seen = {}
         unique = []
         for row in rows:
@@ -84,9 +87,10 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--prepare-only", action="store_true")
     parser.add_argument("--epochs", type=float, default=2)
+    parser.add_argument("--kr-curated", type=Path)
     parser.add_argument("--cpu", action="store_true", help="Use CPU explicitly when GPU is unavailable")
     args = parser.parse_args()
-    splits = prepare(args.base_splits)
+    splits = prepare(args.base_splits, kr_path=args.kr_curated)
     if not args.prepare_only and (not args.model_dir or not (args.model_dir / "config.json").is_file()):
         parser.error("Existing local model directory with config.json is required; no download is performed")
     # Never overwrite an existing experiment or active model.
@@ -104,6 +108,10 @@ def main():
                 "limitations": ["Synthetic seed examples; not verified incidents or a production accuracy benchmark",
                                 "Original base splits must be from the checkpoint's original experiment"]}
     (args.output / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    if args.kr_curated:
+        manifest["kr_curated_sha256"] = hashlib.sha256(args.kr_curated.read_bytes()).hexdigest()
+        manifest["kr_license"] = "CC BY-NC 4.0; KR-MOB-SMISHING Project (2026)"
+        (args.output / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     if args.prepare_only:
         print(json.dumps(manifest["sizes"]))
         return

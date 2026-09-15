@@ -15,7 +15,7 @@ from smishing_api.config import (
 )
 from smishing_api.ocr import extract_text, ocr_status
 from smishing_api.risk import combine_analysis
-from smishing_api.context_review import apply_context_review
+# Final policy is URL-first; optional LLM review cannot override it.
 from smishing_api.schemas import (
     IntegratedAnalysisResponse,
     OcrResponse,
@@ -80,10 +80,6 @@ async def analyze_image(
         text_result,
         url_results,
         ocr_result.text,
-    )
-    risk_level, summary, reasons, actions = await apply_context_review(
-        (risk_level, summary, reasons, actions),
-        ocr_result.text, text_result, url_results,
     )
     return IntegratedAnalysisResponse(
         ocrText=ocr_result.text,

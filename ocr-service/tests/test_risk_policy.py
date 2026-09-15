@@ -1,110 +1,121 @@
 import pytest
-
 from smishing_api.risk import combine_analysis, requests_link_access
 from smishing_api.schemas import TextAnalysisResult, UrlAnalysisResult, ReputationResult
 
 
-def url(verdict):
-    return UrlAnalysisResult(url="https://example.com/", verdict=verdict,
-                             riskScore=0.8, reasons=[], reputation=ReputationResult(status="NOT_FOUND"))
+def url(verdict, address="https://unverified.example/"):
+    return UrlAnalysisResult(url=address, verdict=verdict, riskScore=0.8,
+                             reputation=ReputationResult(status="NOT_FOUND"))
 
 
-@pytest.mark.parametrize("verdict,expected", [
-    ("DANGEROUS", "HIGH"), ("SUSPICIOUS", "HIGH"),
-    ("UNKNOWN", "LOW"), ("INVALID", "LOW"), ("NO_KNOWN_THREAT", "LOW"),
-])
+def decide(message, urls, score=0.99):
+    return combine_analysis(TextAnalysisResult(label="RISK", riskScore=score), urls, message)[0]
+
+
+@pytest.mark.parametrize("message", ["안녕하세요", "긴급 서비스 중단"])
+def test_no_url_is_low(message):
+    assert decide(message, []) == "LOW"
+
+
+@pytest.mark.parametrize("verdict", ["UNKNOWN", "INVALID", "NO_KNOWN_THREAT", "SUSPICIOUS"])
+def test_unverified_without_lure_is_caution(verdict):
+    assert decide("회의 자료입니다.", [url(verdict)]) == "MEDIUM"
+
+
+@pytest.mark.parametrize("verdict", ["UNKNOWN", "INVALID", "NO_KNOWN_THREAT", "SUSPICIOUS", "DANGEROUS"])
 @pytest.mark.parametrize("score", [0.01, 0.99])
-def test_url_verdict_controls_grade(verdict, expected, score):
-    level, summary, _, _ = combine_analysis(
-        TextAnalysisResult(label="NORMAL", riskScore=score), [url(verdict)],
-        "인증번호를 입력하고 링크를 클릭하세요.",
-    )
-    assert level == expected
-    if verdict == "SUSPICIOUS":
-        assert "가능성이 높습니다" in summary
-        assert "확인되었습니다" not in summary
+def test_unverified_with_lure_is_high(verdict, score):
+    assert decide("링크를 클릭하세요.", [url(verdict)], score) == "HIGH"
 
 
-@pytest.mark.parametrize("message,expected", [
-    ("개인정보를 제출하세요.", "MEDIUM"),
-    ("신용정보를\n보내주세요.", "MEDIUM"),
-    ("신용카드정보를 입력하세요.", "MEDIUM"),
-    ("계좌로 송금해 주세요.", "MEDIUM"),
-    ("10만원 보내줘.", "MEDIUM"),
-    ("인증번호를 알려주세요.", "MEDIUM"),
-    ("[해외발신] 오늘까지 긴급 확인 바랍니다.", "LOW"),
-    ("내일 배송 예정입니다.", "LOW"),
-])
-def test_text_only_caution_requires_sensitive_request(message, expected):
-    assert combine_analysis(TextAnalysisResult(label="RISK", riskScore=0.99), [], message)[0] == expected
+@pytest.mark.parametrize("address", ["https://unverified.example/", "https://www.kbstar.com/"])
+def test_dangerous_overrides_everything(address):
+    assert decide("[국민은행] 공지입니다.", [url("DANGEROUS", address)]) == "HIGH"
 
 
-def test_safe_link_does_not_hide_a_risky_link():
-    assert combine_analysis(TextAnalysisResult(label="NORMAL", riskScore=0.01),
-                            [url("NO_KNOWN_THREAT"), url("SUSPICIOUS")],
-                            "자세한 내용은 링크를 클릭하세요.")[0] == "MEDIUM"
+@pytest.mark.parametrize("verdict", ["UNKNOWN", "NO_KNOWN_THREAT", "SUSPICIOUS"])
+def test_matching_whitelist_is_safe_despite_model_noise(verdict):
+    assert decide("[국민은행] 링크를 클릭하세요.", [url(verdict, "https://www.kbstar.com/")]) == "LOW"
 
 
-@pytest.mark.parametrize("verdict", ["DANGEROUS", "SUSPICIOUS"])
-def test_risky_link_without_sensitive_request_is_caution(verdict):
-    level, summary, _, _ = combine_analysis(
-        TextAnalysisResult(label="NORMAL", riskScore=0.01),
-        [url(verdict)],
-        "자세한 내용은 링크를 클릭하세요.",
-    )
-    assert level == "MEDIUM"
-    assert "주의" in summary
+@pytest.mark.parametrize("address", ["https://www.shinhan.com/", "https://kbstar.com.evil.example/", "https://kbstar.com@evil.example/"])
+def test_mismatch_cannot_be_safe(address):
+    assert decide("[국민은행] 안내입니다.", [url("UNKNOWN", address)]) == "MEDIUM"
 
 
-def test_suspicious_link_without_access_request_stays_low():
-    level, summary, reasons, _ = combine_analysis(
-        TextAnalysisResult(label="NORMAL", riskScore=0.01),
-        [url("SUSPICIOUS")],
-        "회의 자료를 공유합니다.",
-    )
-    assert level == "LOW"
-    assert "안전이 확인된 것은 아닙니다" in summary
-    assert any("직접 유도" in reason for reason in reasons)
+@pytest.mark.parametrize("other,expected", [("DANGEROUS", "HIGH"), ("UNKNOWN", "MEDIUM")])
+def test_mixed_urls_take_highest_risk(other, expected):
+    assert decide("[국민은행] 공지", [url("UNKNOWN", "https://kbstar.com"), url(other)]) == expected
+
+
+def test_missing_url_result_is_not_no_url():
+    assert decide("자료 https://unverified.example", []) == "MEDIUM"
 
 
 @pytest.mark.parametrize("message", [
-    "링크를 클릭해서 확인하세요.",
-    "아래 주소로 접속 바랍니다.",
-    "여기에서 확인하세요. https://example.com",
+    "링크를 클릭해서 확인하세요.", "아래 주소로 접속 바랍니다.",
+    "신원확인을 완료하지 않은 이용자는 서비스사용이 중단됩니다.",
+    "금일 중 미확인 시 자동 반송됩니다.", "갱신하기: https://unverified.example",
 ])
-def test_detects_link_access_request(message):
+def test_direct_and_indirect_lures(message):
     assert requests_link_access(message)
+    assert decide(message, [url("UNKNOWN")]) == "HIGH"
 
 
-def test_link_mention_without_action_is_not_access_request():
-    assert not requests_link_access("회의 자료 링크가 포함되어 있습니다.")
+@pytest.mark.parametrize("message", ["회의 자료 링크가 포함되어 있습니다.", "링크를 클릭하지 마세요.",
+    "신원확인 미완료 시 서비스 이용이 중단됩니다. 기존 앱을 직접 열어 확인하세요."])
+def test_no_lure_or_app_only(message):
+    assert not requests_link_access(message)
+    assert decide(message, [url("UNKNOWN")]) == "MEDIUM"
+
+@pytest.mark.parametrize("message", ["인증번호를 알려주세요.", "개인정보를 입력하세요.", "계좌로 송금하세요.", "10만원 보내주세요."])
+@pytest.mark.parametrize("official", [False, True])
+def test_sensitive_request_is_at_least_caution(message, official):
+    urls = [url("UNKNOWN", "https://www.kbstar.com/")] if official else []
+    assert decide(message, urls) == "MEDIUM"
+
+@pytest.mark.parametrize("message", ["인증번호를 알려주지 마세요.", "개인정보를 입력하지 마세요.", "계좌로 송금하지 마세요.", "개인정보를 요구하지 않습니다."])
+def test_safety_advice_is_not_a_sensitive_request(message):
+    assert decide(message, []) == "LOW"
 
 
-@pytest.mark.parametrize("verdict,expected", [
-    ("UNKNOWN", "MEDIUM"), ("NO_KNOWN_THREAT", "MEDIUM"),
-    ("SUSPICIOUS", "HIGH"), ("DANGEROUS", "HIGH"),
-])
+def test_sensitive_request_never_downgrades_dangerous_url():
+    assert decide("인증번호를 알려주세요.", [url("DANGEROUS")]) == "HIGH"
+
+
+@pytest.mark.parametrize("message", ["89,700원이 입금되었습니다.", "결제/주문 내역을 확인하세요.", "송금이 완료되었습니다."])
+def test_transaction_notifications_are_not_requests(message):
+    assert decide(message, []) == "LOW"
+
+
 @pytest.mark.parametrize("message", [
-    "[국제발신] [PI MINE]신원확인을 완료하지 않은 이용자는 서비스사용이 중단됩니다.",
-    "[PI MINE] 신원 확인을 완료하지 않은 이용자는 서비스 사용이 중단됩니다.",
-    "본인인증 미완료 시 계정 이용이 제한됩니다.",
+    "엄마 나 휴대폰 고장났어. 이 계좌로 30만원 이체해 줘.",
+    "이름과 생년월일을 알려주세요.",
+    "인증번호를 알려주지 마세요\n아래 계좌로 30만원 송금해주세요",
+    "인증번호를 알려주지 마세요, 아래 계좌로 30만원 송금해주세요",
+    "신분증을 제출해 주세요.", "전화번호를 회신 바랍니다.",
 ])
-def test_indirect_identity_threat_with_external_link(message, verdict, expected):
-    link = url(verdict).model_copy(update={"url": "https://kycy.piwallts.one"})
-    level, summary, reasons, _ = combine_analysis(
-        TextAnalysisResult(label="NORMAL", riskScore=0.01), [link],
-        message + "\nhttps://kycy.piwallts.one",
-    )
-    assert level == expected
-    assert "정상" not in summary
-    assert any("서비스 중단 위협" in reason for reason in reasons)
+@pytest.mark.parametrize("official", [False, True])
+def test_reviewed_request_regressions(message, official):
+    urls = [url("UNKNOWN", "https://www.kbstar.com/")] if official else []
+    assert decide(message, urls) == "MEDIUM"
 
 
-@pytest.mark.parametrize("message", [
-    "[국제발신] 내일 오후 3시 예약입니다.",
-    "서비스 점검으로 이용이 중단됩니다.",
-    "신원확인이 완료되었습니다.",
-])
-def test_single_signal_does_not_trigger_identity_threat(message):
-    assert combine_analysis(TextAnalysisResult(label="NORMAL", riskScore=0.01),
-                            [url("UNKNOWN")], message)[0] == "LOW"
+@pytest.mark.parametrize("message", ["개인정보 입력이 완료되었습니다.", "이름과 생년월일 등록 완료", "신분증 제출이 완료되었습니다."])
+def test_information_completion_is_not_request(message):
+    assert decide(message, []) == "LOW"
+
+
+@pytest.mark.parametrize("joint,score,expected", [(True, .95, "HIGH"), (True, .6, "MEDIUM"), (False, .99, "MEDIUM")])
+def test_joint_model_supports_indirect_action_context(joint, score, expected):
+    text = TextAnalysisResult(label="RISK", riskScore=score, contextModel=joint)
+    message = "회원 혜택 유지에 필요한 정보 보완 https://unverified.example/"
+    assert combine_analysis(text, [url("UNKNOWN")], message)[0] == expected
+
+
+@pytest.mark.parametrize("message", ["회의 자료입니다.", "개인정보 입력이 완료되었습니다.", "개인정보를 알려주지 마세요."])
+@pytest.mark.parametrize("address,expected", [(None, "LOW"), ("https://www.kbstar.com/", "LOW"), ("https://unverified.example/", "MEDIUM")])
+def test_model_score_alone_cannot_override_url_policy(message, address, expected):
+    text = TextAnalysisResult(label="RISK", riskScore=.99, contextModel=True)
+    urls = [url("UNKNOWN", address)] if address else []
+    assert combine_analysis(text, urls, message)[0] == expected

@@ -139,7 +139,7 @@ def test_integrated_endpoint_passes_ocr_text_to_risk_policy(monkeypatch) -> None
     assert response.json()["riskLevel"] == "MEDIUM"
 
 
-def test_integrated_endpoint_uses_prompt_review(monkeypatch):
+def test_integrated_endpoint_uses_url_policy_without_llm(monkeypatch):
     from smishing_api import context_review
     monkeypatch.setenv("CONTEXT_LLM_MODEL", "test-model")
     monkeypatch.setattr(app_module, "extract_text", lambda image: OcrResponse(
@@ -153,6 +153,7 @@ def test_integrated_endpoint_uses_prompt_review(monkeypatch):
         return UrlAnalysisResult(url=url, verdict="UNKNOWN", riskScore=0,
                                  reputation=ReputationResult(status="NOT_FOUND"))
     async def review(message, text, urls, *, client):
+        pytest.fail("URL-first endpoint must not call LLM")
         assert "신원확인" in message
         assert urls[0].verdict == "UNKNOWN"
         return context_review.ContextReview(
@@ -166,4 +167,4 @@ def test_integrated_endpoint_uses_prompt_review(monkeypatch):
     result = response.json()
     assert result["riskLevel"] == "HIGH"
     assert result["textAnalysis"]["label"] == "NORMAL"
-    assert "인증 유도" in result["summary"]
+    assert "접속을 유도" in result["summary"]

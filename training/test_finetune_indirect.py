@@ -41,3 +41,13 @@ def test_rejects_conflicting_labels(tmp_path):
         stream.write("저녁 약속,1\n")
     with pytest.raises(ValueError, match="Conflicting"):
         module.prepare(tmp_path)
+
+
+def test_curated_kr_is_train_only(tmp_path):
+    base_splits(tmp_path)
+    baseline = module.prepare(tmp_path)
+    curated = Path(__file__).with_name("kr_mob_filtered") / "accepted.csv"
+    splits = module.prepare(tmp_path, kr_path=curated)
+    assert splits["valid"] == baseline["valid"]
+    assert splits["test"] == baseline["test"]
+    assert sum(r["slice"] == "kr_mob_curated" for r in splits["train"]) == 18

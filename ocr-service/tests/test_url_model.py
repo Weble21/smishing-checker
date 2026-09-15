@@ -75,7 +75,7 @@ async def test_whitelist_cancels_only_official_model_suspicion(monkeypatch, url,
         assert any("화이트리스트" in reason for reason in result.reasons)
         text = TextAnalysisResult(label="NORMAL", riskScore=0.05)
         assert combine_analysis(text, [result], "[KB국민은행] 입금 알림입니다.")[0] == "LOW"
-        assert combine_analysis(text, [result], "[KB국민은행] 인증번호를 입력하세요.")[0] == "LOW"
+        assert combine_analysis(text, [result], "[KB국민은행] 인증번호를 입력하세요.")[0] == "MEDIUM"
 
 
 @pytest.mark.asyncio

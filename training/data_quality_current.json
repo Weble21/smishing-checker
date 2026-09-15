@@ -1,0 +1,33 @@
+{
+  "counts": {
+    "train": {
+      "('KR-MOB-SMISHING-v1', 1)": 18,
+      "('meal-bbang/Korean_message', 0)": 6770,
+      "('meal-bbang/Korean_message', 1)": 6071,
+      "('synthetic', 0)": 10,
+      "('synthetic', 1)": 10
+    },
+    "valid": {
+      "('meal-bbang/Korean_message', 0)": 762,
+      "('meal-bbang/Korean_message', 1)": 724,
+      "('synthetic', 0)": 4,
+      "('synthetic', 1)": 4
+    },
+    "test": {
+      "('meal-bbang/Korean_message', 0)": 653,
+      "('meal-bbang/Korean_message', 1)": 836,
+      "('synthetic', 0)": 4,
+      "('synthetic', 1)": 4
+    }
+  },
+  "baseline": {
+    "length": {
+      "accuracy": 0.8453815261044176,
+      "macro_f1": 0.8453149266609146
+    },
+    "length+delivery+url": {
+      "accuracy": 0.8587684069611781,
+      "macro_f1": 0.8581705342371886
+    }
+  }
+}

@@ -73,6 +73,7 @@ def predict_text(text: str) -> TextAnalysisResult:
         risk_score = float(probabilities[1].detach().cpu())
 
     return TextAnalysisResult(
-        label="RISK" if risk_score >= 0.5 else "NORMAL",
+        contextModel=getattr(model.config, "smishing_input_schema", None) == INPUT_SCHEMA,
+        label="RISK" if risk_score >= float(getattr(model.config, "smishing_risk_threshold", 0.5)) else "NORMAL",
         riskScore=round(risk_score, 4),
     )
