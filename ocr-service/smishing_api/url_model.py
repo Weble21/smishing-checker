@@ -7,6 +7,7 @@ import threading
 from typing import Any
 
 from .config import URL_MODEL_PATH
+from .url_features import INPUT_SCHEMA, model_document as feature_model_document
 
 
 _lock = threading.RLock()
@@ -67,8 +68,14 @@ def predict_url_risk(url: str) -> tuple[float | None, float | None]:
             return None, None
         import torch
 
+        normalized_url = _model_document(url)
+        document = (
+            feature_model_document(normalized_url)
+            if getattr(_model.config, "smishing_url_input_schema", None) == INPUT_SCHEMA
+            else normalized_url
+        )
         encoded = _tokenizer(
-            _model_document(url), truncation=True, max_length=256,
+            document, truncation=True, max_length=256,
             padding=True, return_tensors="pt",
         )
         encoded = {name: value.to(_device) for name, value in encoded.items()}

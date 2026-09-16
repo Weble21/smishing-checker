@@ -15,11 +15,14 @@ ocr-service/.venv/
 /model/
 /dataset/open/
 /dataset/archive/
+/dataset/url-training/open/
+/smishing-checker-main/dataset/open/
 /KOR_phishing_data_BoW/
 /KOR_phishing_data_raw/
 *.safetensors
 *.pt
 *.pth
+*.duckdb
 
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
