@@ -2,6 +2,7 @@ package com.safeletter.smishing_checker.service;
 
 import com.safeletter.smishing_checker.dto.AnalysisResponse;
 import com.safeletter.smishing_checker.dto.IntegratedAnalysisResult;
+import com.safeletter.smishing_checker.dto.DynamicAnalysisJob;
 import com.safeletter.smishing_checker.exception.ExternalApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Service
 public class MessageAnalysisService {
@@ -20,6 +22,7 @@ public class MessageAnalysisService {
             "image/jpeg",
             "image/png"
     );
+    private static final Pattern JOB_ID = Pattern.compile("[0-9a-f]{32}");
 
     private final AiAnalysisClient analysisClient;
 
@@ -43,7 +46,11 @@ public class MessageAnalysisService {
                     false,
                     "SUCCESS",
                     null,
-                    validTextRiskScore(result)
+                    validTextRiskScore(result),
+                    result.urlAnalysis() == null ? List.of() : result.urlAnalysis().stream()
+                            .map(IntegratedAnalysisResult.UrlAnalysis::dynamicAnalysis)
+                            .filter(java.util.Objects::nonNull)
+                            .toList()
             );
         } catch (ExternalApiException exception) {
             return unavailableResponse(exception.errorCode());
@@ -66,8 +73,16 @@ public class MessageAnalysisService {
                 false,
                 "AI_ERROR",
                 errorCode,
-                null
+                null,
+                List.of()
         );
+    }
+
+    public DynamicAnalysisJob getDynamicJob(String jobId) {
+        if (jobId == null || !JOB_ID.matcher(jobId).matches()) {
+            throw new IllegalArgumentException("올바르지 않은 분석 작업 번호입니다.");
+        }
+        return analysisClient.getDynamicJob(jobId);
     }
 
     private Double validTextRiskScore(IntegratedAnalysisResult result) {

@@ -11,6 +11,8 @@ from smishing_api.schemas import (
     ReputationResult,
     TextAnalysisResult,
     UrlAnalysisResult,
+    DynamicJobReference,
+    DynamicJobStatus,
 )
 
 
@@ -84,6 +86,39 @@ def test_url_endpoint_without_url() -> None:
     response = client.post("/url/analyze", json={"text": "오늘 저녁 같이 먹자."})
     assert response.status_code == 200
     assert response.json() == {"urlCount": 0, "results": []}
+
+
+def test_unknown_url_submits_dynamic_job(monkeypatch):
+    async def static_result(url, *, client):
+        return UrlAnalysisResult(
+            url=url, verdict="UNKNOWN", riskScore=0.4,
+            reputation=ReputationResult(status="NOT_FOUND"),
+        )
+
+    async def dynamic_job(url, *, client):
+        return DynamicJobReference(
+            jobId="a" * 32, status="QUEUED", requestedUrl=url,
+        )
+
+    monkeypatch.setattr(app_module, "analyze_url", static_result)
+    monkeypatch.setattr(app_module, "submit", dynamic_job)
+    response = client.post("/url/analyze", json={"text": "https://unknown.example"})
+    assert response.status_code == 200
+    assert response.json()["results"][0]["dynamicAnalysis"]["jobId"] == "a" * 32
+
+
+def test_dynamic_status_endpoint_maps_completed_job(monkeypatch):
+    async def status(job_id):
+        return DynamicJobStatus(
+            jobId=job_id, status="COMPLETED", requestedUrl="https://example.com/",
+            verdict="SUSPICIOUS", riskLevel="HIGH", summary="민감정보 입력 폼",
+            reasons=["비밀번호 입력 항목"],
+        )
+
+    monkeypatch.setattr(app_module, "get_status", status)
+    response = client.get("/dynamic/jobs/" + "b" * 32)
+    assert response.status_code == 200
+    assert response.json()["riskLevel"] == "HIGH"
 
 
 def test_integrated_image_endpoint(monkeypatch) -> None:

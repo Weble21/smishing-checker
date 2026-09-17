@@ -25,6 +25,24 @@ class ReputationResult(BaseModel):
     suspicious: int = 0
 
 
+class DynamicJobReference(BaseModel):
+    jobId: str
+    status: Literal["QUEUED", "RUNNING"]
+    requestedUrl: str
+
+
+class DynamicJobStatus(BaseModel):
+    jobId: str
+    status: Literal["QUEUED", "RUNNING", "COMPLETED", "TIMED_OUT", "FAILED"]
+    requestedUrl: str
+    verdict: Literal[
+        "DANGEROUS", "SUSPICIOUS", "NO_OBSERVED_THREAT", "INCONCLUSIVE",
+    ] | None = None
+    riskLevel: RiskLevel | None = None
+    summary: str | None = None
+    reasons: list[str] = Field(default_factory=list)
+
+
 class UrlAnalysisResult(BaseModel):
     url: str
     hostname: str = ""
@@ -33,6 +51,7 @@ class UrlAnalysisResult(BaseModel):
     modelScore: float | None = Field(default=None, ge=0, le=1)
     reasons: list[str] = Field(default_factory=list)
     reputation: ReputationResult
+    dynamicAnalysis: DynamicJobReference | None = None
 
 
 class UrlAnalyzeResponse(BaseModel):

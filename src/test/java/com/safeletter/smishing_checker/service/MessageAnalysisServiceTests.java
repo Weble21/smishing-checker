@@ -31,6 +31,7 @@ class MessageAnalysisServiceTests {
         assertFalse(result.mock());
         assertEquals("SUCCESS", result.analysisStatus());
         assertEquals(0.98, result.textRiskScore());
+        assertEquals(List.of(), result.dynamicAnalyses());
     }
 
     @Test

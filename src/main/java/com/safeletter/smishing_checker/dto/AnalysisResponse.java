@@ -10,6 +10,7 @@ public record AnalysisResponse(
         boolean mock,
         String analysisStatus,
         String errorCode,
-        Double textRiskScore
+        Double textRiskScore,
+        List<DynamicAnalysisJob> dynamicAnalyses
 ) {
 }

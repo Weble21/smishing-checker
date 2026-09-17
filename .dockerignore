@@ -8,6 +8,9 @@
 !ocr-service/requirements.txt
 !ocr-service/app.py
 !ocr-service/smishing_api/**
+!dynamic-analysis-service/
+!dynamic-analysis-service/requirements.txt
+!dynamic-analysis-service/*.py
 !config/
 !config/official_domain_seeds.json
 !dataset/

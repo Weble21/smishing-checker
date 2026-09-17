@@ -1,6 +1,7 @@
 package com.safeletter.smishing_checker.service;
 
 import com.safeletter.smishing_checker.dto.IntegratedAnalysisResult;
+import com.safeletter.smishing_checker.dto.DynamicAnalysisJob;
 import com.safeletter.smishing_checker.exception.ExternalApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +30,7 @@ public class FastApiAnalysisClient implements AiAnalysisClient {
 
     private final RestClient restClient;
     private final String endpoint;
+    private final String dynamicJobEndpoint;
 
     @Autowired
     public FastApiAnalysisClient(
@@ -41,7 +43,37 @@ public class FastApiAnalysisClient implements AiAnalysisClient {
 
     FastApiAnalysisClient(RestClient restClient, String baseUrl) {
         this.restClient = restClient;
-        this.endpoint = stripTrailingSlash(baseUrl) + "/analyze";
+        String normalizedBaseUrl = stripTrailingSlash(baseUrl);
+        this.endpoint = normalizedBaseUrl + "/analyze";
+        this.dynamicJobEndpoint = normalizedBaseUrl + "/dynamic/jobs/{jobId}";
+    }
+
+    @Override
+    public DynamicAnalysisJob getDynamicJob(String jobId) {
+        try {
+            DynamicAnalysisJob result = restClient.get()
+                    .uri(dynamicJobEndpoint, jobId)
+                    .retrieve()
+                    .onStatus(status -> status.isError(), (request, response) -> {
+                        throw new ExternalApiException(
+                                "DYNAMIC_UPSTREAM_ERROR",
+                                "동적 분석 결과를 조회하지 못했습니다."
+                        );
+                    })
+                    .body(DynamicAnalysisJob.class);
+            if (result == null || result.jobId() == null || result.status() == null) {
+                throw new ExternalApiException(
+                        "INVALID_RESPONSE", "동적 분석 응답 형식이 올바르지 않습니다."
+                );
+            }
+            return result;
+        } catch (ExternalApiException exception) {
+            throw exception;
+        } catch (RestClientException exception) {
+            throw new ExternalApiException(
+                    "DYNAMIC_UNAVAILABLE", "동적 분석 결과를 조회할 수 없습니다.", exception
+            );
+        }
     }
 
     @Override

@@ -1,11 +1,14 @@
 package com.safeletter.smishing_checker.controller;
 
 import com.safeletter.smishing_checker.dto.AnalysisResponse;
+import com.safeletter.smishing_checker.dto.DynamicAnalysisJob;
 import com.safeletter.smishing_checker.service.MessageAnalysisService;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,5 +37,12 @@ public class MessageAnalysisController {
                 messageAnalysisService.analyze(image);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/dynamic/{jobId}")
+    public ResponseEntity<DynamicAnalysisJob> dynamicStatus(
+            @PathVariable String jobId
+    ) {
+        return ResponseEntity.ok(messageAnalysisService.getDynamicJob(jobId));
     }
 }

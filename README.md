@@ -12,7 +12,9 @@
   → 저장된 KoELECTRA NORMAL/RISK 분류
   → URL 구조 검사 + VirusTotal 기존 보고서 조회
   → 명시적 규칙으로 위험도 종합
+  → UNKNOWN/SUSPICIOUS URL은 격리 브라우저 작업 큐에 등록
   → AnalysisResponse로 변환 후 결과 화면 표시 (문자 AI 추정 피싱 가능성 포함)
+  → 결과 화면에서 동적 분석 상태 조회 및 위험 근거 반영
 ```
 
 결과 API의 `textRiskScore`는 문자 모델의 `textAnalysis.riskScore`를 전달한 0~1 값입니다.
@@ -20,7 +22,21 @@
 URL 및 정책 규칙을 반영하는 종합 `riskLevel`과 다를 수 있습니다.
 분석 실패 또는 점수 누락·범위 오류 시 `null`을 반환하고 화면에는 `산출 불가`로 표시합니다.
 
-업로드 이미지는 두 서비스 모두 메모리에서만 처리하며 파일이나 OCR 원문을 로그에 기록하지 않습니다. FastAPI는 대상 URL에 직접 접속하거나 VirusTotal에 새 URL을 제출하지 않습니다.
+업로드 이미지는 두 서비스 모두 메모리에서만 처리하며 파일이나 OCR 원문을 로그에 기록하지 않습니다. FastAPI는 대상 URL에 직접 접속하지 않으며, 활성화된 경우 격리된 동적 분석 워커만 통제 프록시를 통해 접속합니다. VirusTotal에는 새 URL을 제출하지 않습니다.
+
+## 동적 URL 분석 준비 상태
+
+`dynamic-analysis-service`에는 Playwright 기반 관찰 워커와 결과 계약이 있습니다.
+현재 Compose 프로필은 비루트 사용자, 읽기 전용 파일시스템, capability 제거,
+자원 제한과 격리된 브라우저 네트워크를 적용합니다. 외부 접속은 공개 IP만
+허용하는 별도 프록시를 통하도록 구성했습니다. 배포 환경에서 네트워크 격리를
+검증하기 전까지 동적 분석은 기본적으로 비활성화됩니다. 자세한 실행 및 결과
+필드는 `dynamic-analysis-service/README.md`를 참고하세요.
+
+활성화하면 정적 판정이 `UNKNOWN` 또는 `SUSPICIOUS`인 URL을 비동기 작업 큐에
+등록합니다. 결과 화면은 작업 상태를 조회하고 실행 파일 다운로드 또는 민감정보
+입력 폼이 관찰되면 종합 위험도를 `HIGH`로 올립니다. 관찰 결과가 없거나 분석에
+실패해도 기존 위험도를 낮추지 않습니다.
 
 ## 환경변수
 
@@ -34,6 +50,7 @@ URL 및 정책 규칙을 반영하는 종합 `riskLevel`과 다를 수 있습니
 | `SMISHING_PROJECT_DIR` | 저장소 루트 자동 탐색 | 모델 탐색 기준 경로 |
 | `SMISHING_MODEL_DIR` | 최신 `experiments/koelectra-*/model` | 저장된 이진 분류 모델 경로 |
 | `VT_API_KEY` | 없음 | VirusTotal API 키 |
+| `DYNAMIC_ANALYSIS_ENABLED` | `false` | 격리 브라우저 분석 작업 등록 여부 |
 | `VT_TIMEOUT_SECONDS` | `5` | VirusTotal 조회 제한 시간 |
 | `TEXT_HIGH_THRESHOLD` | `0.80` | 문자 고위험 점수 기준 |
 | `TEXT_MEDIUM_THRESHOLD` | `0.60` | 문자 주의 점수 기준 |
@@ -139,8 +156,11 @@ main push에서는 테스트 성공 후 이미지 빌드·배포·헬스체크�
 ## API 목록
 
 - `POST /api/v1/messages/analyze`: 브라우저용 Spring multipart API (`image`)
+- `GET /api/v1/messages/dynamic/{jobId}`: 브라우저용 동적 분석 상태 조회
 - `POST /analyze`: 이미지 한 장을 받는 통합 FastAPI (`image`)
 - `POST /url/analyze`: 텍스트의 URL만 분석하는 FastAPI
+- `GET /dynamic/jobs/{jobId}`: 격리 워커 상태를 전달하는 FastAPI
+- `POST /jobs`, `GET /jobs/{jobId}`: 내부망 전용 동적 분석 작업 API
 - `POST /ocr`: 기존 개별 OCR 호환 API
 - `GET /health`: OCR·문자·URL 모델 로딩 상태
 

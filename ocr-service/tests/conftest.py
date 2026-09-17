@@ -15,3 +15,5 @@ if str(SERVICE_DIR) not in sys.path:
 def disable_external_context_review(monkeypatch):
     # Tests opt in explicitly; developer environment must never send fixture SMSs.
     monkeypatch.delenv("CONTEXT_LLM_MODEL", raising=False)
+    monkeypatch.delenv("DYNAMIC_ANALYSIS_ENABLED", raising=False)
+    monkeypatch.delenv("DYNAMIC_ANALYSIS_BASE_URL", raising=False)

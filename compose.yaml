@@ -1,5 +1,66 @@
 name: smishing-checker
 services:
+  egress-proxy:
+    profiles: ["dynamic-analysis"]
+    build:
+      context: .
+      dockerfile: docker/egress-proxy.Dockerfile
+    restart: unless-stopped
+    init: true
+    read_only: true
+    cap_drop: ["ALL"]
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 64
+    mem_limit: 128m
+    cpus: 0.5
+    networks:
+      - sandbox-internal
+      - sandbox-egress
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.create_connection(('127.0.0.1',3128),timeout=2); s.close()"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+
+  dynamic-analysis:
+    profiles: ["dynamic-analysis"]
+    build:
+      context: .
+      dockerfile: docker/dynamic-analysis.Dockerfile
+    restart: unless-stopped
+    init: true
+    user: pwuser
+    read_only: true
+    cap_drop: ["ALL"]
+    cap_add: ["SYS_CHROOT"]
+    security_opt:
+      - no-new-privileges:true
+      - seccomp=./docker/playwright-seccomp.json
+    pids_limit: 256
+    mem_limit: 768m
+    cpus: 1.0
+    shm_size: 256mb
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+      - /home/pwuser:size=32m,uid=1000,gid=1000,mode=0700
+    environment:
+      DYNAMIC_ANALYSIS_ENABLED: ${DYNAMIC_ANALYSIS_ENABLED:-false}
+      DYNAMIC_ANALYSIS_EGRESS_READY: "true"
+      DYNAMIC_ANALYSIS_TIMEOUT_SECONDS: "15"
+      DYNAMIC_ANALYSIS_PROXY_URL: http://egress-proxy:3128
+    depends_on:
+      egress-proxy:
+        condition: service_healthy
+    networks:
+      - sandbox-internal
+      - analysis-control
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json,urllib.request; assert json.load(urllib.request.urlopen('http://127.0.0.1:8081/health'))['status'] == 'ok'"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+
   fastapi:
     build:
       context: .
@@ -17,6 +78,12 @@ services:
       CONTEXT_LLM_MODEL: ${CONTEXT_LLM_MODEL:-}
       CONTEXT_LLM_BASE_URL: ${CONTEXT_LLM_BASE_URL:-http://host.docker.internal:11434}
       CONTEXT_LLM_TIMEOUT_SECONDS: ${CONTEXT_LLM_TIMEOUT_SECONDS:-30}
+      DYNAMIC_ANALYSIS_ENABLED: ${DYNAMIC_ANALYSIS_ENABLED:-false}
+      DYNAMIC_ANALYSIS_BASE_URL: http://dynamic-analysis:8081
+      DYNAMIC_ANALYSIS_API_TIMEOUT_SECONDS: "3"
+    networks:
+      - default
+      - analysis-control
     volumes:
       - type: bind
         source: ${DOCKER_TEXT_MODEL_DIR:-./experiments/koelectra-baseline-v2-20260907T015430973273Z/checkpoints/checkpoint-497}
@@ -61,3 +128,10 @@ services:
       - "${DOCKER_WEB_PORT:-18080}:8080"
 volumes:
   ocr-cache:
+
+networks:
+  sandbox-internal:
+    internal: true
+  sandbox-egress:
+  analysis-control:
+    internal: true

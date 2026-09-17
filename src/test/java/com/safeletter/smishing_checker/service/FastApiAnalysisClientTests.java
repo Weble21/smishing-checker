@@ -8,6 +8,7 @@ import org.springframework.web.client.RestClient;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -61,6 +62,34 @@ class FastApiAnalysisClientTests {
                 () -> client.analyze(new byte[]{1}, "image/png")
         );
         assertEquals("INVALID_RESPONSE", exception.errorCode());
+    }
+
+    @Test
+    void fetchesDynamicAnalysisStatus() {
+        RestClient.Builder builder = RestClient.builder();
+        MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+        String jobId = "a".repeat(32);
+        server.expect(requestTo("http://localhost:8000/dynamic/jobs/" + jobId))
+                .andRespond(withSuccess("""
+                        {
+                          "jobId": "%s",
+                          "status": "COMPLETED",
+                          "requestedUrl": "https://example.com/",
+                          "verdict": "SUSPICIOUS",
+                          "riskLevel": "HIGH",
+                          "summary": "민감정보 입력 폼이 확인되었습니다.",
+                          "reasons": ["비밀번호 입력 항목이 있습니다."]
+                        }
+                        """.formatted(jobId), MediaType.APPLICATION_JSON));
+        FastApiAnalysisClient client = new FastApiAnalysisClient(
+                builder.build(), "http://localhost:8000"
+        );
+
+        var result = client.getDynamicJob(jobId);
+
+        assertEquals("HIGH", result.riskLevel());
+        assertEquals(List.of("비밀번호 입력 항목이 있습니다."), result.reasons());
+        server.verify();
     }
 
     @Test

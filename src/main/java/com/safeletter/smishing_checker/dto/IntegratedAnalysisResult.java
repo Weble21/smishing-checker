@@ -20,7 +20,8 @@ public record IntegratedAnalysisResult(
             String verdict,
             double riskScore,
             List<String> reasons,
-            Reputation reputation
+            Reputation reputation,
+            DynamicAnalysisJob dynamicAnalysis
     ) {
     }
 

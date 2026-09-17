@@ -19,7 +19,8 @@ class AnalysisResponseTests {
                 false,
                 "SUCCESS",
                 null,
-                0.82
+                0.82,
+                List.of()
         );
 
         String json = new ObjectMapper().writeValueAsString(response);

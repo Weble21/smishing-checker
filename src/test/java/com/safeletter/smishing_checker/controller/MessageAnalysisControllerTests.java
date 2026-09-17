@@ -1,6 +1,7 @@
 package com.safeletter.smishing_checker.controller;
 
 import com.safeletter.smishing_checker.dto.AnalysisResponse;
+import com.safeletter.smishing_checker.dto.DynamicAnalysisJob;
 import com.safeletter.smishing_checker.service.MessageAnalysisService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,7 +39,8 @@ class MessageAnalysisControllerTests {
                         false,
                         "SUCCESS",
                         null,
-                        0.82
+                        0.82,
+                        List.of()
                 )
         );
         MockMultipartFile image = new MockMultipartFile(
@@ -53,5 +56,22 @@ class MessageAnalysisControllerTests {
                 .andExpect(jsonPath("$.summary").value("주의가 필요합니다."))
                 .andExpect(jsonPath("$.textRiskScore").value(0.82))
                 .andExpect(jsonPath("$.mock").value(false));
+    }
+
+    @Test
+    void returnsDynamicAnalysisStatus() throws Exception {
+        String jobId = "a".repeat(32);
+        when(messageAnalysisService.getDynamicJob(jobId)).thenReturn(
+                new DynamicAnalysisJob(
+                        jobId, "COMPLETED", "https://example.com/",
+                        "SUSPICIOUS", "HIGH", "민감정보 입력 폼이 확인되었습니다.",
+                        List.of("비밀번호 입력 항목이 있습니다.")
+                )
+        );
+
+        mockMvc.perform(get("/api/v1/messages/dynamic/{jobId}", jobId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("COMPLETED"))
+                .andExpect(jsonPath("$.riskLevel").value("HIGH"));
     }
 }

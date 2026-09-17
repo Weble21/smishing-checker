@@ -13,6 +13,7 @@ from smishing_api.config import (
     OCR_MIN_CONFIDENCE,
     VT_TIMEOUT_SECONDS,
 )
+from smishing_api.dynamic_analysis import get_status, submit
 from smishing_api.ocr import extract_text, ocr_status
 from smishing_api.risk import combine_analysis
 # Final policy is URL-first; optional LLM review cannot override it.
@@ -22,6 +23,7 @@ from smishing_api.schemas import (
     UrlAnalysisResult,
     UrlAnalyzeRequest,
     UrlAnalyzeResponse,
+    DynamicJobStatus,
 )
 from smishing_api.text_model import model_status, predict_text
 from smishing_api.url_analysis import analyze_url, extract_urls
@@ -92,6 +94,19 @@ async def analyze_image(
     )
 
 
+@app.get("/dynamic/jobs/{job_id}", response_model=DynamicJobStatus)
+async def dynamic_job_status(job_id: str) -> DynamicJobStatus:
+    if len(job_id) != 32 or any(char not in "0123456789abcdef" for char in job_id):
+        raise HTTPException(status_code=404, detail="Analysis job was not found")
+    try:
+        return await get_status(job_id)
+    except RuntimeError as exception:
+        raise HTTPException(status_code=503, detail="Dynamic analysis is disabled") from exception
+    except httpx.HTTPStatusError as exception:
+        status_code = 404 if exception.response.status_code == 404 else 502
+        raise HTTPException(status_code=status_code, detail="Dynamic analysis lookup failed") from exception
+    except (httpx.HTTPError, ValueError, KeyError, TypeError) as exception:
+        raise HTTPException(status_code=502, detail="Dynamic analysis lookup failed") from exception
 async def _recognize_image(image: UploadFile) -> OcrResponse:
     image_bytes = await _read_valid_image(image)
     try:
@@ -111,9 +126,15 @@ async def _analyze_text_urls(text: str) -> list[UrlAnalysisResult]:
         timeout=VT_TIMEOUT_SECONDS,
         follow_redirects=False,
     ) as client:
-        return list(await asyncio.gather(
+        results = list(await asyncio.gather(
             *(analyze_url(url, client=client) for url in candidates)
         ))
+        eligible = [result for result in results if result.verdict in {"UNKNOWN", "SUSPICIOUS"}]
+        if eligible:
+            jobs = await asyncio.gather(*(submit(result.url, client=client) for result in eligible))
+            for result, job in zip(eligible, jobs):
+                result.dynamicAnalysis = job
+        return results
 
 
 async def _read_valid_image(image: UploadFile) -> bytes:
