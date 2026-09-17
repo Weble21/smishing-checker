@@ -48,6 +48,16 @@
     background: #fff3f2;
 }
 
+.risk-estimate strong {
+    font-size: 24px;
+    white-space: nowrap;
+}
+
+.risk-card .risk-estimate-note {
+    font-size: 14px;
+    color: #465167;
+}
+
 .risk-card--high h2 {
     color: #b42318;
 }

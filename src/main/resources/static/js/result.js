@@ -96,6 +96,14 @@
       : "분석 결과에 대한 설명이 없습니다.";
   mockNotice.hidden = result.mock !== true;
 
+  const score = result.textRiskScore;
+  const hasScore = result.analysisStatus === "SUCCESS" &&
+    typeof score === "number" && Number.isFinite(score) && score >= 0 && score <= 1;
+  document.querySelector("#textRiskScore").textContent = hasScore
+    ? `${(score * 100 - 1).toFixed(1)}%`
+    : "산출 불가";
+  document.querySelector("#scoreNote").hidden = !hasScore;
+
   renderList(result.reasons, reasonList, reasonEmpty);
   renderList(result.actions, actionList, actionEmpty);
 

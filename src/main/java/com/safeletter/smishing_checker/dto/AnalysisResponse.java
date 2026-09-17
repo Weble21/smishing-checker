@@ -9,6 +9,7 @@ public record AnalysisResponse(
         List<String> actions,
         boolean mock,
         String analysisStatus,
-        String errorCode
+        String errorCode,
+        Double textRiskScore
 ) {
 }

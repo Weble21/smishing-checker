@@ -12,8 +12,13 @@
   → 저장된 KoELECTRA NORMAL/RISK 분류
   → URL 구조 검사 + VirusTotal 기존 보고서 조회
   → 명시적 규칙으로 위험도 종합
-  → 기존 AnalysisResponse로 변환 후 결과 화면 표시
+  → AnalysisResponse로 변환 후 결과 화면 표시 (문자 AI 추정 피싱 가능성 포함)
 ```
+
+결과 API의 `textRiskScore`는 문자 모델의 `textAnalysis.riskScore`를 전달한 0~1 값입니다.
+화면에서는 백분율로 표시하며, 실제 피싱 확률로 보정·검증된 수치는 아닙니다.
+URL 및 정책 규칙을 반영하는 종합 `riskLevel`과 다를 수 있습니다.
+분석 실패 또는 점수 누락·범위 오류 시 `null`을 반환하고 화면에는 `산출 불가`로 표시합니다.
 
 업로드 이미지는 두 서비스 모두 메모리에서만 처리하며 파일이나 OCR 원문을 로그에 기록하지 않습니다. FastAPI는 대상 URL에 직접 접속하거나 VirusTotal에 새 URL을 제출하지 않습니다.
 

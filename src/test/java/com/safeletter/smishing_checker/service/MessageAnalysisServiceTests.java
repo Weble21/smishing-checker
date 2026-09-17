@@ -10,6 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MessageAnalysisServiceTests {
@@ -29,6 +30,7 @@ class MessageAnalysisServiceTests {
         assertEquals("위험 신호가 확인되었습니다.", result.summary());
         assertFalse(result.mock());
         assertEquals("SUCCESS", result.analysisStatus());
+        assertEquals(0.98, result.textRiskScore());
     }
 
     @Test
@@ -46,6 +48,31 @@ class MessageAnalysisServiceTests {
         assertEquals("REVIEW_REQUIRED", result.riskLevel());
         assertEquals("AI_ERROR", result.analysisStatus());
         assertEquals("CONNECTION_ERROR", result.errorCode());
+        assertNull(result.textRiskScore());
+    }
+
+    @Test
+    void doesNotInventScoreWhenModelScoreIsMissingOrInvalid() {
+        for (Double score : new Double[]{null, -0.1, 1.1, Double.NaN, Double.POSITIVE_INFINITY}) {
+            var original = successResult();
+            AiAnalysisClient client = (bytes, contentType) -> new IntegratedAnalysisResult(
+                    original.ocrText(), new IntegratedAnalysisResult.TextAnalysis("RISK", score),
+                    original.urlAnalysis(), original.riskLevel(), original.summary(),
+                    original.reasons(), original.actions());
+            assertNull(new MessageAnalysisService(client).analyze(validImage()).textRiskScore());
+        }
+    }
+
+    @Test
+    void preservesZeroAndOneScores() {
+        for (double score : new double[]{0.0, 1.0}) {
+            var original = successResult();
+            AiAnalysisClient client = (bytes, contentType) -> new IntegratedAnalysisResult(
+                    original.ocrText(), new IntegratedAnalysisResult.TextAnalysis("RISK", score),
+                    original.urlAnalysis(), original.riskLevel(), original.summary(),
+                    original.reasons(), original.actions());
+            assertEquals(score, new MessageAnalysisService(client).analyze(validImage()).textRiskScore());
+        }
     }
 
     @Test

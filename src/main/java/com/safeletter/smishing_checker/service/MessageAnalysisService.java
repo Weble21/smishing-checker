@@ -42,7 +42,8 @@ public class MessageAnalysisService {
                     List.copyOf(result.actions()),
                     false,
                     "SUCCESS",
-                    null
+                    null,
+                    validTextRiskScore(result)
             );
         } catch (ExternalApiException exception) {
             return unavailableResponse(exception.errorCode());
@@ -64,8 +65,15 @@ public class MessageAnalysisService {
                 ),
                 false,
                 "AI_ERROR",
-                errorCode
+                errorCode,
+                null
         );
+    }
+
+    private Double validTextRiskScore(IntegratedAnalysisResult result) {
+        Double score = result.textAnalysis() == null ? null : result.textAnalysis().riskScore();
+        return score != null && Double.isFinite(score) && score >= 0 && score <= 1
+                ? score : null;
     }
 
     private void validateImage(MultipartFile image) {

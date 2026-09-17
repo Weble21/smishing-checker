@@ -36,7 +36,8 @@ class MessageAnalysisControllerTests {
                         List.of("공식 앱에서 확인하세요."),
                         false,
                         "SUCCESS",
-                        null
+                        null,
+                        0.82
                 )
         );
         MockMultipartFile image = new MockMultipartFile(
@@ -50,6 +51,7 @@ class MessageAnalysisControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.riskLevel").value("MEDIUM"))
                 .andExpect(jsonPath("$.summary").value("주의가 필요합니다."))
+                .andExpect(jsonPath("$.textRiskScore").value(0.82))
                 .andExpect(jsonPath("$.mock").value(false));
     }
 }

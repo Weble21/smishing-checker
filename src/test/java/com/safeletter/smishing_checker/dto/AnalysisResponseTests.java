@@ -18,12 +18,14 @@ class AnalysisResponseTests {
                 List.of("공식 앱에서 확인하세요."),
                 false,
                 "SUCCESS",
-                null
+                null,
+                0.82
         );
 
         String json = new ObjectMapper().writeValueAsString(response);
 
         assertTrue(json.contains("\"riskLevel\":\"MEDIUM\""));
         assertTrue(json.contains("\"mock\":false"));
+        assertTrue(json.contains("\"textRiskScore\":0.82"));
     }
 }

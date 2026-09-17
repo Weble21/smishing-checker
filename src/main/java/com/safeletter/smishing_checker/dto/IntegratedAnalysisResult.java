@@ -11,7 +11,7 @@ public record IntegratedAnalysisResult(
         List<String> reasons,
         List<String> actions
 ) {
-    public record TextAnalysis(String label, double riskScore) {
+    public record TextAnalysis(String label, Double riskScore) {
     }
 
     public record UrlAnalysis(
