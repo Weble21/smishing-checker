@@ -41,6 +41,7 @@ class DynamicJobStatus(BaseModel):
     riskLevel: RiskLevel | None = None
     summary: str | None = None
     reasons: list[str] = Field(default_factory=list)
+    evidence: list[str] = Field(default_factory=list)
 
 
 class UrlAnalysisResult(BaseModel):

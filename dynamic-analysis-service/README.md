@@ -29,8 +29,12 @@ job ID. `GET /jobs/{jobId}` returns `QUEUED`, `RUNNING`, `COMPLETED`, `TIMED_OUT
 or `FAILED`. Active duplicate URLs share one job. One worker consumes the bounded
 queue; completed jobs are retained in memory for 30 minutes with a 200-job limit.
 Container restart clears the queue and retained results.
-Call `GET /jobs/{jobId}?includeArtifacts=false` when only status and assessment are
-needed; this omits captured page text and screenshots from the response.
+After retention or a restart, the result screen treats a missing job as expired
+and asks for a new analysis. Concurrent status requests do not change the
+single-browser-analysis limit.
+Call `GET /jobs/{jobId}?includeArtifacts=false` for status, assessment, and
+redacted structured observations on the result screen. It omits captured page
+text and screenshots.
 
 A completed result includes:
 

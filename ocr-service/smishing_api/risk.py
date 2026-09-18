@@ -151,9 +151,19 @@ def combine_analysis(
     lure = bool(states) and (requests_link_access(message) or learned_lure)
     if learned_lure:
         reasons.append("미확인 URL과 행동 요구 문맥을 문자 모델이 위험으로 평가했습니다.")
+    sensitive_request = any(reason in {
+        "개인정보 또는 인증정보를 요구합니다.",
+        "송금·입금 또는 금전 거래를 요구합니다.",
+    } for reason in reasons)
+    coercive_lure = bool(re.search(
+        r"(?:미확인|미제출|미등록|미신청|미납|미완료|않으면|않을\s*경우).{0,45}"
+        r"(?:반송|취소|소멸|정지|중단|제한)", message,
+    ))
+    identity_threat = bool(IDENTITY_PATTERN.search(message) and SERVICE_THREAT_PATTERN.search(message))
+    strong_lure = learned_lure or (lure and (sensitive_request or coercive_lure or identity_threat))
     if "dangerous" in states:
         level, summary = "HIGH", "위험한 URL이 포함되어 있습니다."
-    elif "unknown" in states and lure:
+    elif "unknown" in states and strong_lure:
         level, summary = "HIGH", "안전 여부가 미확인인 URL로 접속을 유도해 스미싱 가능성이 높습니다."
     elif "unknown" in states:
         level, summary = "MEDIUM", "URL의 안전 여부를 확인하지 못해 주의가 필요합니다."

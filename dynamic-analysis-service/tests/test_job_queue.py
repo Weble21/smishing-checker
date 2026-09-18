@@ -5,6 +5,7 @@ import asyncio
 import pytest
 
 from job_queue import JobQueue
+from assessment import assess
 from schemas import (
     DownloadObservation,
     DynamicAnalysisResponse,
@@ -81,3 +82,13 @@ def test_queue_returns_explicit_failure():
         assert result.assessment.verdict == "INCONCLUSIVE"
         await queue.stop()
     asyncio.run(exercise())
+
+
+def test_blocked_destination_is_inconclusive_with_reason():
+    result = DynamicAnalysisResponse(
+        status="FAILED", requestedUrl="https://example.com/redirect",
+        finalUrl="http://127.0.0.1/", errorCode="BLOCKED_DESTINATION",
+    )
+    assessment = assess(result)
+    assert assessment.verdict == "INCONCLUSIVE"
+    assert "차단된 내부 주소" in assessment.reasons[0]

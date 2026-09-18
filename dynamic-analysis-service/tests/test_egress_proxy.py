@@ -6,7 +6,8 @@ import socket
 import pytest
 
 import egress_proxy as proxy
-from analyzer import blocked_browser_target
+from analyzer import blocked_browser_target, blocked_navigation
+from schemas import RedirectHop
 
 
 @pytest.mark.parametrize("address", [
@@ -47,6 +48,18 @@ def test_browser_blocks_local_targets_before_proxy(url):
 
 def test_browser_allows_public_domain_to_reach_proxy():
     assert not blocked_browser_target("https://example.com/")
+
+
+def test_blocked_redirect_cannot_be_reported_as_completed_public_navigation():
+    responses = [
+        RedirectHop(url="https://example.com/redirect", status=302),
+        RedirectHop(url="http://127.0.0.1/", status=403),
+    ]
+    assert blocked_navigation("http://127.0.0.1/", responses)
+    assert blocked_navigation("https://example.com/", responses)
+    assert not blocked_navigation(
+        "https://example.com/", [RedirectHop(url="https://example.com/", status=200)],
+    )
 
 
 def test_dns_rejects_mixed_public_and_private_results(monkeypatch):

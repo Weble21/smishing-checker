@@ -102,14 +102,6 @@
       : "분석 결과에 대한 설명이 없습니다.";
   mockNotice.hidden = result.mock !== true;
 
-  const score = result.textRiskScore;
-  const hasScore = result.analysisStatus === "SUCCESS" &&
-    typeof score === "number" && Number.isFinite(score) && score >= 0 && score <= 1;
-  document.querySelector("#textRiskScore").textContent = hasScore
-    ? `${(score * 100 - 1).toFixed(1)}%`
-    : "산출 불가";
-  document.querySelector("#scoreNote").hidden = !hasScore;
-
   renderList(result.reasons, reasonList, reasonEmpty);
   renderList(result.actions, actionList, actionEmpty);
 
@@ -129,6 +121,15 @@
       const pending = jobs.filter((job) => !completedJobs.has(job.jobId));
       const responses = await Promise.allSettled(pending.map(async (job) => {
         const response = await fetch(`/api/v1/messages/dynamic/${job.jobId}`);
+        if (response.status === 404) {
+          return {
+            jobId: job.jobId, status: "EXPIRED", verdict: "INCONCLUSIVE",
+            riskLevel: null,
+            summary: "동적 분석 결과가 만료되었습니다. 다시 검사해주세요.",
+            reasons: ["동적 분석 결과를 더 이상 조회할 수 없습니다."],
+            evidence: [],
+          };
+        }
         if (!response.ok) throw new Error("동적 분석 상태를 조회하지 못했습니다.");
         return response.json();
       }));
@@ -138,7 +139,7 @@
         if (response.status !== "fulfilled") return;
         const job = response.value;
         jobStates.set(original.jobId, job);
-        if (["COMPLETED", "TIMED_OUT", "FAILED"].includes(job.status)) {
+        if (["COMPLETED", "TIMED_OUT", "FAILED", "EXPIRED"].includes(job.status)) {
           completedJobs.add(original.jobId);
         }
         if (job.riskLevel === "HIGH") {
@@ -148,9 +149,18 @@
             result.summary = job.summary;
             resultSummary.textContent = job.summary;
           }
+        } else if (["TIMED_OUT", "FAILED", "EXPIRED"].includes(job.status) && result.riskLevel === "LOW") {
+          result.riskLevel = "REVIEW_REQUIRED";
+          renderRisk("REVIEW_REQUIRED");
+          const detail = typeof job.summary === "string" && job.summary.trim()
+            ? job.summary.trim()
+            : "동적 분석을 완료하지 못했습니다.";
+          result.summary = `${detail} 링크를 안전하다고 판단할 수 없어 직접 확인이 필요합니다.`;
+          resultSummary.textContent = result.summary;
         }
-        if (Array.isArray(job.reasons)) {
-          job.reasons.forEach((reason) => {
+        for (const values of [job.reasons, job.evidence]) {
+          if (!Array.isArray(values)) continue;
+          values.forEach((reason) => {
             if (typeof reason === "string" && reason.trim() && !dynamicReasons.includes(reason)) {
               dynamicReasons.push(reason);
             }
@@ -163,9 +173,16 @@
       sessionStorage.setItem(RESULT_KEY, JSON.stringify(result));
 
       const done = completedJobs.size;
-      dynamicStatus.textContent = done === jobs.length
-        ? `동적 분석 ${done}건이 완료되었습니다.`
-        : `동적 분석 중입니다. (${done}/${jobs.length})`;
+      if (done === jobs.length) {
+        const states = [...jobStates.values()];
+        const completed = states.filter((job) => job.status === "COMPLETED").length;
+        const timedOut = states.filter((job) => job.status === "TIMED_OUT").length;
+        const failed = states.filter((job) => job.status === "FAILED").length;
+        const expired = states.filter((job) => job.status === "EXPIRED").length;
+        dynamicStatus.textContent = `동적 분석 완료 ${completed}건 · 시간 초과 ${timedOut}건 · 실패 ${failed}건 · 만료 ${expired}건`;
+      } else {
+        dynamicStatus.textContent = `동적 분석 중입니다. (${done}/${jobs.length})`;
+      }
       if (done < jobs.length && attempts < 20) {
         window.setTimeout(poll, 2000);
       } else if (done < jobs.length) {

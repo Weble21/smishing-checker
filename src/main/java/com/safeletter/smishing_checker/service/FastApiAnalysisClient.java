@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.net.http.HttpClient;
 import java.time.Duration;
@@ -55,6 +57,12 @@ public class FastApiAnalysisClient implements AiAnalysisClient {
                     .uri(dynamicJobEndpoint, jobId)
                     .retrieve()
                     .onStatus(status -> status.isError(), (request, response) -> {
+                        if (response.getStatusCode().value() == 404) {
+                            throw new ResponseStatusException(
+                                    HttpStatus.NOT_FOUND,
+                                    "동적 분석 결과가 만료되었거나 존재하지 않습니다."
+                            );
+                        }
                         throw new ExternalApiException(
                                 "DYNAMIC_UPSTREAM_ERROR",
                                 "동적 분석 결과를 조회하지 못했습니다."

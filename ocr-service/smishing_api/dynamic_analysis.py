@@ -56,8 +56,23 @@ async def get_status(job_id: str, *, client: httpx.AsyncClient | None = None) ->
         response.raise_for_status()
         payload = response.json()
         assessment = payload.get("assessment") or {}
+        result = payload.get("result") or {}
         verdict = assessment.get("verdict")
         reasons = assessment.get("reasons") or []
+        evidence: list[str] = []
+        if result.get("finalUrl"):
+            evidence.append(f"최종 URL: {result['finalUrl']}")
+        for hop in (result.get("redirectChain") or [])[:10]:
+            evidence.append(f"이동 응답 {hop['status']}: {hop['url']}")
+        for form in (result.get("forms") or [])[:10]:
+            evidence.append(f"폼 {form['method']}: {form['action']} (입력 유형: {', '.join(form.get('inputTypes') or []) or '없음'})")
+        requests = result.get("networkRequests") or []
+        if requests:
+            evidence.append(f"네트워크 요청: {len(requests)}건")
+            for request in requests[:5]:
+                evidence.append(f"{request['method']} {request['url']} ({request['resourceType']})")
+        for download in (result.get("downloads") or [])[:10]:
+            evidence.append(f"다운로드 시도: {download['suggestedFilename']}")
         risk_level = "HIGH" if verdict in {"DANGEROUS", "SUSPICIOUS"} else None
         summary = {
             "DANGEROUS": "동적 분석에서 실행 파일 다운로드 유도가 확인되었습니다.",
@@ -65,10 +80,13 @@ async def get_status(job_id: str, *, client: httpx.AsyncClient | None = None) ->
             "NO_OBSERVED_THREAT": "동적 분석의 제한된 관찰 시간에는 강한 위험 행동이 확인되지 않았습니다.",
             "INCONCLUSIVE": "동적 분석을 완료하지 못했습니다.",
         }.get(verdict)
+        if result.get("errorCode") == "BLOCKED_DESTINATION":
+            summary = "웹페이지가 차단된 내부 주소로 이동하려 해 분석을 중단했습니다."
         return DynamicJobStatus(
             jobId=payload["jobId"], status=payload["status"],
             requestedUrl=payload["requestedUrl"], verdict=verdict,
             riskLevel=risk_level, summary=summary, reasons=reasons,
+            evidence=evidence,
         )
     finally:
         if owns_client:

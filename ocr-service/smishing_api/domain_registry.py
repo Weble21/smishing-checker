@@ -13,8 +13,9 @@ from .config import DOMAIN_SEED_PATH, OFFICIAL_DOMAINS_PATH
 def _hostname(value: str) -> str:
     candidate = value if "://" in value else f"https://{value}"
     try:
-        return (urlsplit(candidate).hostname or "").lower().strip(".")
-    except ValueError:
+        host = (urlsplit(candidate).hostname or "").lower().strip(".")
+        return host.encode("idna").decode("ascii")
+    except (ValueError, UnicodeError):
         return ""
 
 
@@ -43,7 +44,11 @@ def load_domain_registry(path: str | None = None, csv_path: str | None = None) -
                 return registry
             services = {}
             for row in reader:
-                domain = (row.get("registered_domain") or "").strip().lower().rstrip(".")
+                raw_domain = (row.get("registered_domain") or "").strip().lower().rstrip(".")
+                try:
+                    domain = raw_domain.encode("idna").decode("ascii")
+                except UnicodeError:
+                    continue
                 brand = (row.get("brand") or "").strip()
                 kind = row.get("url_category")
                 if kind not in {"official", "messenger"} or not brand:

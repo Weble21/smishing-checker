@@ -22,10 +22,20 @@ def test_unverified_without_lure_is_caution(verdict):
     assert decide("회의 자료입니다.", [url(verdict)]) == "MEDIUM"
 
 
-@pytest.mark.parametrize("verdict", ["UNKNOWN", "INVALID", "NO_KNOWN_THREAT", "SUSPICIOUS", "DANGEROUS"])
+@pytest.mark.parametrize("verdict", ["UNKNOWN", "INVALID", "NO_KNOWN_THREAT", "SUSPICIOUS"])
 @pytest.mark.parametrize("score", [0.01, 0.99])
-def test_unverified_with_lure_is_high(verdict, score):
-    assert decide("링크를 클릭하세요.", [url(verdict)], score) == "HIGH"
+def test_unverified_with_generic_link_invitation_is_caution(verdict, score):
+    assert decide("링크를 클릭하세요.", [url(verdict)], score) == "MEDIUM"
+
+
+def test_unverified_link_requesting_credentials_remains_high():
+    message = "링크를 클릭하고 비밀번호를 입력하세요. https://unverified.example/"
+    assert decide(message, [url("UNKNOWN")]) == "HIGH"
+
+
+def test_link_brand_does_not_trust_lookalike_domain():
+    message = "Your Link verification code is 123456. Visit https://support.link.com.evil.example/"
+    assert decide(message, [url("UNKNOWN", "https://support.link.com.evil.example/")]) == "MEDIUM"
 
 
 @pytest.mark.parametrize("address", ["https://unverified.example/", "https://www.kbstar.com/"])
@@ -52,14 +62,16 @@ def test_missing_url_result_is_not_no_url():
     assert decide("자료 https://unverified.example", []) == "MEDIUM"
 
 
-@pytest.mark.parametrize("message", [
-    "링크를 클릭해서 확인하세요.", "아래 주소로 접속 바랍니다.",
-    "신원확인을 완료하지 않은 이용자는 서비스사용이 중단됩니다.",
-    "금일 중 미확인 시 자동 반송됩니다.", "갱신하기: https://unverified.example",
+@pytest.mark.parametrize("message,expected", [
+    ("링크를 클릭해서 확인하세요.", "MEDIUM"),
+    ("아래 주소로 접속 바랍니다.", "MEDIUM"),
+    ("신원확인을 완료하지 않은 이용자는 서비스사용이 중단됩니다.", "HIGH"),
+    ("금일 중 미확인 시 자동 반송됩니다.", "HIGH"),
+    ("갱신하기: https://unverified.example", "MEDIUM"),
 ])
-def test_direct_and_indirect_lures(message):
+def test_direct_and_indirect_lures(message, expected):
     assert requests_link_access(message)
-    assert decide(message, [url("UNKNOWN")]) == "HIGH"
+    assert decide(message, [url("UNKNOWN")]) == expected
 
 
 @pytest.mark.parametrize("message", ["회의 자료 링크가 포함되어 있습니다.", "링크를 클릭하지 마세요.",

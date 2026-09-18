@@ -1,9 +1,13 @@
 ﻿service_group,brand,registered_domain,domain_owner,url_category,source_url,usage_note
+결제,Link,link.com,Stripe,official,https://support.link.com/sms-opt-out,Link 공식 SMS 수신 거부 안내 주소. 등록도메인과 문자 속 브랜드를 함께 확인.
 택배,CJ대한통운,cjlogistics.com,CJ대한통운,official,https://www.cjlogistics.com/ko/main,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+택배,CJ대한통운,앱다운.com,CJ대한통운,official,https://www.cjlogistics.com/ko/newsroom/news/NR_00000010,CJ대한통운이 공지한 앱 설치 주소. 내부 비교 시 xn--2j1bu56az1a.com으로 변환. 문자 속 브랜드도 함께 확인.
 택배,한진택배,hanjin.com,한진,official,https://www.hanjin.com/kor/Main.do,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
 택배,롯데택배,lotteglogis.com,롯데글로벌로지스,official,https://www.lotteglogis.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
 택배,로젠택배,ilogen.com,로젠,official,https://www.ilogen.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
 택배,우체국,epost.go.kr,우정사업본부,official,https://www.epost.go.kr/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
+택배,경동택배,kdexp.com,경동물류,official,https://kdexp.com/cs/faq.do,공식 FAQ가 배송조회 홈페이지로 안내하는 주소. 문자 속 브랜드도 함께 확인.
+택배,합동택배,hdexp.co.kr,합동물류,official,https://hdexp.co.kr/index.do,공식 홈페이지의 배송조회 주소. 문자 속 브랜드도 함께 확인.
 은행,KB국민은행,kbstar.com,KB국민은행,official,https://www.kbstar.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
 은행,신한은행,shinhan.com,신한은행,official,https://www.shinhan.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.
 은행,하나은행,kebhana.com,하나은행,official,https://www.kebhana.com/,등록도메인(eTLD+1) 또는 공식 서비스 하위도메인 기준. 단독 whitelist 판정 금지.

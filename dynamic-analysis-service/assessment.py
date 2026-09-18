@@ -13,7 +13,11 @@ def assess(result: DynamicAnalysisResponse) -> DynamicAssessment:
     if result.status != "COMPLETED":
         return DynamicAssessment(
             verdict="INCONCLUSIVE",
-            reasons=["동적 분석을 완료하지 못했습니다."],
+            reasons=[
+                "웹페이지가 차단된 내부 주소로 이동하려 했습니다."
+                if result.errorCode == "BLOCKED_DESTINATION"
+                else "동적 분석을 완료하지 못했습니다."
+            ],
         )
 
     reasons: list[str] = []
@@ -43,4 +47,3 @@ def assess(result: DynamicAnalysisResponse) -> DynamicAssessment:
         verdict="NO_OBSERVED_THREAT",
         reasons=["제한된 관찰 시간 동안 실행 파일 다운로드나 민감정보 입력 폼을 확인하지 못했습니다."],
     )
-

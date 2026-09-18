@@ -26,9 +26,11 @@ def test_analysis_requires_both_safety_gates(monkeypatch):
 
 def test_job_api_runs_and_returns_result(monkeypatch):
     async def fake_analyze(url, timeout):
-        from schemas import DynamicAnalysisResponse
+        from schemas import DynamicAnalysisResponse, RedirectHop
         return DynamicAnalysisResponse(
             status="COMPLETED", requestedUrl=url, finalUrl=url,
+            visibleText="private page text", screenshotPngBase64="private-screenshot",
+            redirectChain=[RedirectHop(url=url, status=200)],
         )
 
     monkeypatch.setenv("DYNAMIC_ANALYSIS_ENABLED", "true")
@@ -44,3 +46,8 @@ def test_job_api_runs_and_returns_result(monkeypatch):
                 break
         assert result.status_code == 200
         assert result.json()["assessment"]["verdict"] == "NO_OBSERVED_THREAT"
+        summary = job_client.get(f"/jobs/{job_id}?includeArtifacts=false").json()
+        assert summary["result"]["finalUrl"] == "https://example.com"
+        assert summary["result"]["redirectChain"][0]["status"] == 200
+        assert summary["result"]["visibleText"] == ""
+        assert summary["result"]["screenshotPngBase64"] is None

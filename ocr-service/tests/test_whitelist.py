@@ -51,6 +51,28 @@ def test_lookalike_is_not_whitelisted(host):
     assert lookup_domain(host) is None
 
 
+@pytest.mark.parametrize("brand,domain", [
+    ("경동택배", "kdexp.com"),
+    ("합동택배", "hdexp.co.kr"),
+])
+def test_verified_delivery_domains_require_matching_brand(brand, domain):
+    official_url = f"https://www.{domain}/"
+    match = lookup_domain(official_url)
+    assert match is not None
+    assert match["brand"] == brand
+    assert brand_is_relevant(f"[{brand}] 배송조회 안내", match)
+    other_brand = "합동택배" if brand == "경동택배" else "경동택배"
+    assert not brand_is_relevant(f"[{other_brand}] 배송조회 안내", match)
+    assert lookup_domain(f"https://www.{domain}.evil.example/") is None
+    assert lookup_domain(f"https://fake-{domain}/") is None
+
+    level, _, _, _ = combine_analysis(
+        TextAnalysisResult(label="NORMAL", riskScore=0.05),
+        [result(official_url)], f"[{brand}] 배송조회 안내 {official_url}",
+    )
+    assert level == "LOW"
+
+
 @pytest.mark.parametrize("verdict,score,expected", [
     ("DANGEROUS", 0.05, "HIGH"), ("SUSPICIOUS", 0.05, "LOW"),
     ("UNKNOWN", 0.99, "LOW"),
@@ -79,3 +101,11 @@ def test_csv_is_authoritative_and_seed_aliases_are_preserved():
     assert lookup_domain("go.link") is None
     assert lookup_domain("epeople.go.kr") is None  # JSON-only domain
     assert brand_is_relevant("[대한통운] 배송 안내", lookup_domain("cjlogistics.com"))
+
+
+def test_cj_app_download_domain_is_readable_in_csv_and_normalized_for_matching():
+    with (DATA_DIR / "official_domains.csv").open(encoding="utf-8-sig", newline="") as stream:
+        rows = list(csv.DictReader(stream))
+    assert any(row["brand"] == "CJ대한통운" and row["registered_domain"] == "앱다운.com"
+               for row in rows)
+    assert lookup_domain("http://앱다운.com")["domains"] == ["xn--2j1bu56az1a.com"]

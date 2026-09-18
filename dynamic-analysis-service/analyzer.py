@@ -6,7 +6,7 @@ import os
 import ipaddress
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
-from playwright.async_api import async_playwright
+from playwright.async_api import Error as PlaywrightError, async_playwright
 
 from schemas import (
     DownloadObservation,
@@ -38,6 +38,12 @@ def blocked_browser_target(url: str) -> bool:
     return not public_ip(host)
 
 
+def blocked_navigation(final_url: str, responses: list[RedirectHop]) -> bool:
+    return blocked_browser_target(final_url) or any(
+        blocked_browser_target(response.url) for response in responses
+    )
+
+
 def redact_url(url: str) -> str:
     """Keep routing evidence while removing query values and fragments."""
     parsed = urlsplit(url)
@@ -54,6 +60,7 @@ async def analyze_url(url: str, timeout_seconds: float) -> DynamicAnalysisRespon
         raise ValueError("Controlled proxy is required")
     network_requests: list[NetworkObservation] = []
     downloads: list[DownloadObservation] = []
+    download_urls: list[str] = []
     navigation_responses: list[RedirectHop] = []
     truncated = False
 
@@ -96,6 +103,7 @@ async def analyze_url(url: str, timeout_seconds: float) -> DynamicAnalysisRespon
                 ))
 
         def observe_download(download) -> None:
+            download_urls.append(redact_url(download.url))
             downloads.append(DownloadObservation(
                 suggestedFilename=download.suggested_filename[:255],
             ))
@@ -106,7 +114,14 @@ async def analyze_url(url: str, timeout_seconds: float) -> DynamicAnalysisRespon
 
         try:
             async with asyncio.timeout(timeout_seconds):
-                await page.goto(url, wait_until="domcontentloaded")
+                try:
+                    await page.goto(url, wait_until="domcontentloaded")
+                except PlaywrightError as exception:
+                    if "Download is starting" not in str(exception):
+                        raise
+                    await page.wait_for_timeout(200)
+                    if not downloads:
+                        raise
                 await page.wait_for_timeout(OBSERVATION_SECONDS * 1000)
                 title = (await page.title())[:500]
                 body_text = await page.locator("body").inner_text(timeout=2_000)
@@ -120,7 +135,12 @@ async def analyze_url(url: str, timeout_seconds: float) -> DynamicAnalysisRespon
                         (input.getAttribute('type') || input.tagName).toLowerCase());
                       const sensitive = inputs.filter(input => {
                         const value = `${input.name || ''} ${input.id || ''} ${input.autocomplete || ''}`;
-                        return input.type === 'password' || /pass|otp|pin|card|account|resident|ssn/i.test(value);
+                        const words = value.replace(/([a-z])([A-Z])/g, '$1 $2')
+                          .toLowerCase().split(/[^a-z0-9]+/);
+                        return input.type === 'password' || words.some(word =>
+                          ['password', 'passwd', 'passcode', 'pwd', 'otp', 'pin',
+                           'card', 'cardnumber', 'creditcard', 'cvv', 'cvc',
+                           'account', 'resident', 'ssn'].includes(word));
                       }).map(input => input.type || input.tagName.toLowerCase());
                       return {
                         action: form.action || location.href,
@@ -136,13 +156,22 @@ async def analyze_url(url: str, timeout_seconds: float) -> DynamicAnalysisRespon
                     inputTypes=item["inputTypes"],
                     sensitiveFields=item["sensitiveFields"],
                 ) for item in forms_raw]
+                final_url = download_urls[-1] if download_urls else page.url
+                if blocked_navigation(final_url, navigation_responses):
+                    return DynamicAnalysisResponse(
+                        status="FAILED", requestedUrl=redact_url(url),
+                        finalUrl=redact_url(final_url),
+                        redirectChain=navigation_responses,
+                        networkRequests=network_requests,
+                        errorCode="BLOCKED_DESTINATION",
+                    )
                 screenshot = base64.b64encode(await page.screenshot(
                     type="png", full_page=False,
                 )).decode("ascii")
                 return DynamicAnalysisResponse(
                     status="COMPLETED",
                     requestedUrl=redact_url(url),
-                    finalUrl=redact_url(page.url),
+                    finalUrl=redact_url(final_url),
                     title=title,
                     visibleText=body_text,
                     redirectChain=navigation_responses,

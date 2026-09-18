@@ -9,6 +9,7 @@ public record DynamicAnalysisJob(
         String verdict,
         String riskLevel,
         String summary,
-        List<String> reasons
+        List<String> reasons,
+        List<String> evidence
 ) {
 }

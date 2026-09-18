@@ -63,15 +63,21 @@ def _join_wrapped_urls(text: str) -> str:
         continuation = False
         # OCR can corrupt a standalone scheme (e.g. https:lL). A bare
         # hostname with a path still establishes URL continuation context.
-        if previous and URL_PATTERN.fullmatch(previous):
+        trailing_url = next((match.group(0) for match in reversed(list(URL_PATTERN.finditer(previous)))
+                             if match.end() == len(previous)), None)
+        if trailing_url:
             try:
-                candidate = previous if re.match(r"(?i)^(?:https?|hxxps?)://", previous) else "https://" + previous
+                candidate = trailing_url if re.match(r"(?i)^(?:https?|hxxps?)://", trailing_url) else "https://" + trailing_url
                 continuation = bool(urlsplit(candidate).path)
             except ValueError:
                 pass
         ascii_url_piece = bool(re.fullmatch(r"[A-Za-z0-9._~:/?#\[\]@!$&()*+,;=%-]+", line))
         independent_url = URL_PATTERN.match(line) is not None
-        if ascii_url_piece and (scheme_only or (continuation and not independent_url)):
+        wrapped_host = bool(
+            re.search(r"(?i)(?<![a-z0-9.-])(?:www|support|help|account|my)\.$", previous)
+            and re.match(r"(?i)[a-z0-9-]+(?:\.[a-z0-9-]+)+(?:[/?#]|$)", line)
+        )
+        if ascii_url_piece and (scheme_only or wrapped_host or (continuation and not independent_url)):
             lines[-1] += line
         else:
             lines.append(line)

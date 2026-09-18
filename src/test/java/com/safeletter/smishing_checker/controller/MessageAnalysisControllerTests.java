@@ -65,13 +65,15 @@ class MessageAnalysisControllerTests {
                 new DynamicAnalysisJob(
                         jobId, "COMPLETED", "https://example.com/",
                         "SUSPICIOUS", "HIGH", "민감정보 입력 폼이 확인되었습니다.",
-                        List.of("비밀번호 입력 항목이 있습니다.")
+                        List.of("비밀번호 입력 항목이 있습니다."),
+                        List.of("최종 URL: https://example.com/login")
                 )
         );
 
         mockMvc.perform(get("/api/v1/messages/dynamic/{jobId}", jobId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("COMPLETED"))
-                .andExpect(jsonPath("$.riskLevel").value("HIGH"));
+                .andExpect(jsonPath("$.riskLevel").value("HIGH"))
+                .andExpect(jsonPath("$.evidence[0]").value("최종 URL: https://example.com/login"));
     }
 }

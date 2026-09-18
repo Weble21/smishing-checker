@@ -3,8 +3,10 @@ package com.safeletter.smishing_checker.service;
 import com.safeletter.smishing_checker.exception.ExternalApiException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -14,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withException;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 class FastApiAnalysisClientTests {
@@ -78,7 +81,8 @@ class FastApiAnalysisClientTests {
                           "verdict": "SUSPICIOUS",
                           "riskLevel": "HIGH",
                           "summary": "민감정보 입력 폼이 확인되었습니다.",
-                          "reasons": ["비밀번호 입력 항목이 있습니다."]
+                          "reasons": ["비밀번호 입력 항목이 있습니다."],
+                          "evidence": ["최종 URL: https://example.com/login"]
                         }
                         """.formatted(jobId), MediaType.APPLICATION_JSON));
         FastApiAnalysisClient client = new FastApiAnalysisClient(
@@ -89,6 +93,26 @@ class FastApiAnalysisClientTests {
 
         assertEquals("HIGH", result.riskLevel());
         assertEquals(List.of("비밀번호 입력 항목이 있습니다."), result.reasons());
+        assertEquals(List.of("최종 URL: https://example.com/login"), result.evidence());
+        server.verify();
+    }
+
+    @Test
+    void preservesMissingDynamicJobAsNotFound() {
+        RestClient.Builder builder = RestClient.builder();
+        MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+        String jobId = "a".repeat(32);
+        server.expect(requestTo("http://localhost:8000/dynamic/jobs/" + jobId))
+                .andRespond(withStatus(HttpStatus.NOT_FOUND));
+        FastApiAnalysisClient client = new FastApiAnalysisClient(
+                builder.build(), "http://localhost:8000"
+        );
+
+        ResponseStatusException exception = assertThrows(
+                ResponseStatusException.class,
+                () -> client.getDynamicJob(jobId)
+        );
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         server.verify();
     }
 

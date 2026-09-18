@@ -105,6 +105,8 @@ def get_job(job_id: str, includeArtifacts: bool = True) -> DynamicJobResponse:
     job = job_queue.get(job_id)
     if job is None:
         raise HTTPException(status_code=404, detail="Analysis job was not found")
-    if not includeArtifacts:
-        job = job.model_copy(update={"result": None})
+    if not includeArtifacts and job.result is not None:
+        job = job.model_copy(update={"result": job.result.model_copy(update={
+            "visibleText": "", "screenshotPngBase64": None,
+        })})
     return job
